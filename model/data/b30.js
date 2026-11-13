@@ -150,7 +150,8 @@ export function buildB30Model(raw = {}) {
             p: 'P' + (r.perfect_count ?? 0) + '(+' + (r.shiny_perfect_count ?? 0) + ')',
             f: 'F' + (r.near_count ?? 0),
             l: 'L' + (r.miss_count ?? 0),
-            clear: clear.text,
+            // FR 两字视觉比 NC 窄，中间补一个空格对齐观感
+            clear: clear.text === 'FR' ? 'F R' : clear.text,
             clearColor: clear.color,
             time: days + 'd',
         }

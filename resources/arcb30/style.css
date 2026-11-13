@@ -241,6 +241,12 @@ body {
   font-size: 9.2px;
   line-height: 1;
   color: #fff;
+  text-shadow:
+    -1px -1px 1.4px rgba(26, 16, 36, 0.95),
+     1px -1px 1.4px rgba(26, 16, 36, 0.95),
+    -1px  1px 1.4px rgba(26, 16, 36, 0.95),
+     1px  1px 1.4px rgba(26, 16, 36, 0.95),
+     0    0   2.2px rgba(26, 16, 36, 0.85);
 }
 .trend-graph {
   position: absolute;
@@ -291,6 +297,12 @@ body {
   line-height: 1;
   color: #fff;
   white-space: nowrap;
+  text-shadow:
+    -1px -1px 1.4px rgba(26, 16, 36, 0.95),
+     1px -1px 1.4px rgba(26, 16, 36, 0.95),
+    -1px  1px 1.4px rgba(26, 16, 36, 0.95),
+     1px  1px 1.4px rgba(26, 16, 36, 0.95),
+     0    0   2.2px rgba(26, 16, 36, 0.85);
 }
 
 /* ---------- 成绩卡片 ---------- */
@@ -351,11 +363,11 @@ body {
 .card .score {
   position: absolute;
   left: 66px;
-  top: 15.2px;
+  top: 15.4px;
   width: 120px;
   font-family: 'Exo', 'GeosansLight', sans-serif;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
   letter-spacing: 0;
   color: #101018;
@@ -365,10 +377,10 @@ body {
   -webkit-text-stroke: 0.24px currentColor;
   position: absolute;
   left: 66px;
-  top: 36.8px;
-  font-size: 9.3px;
+  top: 38.4px;
+  font-size: 10.6px;
   line-height: 1;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.01em;
   color: #7a7a8c;
   white-space: nowrap;
 }
@@ -385,9 +397,9 @@ body {
 .card .clear {
   -webkit-text-stroke: 0.2px currentColor;
   position: absolute;
-  left: 157px;
-  top: 38.2px;
-  width: 21px;
+  left: 155px;
+  top: 40px;
+  width: 23px;
   font-size: 7px;
   line-height: 1;
   text-align: right;
