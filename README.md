@@ -1,13 +1,43 @@
 # arc-plugin
 
-Arcaea 查分插件（b30 成绩单 / 单曲 / 潜力趋势）。
+[![version](https://img.shields.io/badge/version-0.2.0-blue)](package.json)
+[![Yunzai](https://img.shields.io/badge/Yunzai--Bot-plugin-ff69b4)](https://github.com/yoimiya-kokomi/Yunzai-Bot)
 
-对接后端 [`invtwd-server`](tools/out/openapi.json) 查分 API：绑定好友码、查 B50 / 单曲并出图。
-B50 用插件自带的本地模板渲染（像素级对齐设计稿），单曲用服务器渲染的图片。
+> Arcaea 查分插件 —— 绑定好友码，一键出 B50 成绩单、单曲成绩与潜力趋势图。
+
+对接后端查分 API（[`invtwd-server`](tools/out/openapi.json)）：B50 用插件自带的本地模板渲染（像素级对齐设计稿），单曲直接使用服务器渲染的图片。
 
 ![预览](docs/preview.jpg)
 
-## 命令
+## ✨ 功能特性
+
+- **B50 成绩单** —— 本地模板渲染，逐像素对齐官方设计稿，默认 3x / WebP q95（约 2.1 MB）。
+- **单曲查询** —— 支持曲名或 `song_id` + 难度（`PST/PRS/FTR/BYD/ETR`）。
+- **潜力趋势图** —— 自动根据历史成绩生成折线，或由服务器数据驱动。
+- **双渲染器** —— Shotium（默认，进程内，快约 2.3 倍）/ Puppeteer（兜底），出图像素一致。
+- **资源自带** —— 立绘、头像、曲绘全部随插件复制，不引用外部路径。
+
+## 📦 安装
+
+进入云崽（Yunzai-Bot）根目录的 `plugins/`，克隆本仓库：
+
+```bash
+git clone https://github.com/OrbiterStellarTrek/arc-plugin.git ./plugins/arc-plugin
+```
+
+安装渲染器依赖（二选一即可，均为可选 peer 依赖）：
+
+```bash
+pnpm add @pixel.js/shotium -w   # 默认渲染器，推荐
+```
+
+```bash
+pnpm add puppeteer -w           # 兜底渲染器
+```
+
+重启云崽后插件自动加载，首次会从 `config/config_default.yaml` 生成 `config/config.yaml`。
+
+## 🎮 命令
 
 指令头 `cmdhead` 默认 `a`（可在 `config/config.yaml` 改），支持 `#` / `/` 前缀：
 
@@ -21,10 +51,9 @@ B50 用插件自带的本地模板渲染（像素级对齐设计稿），单曲�
 | `#a状态` | 查分服务状态 |
 | `#a帮助` | 命令帮助 |
 
-> 单曲与非样例 B50 的曲名解析依赖 `resources/arcb30/songlist.json`（样例覆盖有限）；
-> 识别不到时请直接用 `song_id`。
+> 单曲与非样例 B50 的曲名解析依赖 `resources/arcb30/songlist.json`（样例覆盖有限）；识别不到时请直接用 `song_id`。
 
-## 配置
+## ⚙️ 配置
 
 首次加载会从 `config/config_default.yaml` 生成 `config/config.yaml`（已 gitignore），改后者即可：
 
@@ -46,20 +75,30 @@ b50:                                  # B50 本地出图参数（透传 renderB3
 
 成图默认输出：3 倍分辨率（3000 × 3102）+ WebP q95，约 2.1 MB → [docs/arc-b30@3x.webp](docs/arc-b30@3x.webp)
 
-## 目录结构
+## 📁 目录结构
 
 ```
 arc-plugin/
-├── index.js                  # 插件入口（导出 renderB30）
+├── index.js                  # 插件入口（挂载 apps、导出 renderB30）
 ├── package.json
+├── apps/                     # 业务层：命令处理
+│   ├── bind.js               # 绑定 / 我的绑定 / 解绑
+│   ├── b50.js                # B50 成绩单
+│   ├── song.js               # 单曲查询
+│   └── help.js               # 帮助 / 状态
+├── config/                   # 配置（config.yaml 已 gitignore）
+│   ├── config_default.yaml
+│   └── config.yaml
 ├── model/
+│   ├── api/client.js         # invtwd-server HTTP 客户端
+│   ├── config.js             # 配置读取
 │   ├── data/b30.js           # 原始成绩数据 → 模板数据
 │   └── render/
 │       ├── arcb30.js         # renderB30(raw, options)：渲染器调度
 │       ├── static.js         # 数据 → 静态 HTML（两个渲染器共用）
 │       ├── shotium.js        # Shotium 渲染器（快，默认优先）
 │       └── puppeteer.js      # Puppeteer 渲染器（兜底）
-├── resources/arcb30/         # 模板本体（素材已随插件复制，不引用外部路径）
+├── resources/arcb30/         # 模板本体（素材已随插件复制）
 │   ├── view.js               # 纯字符串视图：生成页面 HTML（无 DOM API）
 │   ├── style.css
 │   ├── songlist.json         # song_id → 曲名（示例数据）
@@ -75,24 +114,14 @@ arc-plugin/
 └── docs/preview.jpg
 ```
 
-## 渲染
+## 🛠️ 开发
 
-两个渲染器共用同一份静态 HTML（`view.js` 在 Node 侧拼出文档，无 JS 参与），
-所以两边出图像素一致：
-
-| 渲染器 | 首次 | 之后每张 | 依赖 |
-| --- | --- | --- | --- |
-| **Shotium**（默认） | ~1.3s（进程内引擎） | ~1.3s | `@pixel.js/shotium` |
-| Puppeteer | ~2.9s（启动 Chromium） | ~2.9s | `puppeteer` |
-
-> 本机实测（默认 3x / WebP q95，3000×3102）：Shotium 1.28s（2.11 MB）/ Puppeteer 2.91s（2.09 MB），
-> 快约 2.3 倍；两者像素差 mean 1.1/255（仅抗锯齿差异）。
+### 渲染 API
 
 ```js
 import { renderB30, shutdownRenderers, RENDER_DEFAULTS } from './index.js'
 
-// 默认预设：renderer=auto、scale=3、type=webp、quality=95
-// → 3000 × 3102 WebP，约 2.1 MB
+// 默认预设：renderer=auto、scale=3、type=webp、quality=95 → 3000 × 3102 WebP，约 2.1 MB
 const img = await renderB30(raw)
 
 // 需要别的规格时覆盖即可
@@ -121,10 +150,20 @@ node tools/render-preview.js out.png --type=png
 node tools/render-preview.js out.webp --scale=4 --renderer=shotium
 ```
 
-输出体积参考（3000 × 3102）：WebP q95 ≈ **2.1 MB**、PNG ≈ 9.3 MB。
-3x WebP 是本项目的默认基准；发群直接用默认即可。
+输出体积参考（3000 × 3102）：WebP q95 ≈ **2.1 MB**、PNG ≈ 9.3 MB。3x WebP 是本项目默认基准，发群直接用默认即可。
 
-## 模板数据格式
+### 渲染器对比
+
+两个渲染器共用同一份静态 HTML（`view.js` 在 Node 侧拼出文档，无 JS 参与），所以两边出图像素一致：
+
+| 渲染器 | 首次 | 之后每张 | 依赖 |
+| --- | --- | --- | --- |
+| **Shotium**（默认） | ~1.3s（进程内引擎） | ~1.3s | `@pixel.js/shotium` |
+| Puppeteer | ~2.9s（启动 Chromium） | ~2.9s | `puppeteer` |
+
+> 本机实测（默认 3x / WebP q95，3000×3102）：Shotium 1.28s（2.11 MB）/ Puppeteer 2.91s（2.09 MB），快约 2.3 倍；两者像素差 mean 1.1/255（仅抗锯齿差异）。
+
+### 模板数据格式
 
 渲染器最终交给模板的是 `buildB30Model()` 的返回值：
 
@@ -138,10 +177,9 @@ node tools/render-preview.js out.webp --scale=4 --renderer=shotium
 }
 ```
 
-`raw.chart` 未提供时，会根据 `records` 的 `time_played` / `potential` 自动生成趋势序列；
-示例数据直接携带了设计稿使用的序列，以便逐像素对照。
+`raw.chart` 未提供时，会根据 `records` 的 `time_played` / `potential` 自动生成趋势序列；示例数据直接携带了设计稿使用的序列，以便逐像素对照。
 
-## 素材
+### 素材
 
 全部**复制**到 `resources/arcb30`（不引用外部路径），并与设计稿 1000 × 1034 对齐：
 
@@ -157,10 +195,12 @@ node tools/render-preview.js out.webp --scale=4 --renderer=shotium
 - 体积优化：`python tools/optimize-assets.py`（PNG/JPG → WebP，需 Pillow）
 - 数据层依次尝试 `.webp` / `.png`，两种格式都能直接用
 
-角色资源按 `char.character` + `char.is_char_uncapped` 拼成 `char/<id><u?>.webp`，
-头像为 `char/<id><u?>_icon.webp`，找不到回退 `81u`。
+角色资源按 `char.character` + `char.is_char_uncapped` 拼成 `char/<id><u?>.webp`，头像为 `char/<id><u?>_icon.webp`，找不到回退 `81u`。
 
-## 设计稿对照说明
+<details>
+<summary><b>🎨 设计稿对照与还原细节</b></summary>
+
+### 元素位置 / 规格
 
 | 元素 | 位置 / 规格 |
 | --- | --- |
@@ -177,25 +217,19 @@ node tools/render-preview.js out.webp --scale=4 --renderer=shotium
 
 ### 细节还原
 
-- **PTT 数字**：设计稿是游戏同款样式 —— 白字 + 深色描边，且**整数部分比小数部分大**
-  （14.5px vs 10px，约 0.69 倍），小数点是小方点、与数字共基线。
-  实现为 `<span class="ptt-int">` + `<span class="ptt-dec">`，flex 基线对齐，
-  `-webkit-text-stroke: 0.8px` + `paint-order: stroke fill` 保证白字不被描边吃掉。
-  实测整数部分与设计稿墨迹边界完全重合（52.5–66.5 / x 606–621.5）。
+- **PTT 数字**：设计稿是游戏同款样式 —— 白字 + 深色描边，且**整数部分比小数部分大**（14.5px vs 10px，约 0.69 倍），小数点是小方点、与数字共基线。实现为 `<span class="ptt-int">` + `<span class="ptt-dec">`，flex 基线对齐，`-webkit-text-stroke: 0.8px` + `paint-order: stroke fill` 保证白字不被描边吃掉。实测整数部分与设计稿墨迹边界完全重合（52.5–66.5 / x 606–621.5）。
 - **趋势折线**：描边 2.2px、卡片 rgba(138,138,138,.78)（与设计稿组件导出的 4px@2x / alpha 199 一致）。
-- **头像遮罩**：设计稿不是正中菱形，而是 45° 菱形（对角线 78.5）中心上移 7px，
-  所以顶部被节点上边缘切平；名条则是**两端都带箭头**的六边形（右端被头像盖住）。
+- **头像遮罩**：设计稿不是正中菱形，而是 45° 菱形（对角线 78.5）中心上移 7px，所以顶部被节点上边缘切平；名条则是**两端都带箭头**的六边形（右端被头像盖住）。
 - **卡片小字**：用 `-webkit-text-stroke` 补到与设计稿相同的笔画覆盖率。
 
 ### 与设计稿的已知差异
 
-1. **卡片小字 / PTT 数字**：设计稿的小字是同一家的“窄体”字重，素材里只有
-   GeosansLight 一款，模板按行高/位置对齐、逐串校准字号（曲名 10.2px、潜力 9.3px、
-   P/F/L 9.1px），并用 `-webkit-text-stroke` 把笔画粗细补到与设计稿一致。
-   长曲名偶有 1～2px 宽度差。
+1. **卡片小字 / PTT 数字**：设计稿的小字是同一家的"窄体"字重，素材里只有 GeosansLight 一款，模板按行高/位置对齐、逐串校准字号（曲名 10.2px、潜力 9.3px、P/F/L 9.1px），并用 `-webkit-text-stroke` 把笔画粗细补到与设计稿一致。长曲名偶有 1～2px 宽度差。
 2. **趋势曲线形状**：由数据决定，示例数据已内置设计稿曲线以便对照。
 
-## 后续 TODO
+</details>
 
-- 完整曲库 / 中文曲名别名表（当前单曲名解析仅覆盖 `songlist.json` 样例）
-- 曲绘/立绘按需下载（目前是全量自带）
+## 🗺️ Roadmap
+
+- [ ] 完整曲库 / 中文曲名别名表（当前单曲名解析仅覆盖 `songlist.json` 样例）
+- [ ] 曲绘 / 立绘按需下载（目前是全量自带）
