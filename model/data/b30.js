@@ -6,15 +6,18 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const RESOURCE_ROOT = path.resolve(__dirname, '..', '..', 'resources', 'arcb30')
 const JACKET_DIR = path.join(RESOURCE_ROOT, 'jacket')
 
-/** 1 基难度索引 → 名称（接口里 1=PST 2=PRS 3=FTR 4=BYD 5=ETR） */
-const DIFF_NAMES = ['', 'PST', 'PRS', 'FTR', 'BYD', 'ETR']
+/** 0 基难度索引 → 名称（接口 difficulty 0=PST 1=PRS 2=FTR 3=BYD 4=ETR） */
+const DIFF_NAMES = ['PST', 'PRS', 'FTR', 'BYD', 'ETR']
 const DIFF_COLORS = {
     PST: '#4FA8D8',
     PRS: '#46B87E',
     FTR: '#D1455E',
     BYD: '#8E56C8',
     ETR: '#B18BD8',
+    INS: '#8E56C8',
 }
+/** 这些曲目的 BYD(3) 难度实际显示为 INS */
+const INS_SONGS = new Set(['dreadarea', 'rivenpilgrim', 'cataclysmcry', 'deinosphainein'])
 /** 通关状态：0 无 / 1 通关 / 2 全连 / 3 理论值 / 4 简单 / 5 困难 */
 const CLEARS = {
     0: { text: '--', color: '#8A8A96' },
@@ -124,7 +127,8 @@ export function buildB30Model(raw = {}) {
 
     const count = raw.count || 50
     const cards = records.slice(0, count).map((r, i) => {
-        const diff = DIFF_NAMES[r.difficulty] || 'FTR'
+        let diff = DIFF_NAMES[r.difficulty] || 'FTR'
+        if (diff === 'BYD' && INS_SONGS.has(String(r.song_id || '').toLowerCase())) diff = 'INS'
         const clear = CLEARS[r.clear_type] ?? CLEARS[0]
         const potential = Number(r.potential ?? r.play_potential ?? 0)
         const days = r.time_played ? Math.max(0, Math.floor((now - r.time_played) / 86400000)) : 0
