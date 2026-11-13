@@ -1,11 +1,48 @@
 # arc-plugin
 
-Arcaea 成绩单（b30 / 潜力趋势）渲染插件。
+Arcaea 查分插件（b30 成绩单 / 单曲 / 潜力趋势）。
 
-**当前阶段只实现「渲染模板」**：把一份成绩数据渲染成一张 1000 × 1034 的成绩单图片，
-命令、账号绑定、数据抓取等业务逻辑尚未接入。
+对接后端 [`invtwd-server`](tools/out/openapi.json) 查分 API：绑定好友码、查 B50 / 单曲并出图。
+B50 用插件自带的本地模板渲染（像素级对齐设计稿），单曲用服务器渲染的图片。
 
 ![预览](docs/preview.jpg)
+
+## 命令
+
+指令头 `cmdhead` 默认 `a`（可在 `config/config.yaml` 改），支持 `#` / `/` 前缀：
+
+| 命令 | 说明 |
+| --- | --- |
+| `#a绑定 <9位好友码>` | 绑定 Arcaea 好友码 |
+| `#a我的绑定` | 查看当前绑定 |
+| `#a解绑` | 解除绑定 |
+| `#ab50` | 查询 B50 成绩单（本地渲染） |
+| `#a查歌 <曲名或song_id> <难度>` | 查询单曲，难度 `PST/PRS/FTR/BYD/ETR` 或 `0-4`（默认 FTR） |
+| `#a状态` | 查分服务状态 |
+| `#a帮助` | 命令帮助 |
+
+> 单曲与非样例 B50 的曲名解析依赖 `resources/arcb30/songlist.json`（样例覆盖有限）；
+> 识别不到时请直接用 `song_id`。
+
+## 配置
+
+首次加载会从 `config/config_default.yaml` 生成 `config/config.yaml`（已 gitignore），改后者即可：
+
+```yaml
+server:
+  base_url: "http://127.0.0.1:8080"   # 查分服务地址
+  api_key: ""                         # server.api_key（Bearer）
+  timeout_ms: 15000
+cmdhead: "a"                          # 指令头
+poll:
+  max_wait_ms: 60000                  # 单曲等普通查询最长等待
+  b50_max_wait_ms: 180000             # B50 最长等待（后端分批串行，排队可能数十秒）
+b50:                                  # B50 本地出图参数（透传 renderB30）
+  renderer: "auto"
+  scale: 3
+  type: "webp"
+  quality: 95
+```
 
 成图默认输出：3 倍分辨率（3000 × 3102）+ WebP q95，约 2.1 MB → [docs/arc-b30@3x.webp](docs/arc-b30@3x.webp)
 
@@ -160,6 +197,5 @@ node tools/render-preview.js out.webp --scale=4 --renderer=shotium
 
 ## 后续 TODO
 
-- 接入成绩数据源（查询 / 缓存 / 曲目元数据）
-- 注册渲染命令与图片发送
+- 完整曲库 / 中文曲名别名表（当前单曲名解析仅覆盖 `songlist.json` 样例）
 - 曲绘/立绘按需下载（目前是全量自带）

@@ -1,3 +1,4 @@
 tools/out/
 resources/arcb30/.render-*.html
+config/config.yaml
 *.log

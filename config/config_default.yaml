@@ -1,0 +1,31 @@
+# arc-plugin 默认配置
+# 请勿直接修改本文件；首次加载会在 config/config.yaml 生成一份用户配置，改那份即可。
+
+# 后端 invtwd-server
+server:
+  # 查分服务地址（不带末尾斜杠）
+  base_url: "http://127.0.0.1:8080"
+  # server.api_key（Bearer Token），留空表示不带认证（仅本机调试用）
+  api_key: ""
+  # 单次 HTTP 请求超时（毫秒）
+  timeout_ms: 15000
+
+# 命令指令头：匹配 ^[#/]<cmdhead>...，默认 a（如 #ab50 / /a绑定）
+cmdhead: "a"
+
+# 任务轮询
+poll:
+  # 单曲等普通查询从提交到出结果的最长等待（毫秒），超时走 Last 兜底或提示
+  max_wait_ms: 60000
+  # B50 最长等待（毫秒）：后端单 worker 分批串行执行，queued 可能持续数十秒
+  # （默认攒满 20 个请求或自队首 Job 起 40 秒 flush，再串行出图），故给更长的超时
+  b50_max_wait_ms: 180000
+  # 服务端未给 poll_after_ms 时的默认轮询间隔（毫秒）
+  default_interval_ms: 3000
+
+# B50 本地渲染出图参数（透传给 renderB30）
+b50:
+  renderer: "auto"   # auto | shotium | puppeteer
+  scale: 3           # 1=1000x1034, 3=3000x3102
+  type: "webp"       # webp | png | jpeg
+  quality: 95
