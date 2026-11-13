@@ -1,0 +1,30 @@
+{
+  "name": "arc-plugin",
+  "version": "0.1.0",
+  "description": "Arcaea b30 成绩单渲染插件（渲染模板 + Shotium / Puppeteer 双渲染器）",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "render:demo": "node tools/render-preview.js",
+    "render:shotium": "node tools/render-preview.js --renderer=shotium",
+    "render:puppeteer": "node tools/render-preview.js --renderer=puppeteer",
+    "assets:copy": "node tools/copy-assets.js"
+  },
+  "peerDependencies": {
+    "puppeteer": "^24.16.2",
+    "@pixel.js/shotium": "^0.12.2"
+  },
+  "peerDependenciesMeta": {
+    "puppeteer": {
+      "optional": true
+    },
+    "@pixel.js/shotium": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "Yunzai-Bot",
+    "Arcaea"
+  ],
+  "license": "MIT"
+}

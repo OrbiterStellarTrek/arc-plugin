@@ -1,0 +1,3148 @@
+{
+ "player": {
+  "name": "BennettNOTFound"
+ },
+ "ptt": {
+  "value": 12.061,
+  "exact": "12.06147",
+  "b10": 12.79145,
+  "b50": 11.915479466666667
+ },
+ "now": 1793866875000,
+ "chart": {
+  "title": "Potential Trend",
+  "plays": 113,
+  "series": [
+   {
+    "t": 0,
+    "v": 12.045
+   },
+   {
+    "t": 0.641,
+    "v": 10.906
+   },
+   {
+    "t": 0.6449,
+    "v": 10.897
+   },
+   {
+    "t": 0.6462,
+    "v": 10.87
+   },
+   {
+    "t": 0.6462,
+    "v": 11.123
+   },
+   {
+    "t": 0.6474,
+    "v": 10.165
+   },
+   {
+    "t": 0.6474,
+    "v": 11.448
+   },
+   {
+    "t": 0.6487,
+    "v": 10.129
+   },
+   {
+    "t": 0.6487,
+    "v": 11.792
+   },
+   {
+    "t": 0.65,
+    "v": 10.111
+   },
+   {
+    "t": 0.65,
+    "v": 11.99
+   },
+   {
+    "t": 0.6513,
+    "v": 10.111
+   },
+   {
+    "t": 0.6513,
+    "v": 11.99
+   },
+   {
+    "t": 0.6526,
+    "v": 10.111
+   },
+   {
+    "t": 0.6526,
+    "v": 11.99
+   },
+   {
+    "t": 0.6538,
+    "v": 10.111
+   },
+   {
+    "t": 0.6538,
+    "v": 12.189
+   },
+   {
+    "t": 0.6551,
+    "v": 10.129
+   },
+   {
+    "t": 0.6551,
+    "v": 12.207
+   },
+   {
+    "t": 0.6564,
+    "v": 10.49
+   },
+   {
+    "t": 0.6564,
+    "v": 12.207
+   },
+   {
+    "t": 0.6577,
+    "v": 10.49
+   },
+   {
+    "t": 0.6577,
+    "v": 12.207
+   },
+   {
+    "t": 0.659,
+    "v": 12.162
+   },
+   {
+    "t": 0.6782,
+    "v": 12.017
+   },
+   {
+    "t": 0.6795,
+    "v": 11.972
+   },
+   {
+    "t": 0.6795,
+    "v": 12.352
+   },
+   {
+    "t": 0.6808,
+    "v": 11.972
+   },
+   {
+    "t": 0.6808,
+    "v": 12.352
+   },
+   {
+    "t": 0.6821,
+    "v": 11.9
+   },
+   {
+    "t": 0.6821,
+    "v": 12.352
+   },
+   {
+    "t": 0.6833,
+    "v": 11.81
+   },
+   {
+    "t": 0.6833,
+    "v": 12.28
+   },
+   {
+    "t": 0.6846,
+    "v": 11.792
+   },
+   {
+    "t": 0.6846,
+    "v": 12.117
+   },
+   {
+    "t": 0.6859,
+    "v": 11.81
+   },
+   {
+    "t": 0.6859,
+    "v": 12.008
+   },
+   {
+    "t": 0.6872,
+    "v": 11.828
+   },
+   {
+    "t": 0.6872,
+    "v": 12.026
+   },
+   {
+    "t": 0.6885,
+    "v": 11.972
+   },
+   {
+    "t": 0.6962,
+    "v": 12.171
+   },
+   {
+    "t": 0.6974,
+    "v": 12.153
+   },
+   {
+    "t": 0.6974,
+    "v": 12.334
+   },
+   {
+    "t": 0.6987,
+    "v": 12.189
+   },
+   {
+    "t": 0.6987,
+    "v": 12.496
+   },
+   {
+    "t": 0.7,
+    "v": 12.207
+   },
+   {
+    "t": 0.7,
+    "v": 12.514
+   },
+   {
+    "t": 0.7013,
+    "v": 12.243
+   },
+   {
+    "t": 0.7013,
+    "v": 12.496
+   },
+   {
+    "t": 0.7026,
+    "v": 12.424
+   },
+   {
+    "t": 0.7038,
+    "v": 11.99
+   },
+   {
+    "t": 0.7038,
+    "v": 12.514
+   },
+   {
+    "t": 0.7051,
+    "v": 11.99
+   },
+   {
+    "t": 0.7051,
+    "v": 12.514
+   },
+   {
+    "t": 0.7064,
+    "v": 11.99
+   },
+   {
+    "t": 0.7064,
+    "v": 12.514
+   },
+   {
+    "t": 0.7077,
+    "v": 12.045
+   },
+   {
+    "t": 0.7077,
+    "v": 12.424
+   },
+   {
+    "t": 0.709,
+    "v": 12.081
+   },
+   {
+    "t": 0.7115,
+    "v": 12.108
+   },
+   {
+    "t": 0.7141,
+    "v": 12.18
+   },
+   {
+    "t": 0.7154,
+    "v": 12.153
+   },
+   {
+    "t": 0.7154,
+    "v": 12.695
+   },
+   {
+    "t": 0.7167,
+    "v": 11.936
+   },
+   {
+    "t": 0.7167,
+    "v": 12.713
+   },
+   {
+    "t": 0.7179,
+    "v": 11.412
+   },
+   {
+    "t": 0.7179,
+    "v": 12.713
+   },
+   {
+    "t": 0.7192,
+    "v": 11.249
+   },
+   {
+    "t": 0.7192,
+    "v": 12.677
+   },
+   {
+    "t": 0.7205,
+    "v": 11.249
+   },
+   {
+    "t": 0.7205,
+    "v": 12.171
+   },
+   {
+    "t": 0.7218,
+    "v": 11.267
+   },
+   {
+    "t": 0.7218,
+    "v": 11.719
+   },
+   {
+    "t": 0.7231,
+    "v": 11.322
+   },
+   {
+    "t": 0.7231,
+    "v": 11.792
+   },
+   {
+    "t": 0.7244,
+    "v": 11.466
+   },
+   {
+    "t": 0.7244,
+    "v": 11.828
+   },
+   {
+    "t": 0.7256,
+    "v": 11.593
+   },
+   {
+    "t": 0.7269,
+    "v": 12.026
+   },
+   {
+    "t": 0.7282,
+    "v": 11.792
+   },
+   {
+    "t": 0.7282,
+    "v": 12.804
+   },
+   {
+    "t": 0.7295,
+    "v": 11.792
+   },
+   {
+    "t": 0.7295,
+    "v": 12.84
+   },
+   {
+    "t": 0.7308,
+    "v": 11.81
+   },
+   {
+    "t": 0.7308,
+    "v": 12.84
+   },
+   {
+    "t": 0.7321,
+    "v": 11.701
+   },
+   {
+    "t": 0.7321,
+    "v": 12.984
+   },
+   {
+    "t": 0.7333,
+    "v": 11.683
+   },
+   {
+    "t": 0.7333,
+    "v": 13.002
+   },
+   {
+    "t": 0.7346,
+    "v": 11.683
+   },
+   {
+    "t": 0.7346,
+    "v": 13.002
+   },
+   {
+    "t": 0.7359,
+    "v": 11.683
+   },
+   {
+    "t": 0.7359,
+    "v": 12.966
+   },
+   {
+    "t": 0.7372,
+    "v": 11.9
+   },
+   {
+    "t": 0.7372,
+    "v": 12.767
+   },
+   {
+    "t": 0.7385,
+    "v": 12.343
+   },
+   {
+    "t": 0.741,
+    "v": 12.388
+   },
+   {
+    "t": 0.7423,
+    "v": 12.37
+   },
+   {
+    "t": 0.7423,
+    "v": 12.858
+   },
+   {
+    "t": 0.7436,
+    "v": 12.388
+   },
+   {
+    "t": 0.7436,
+    "v": 12.894
+   },
+   {
+    "t": 0.7449,
+    "v": 12.424
+   },
+   {
+    "t": 0.7449,
+    "v": 12.894
+   },
+   {
+    "t": 0.7462,
+    "v": 12.46
+   },
+   {
+    "t": 0.7462,
+    "v": 12.876
+   },
+   {
+    "t": 0.7487,
+    "v": 12.316
+   },
+   {
+    "t": 0.7487,
+    "v": 12.677
+   },
+   {
+    "t": 0.75,
+    "v": 11.575
+   },
+   {
+    "t": 0.75,
+    "v": 12.569
+   },
+   {
+    "t": 0.7513,
+    "v": 11.557
+   },
+   {
+    "t": 0.7513,
+    "v": 12.46
+   },
+   {
+    "t": 0.7526,
+    "v": 11.557
+   },
+   {
+    "t": 0.7526,
+    "v": 12.37
+   },
+   {
+    "t": 0.7538,
+    "v": 11.629
+   },
+   {
+    "t": 0.7538,
+    "v": 12.822
+   },
+   {
+    "t": 0.7551,
+    "v": 11.792
+   },
+   {
+    "t": 0.7551,
+    "v": 12.84
+   },
+   {
+    "t": 0.7564,
+    "v": 11.954
+   },
+   {
+    "t": 0.7564,
+    "v": 12.84
+   },
+   {
+    "t": 0.7577,
+    "v": 12.117
+   },
+   {
+    "t": 0.7577,
+    "v": 12.822
+   },
+   {
+    "t": 0.759,
+    "v": 12.207
+   },
+   {
+    "t": 0.759,
+    "v": 12.731
+   },
+   {
+    "t": 0.7603,
+    "v": 12.207
+   },
+   {
+    "t": 0.7603,
+    "v": 12.731
+   },
+   {
+    "t": 0.7615,
+    "v": 12.225
+   },
+   {
+    "t": 0.7615,
+    "v": 12.713
+   },
+   {
+    "t": 0.7628,
+    "v": 12.153
+   },
+   {
+    "t": 0.7628,
+    "v": 12.605
+   },
+   {
+    "t": 0.7641,
+    "v": 12.026
+   },
+   {
+    "t": 0.7641,
+    "v": 12.46
+   },
+   {
+    "t": 0.7654,
+    "v": 11.954
+   },
+   {
+    "t": 0.7654,
+    "v": 12.424
+   },
+   {
+    "t": 0.7667,
+    "v": 11.954
+   },
+   {
+    "t": 0.7667,
+    "v": 12.966
+   },
+   {
+    "t": 0.7679,
+    "v": 11.954
+   },
+   {
+    "t": 0.7679,
+    "v": 12.984
+   },
+   {
+    "t": 0.7692,
+    "v": 11.593
+   },
+   {
+    "t": 0.7692,
+    "v": 12.984
+   },
+   {
+    "t": 0.7705,
+    "v": 11.231
+   },
+   {
+    "t": 0.7705,
+    "v": 12.984
+   },
+   {
+    "t": 0.7718,
+    "v": 11.213
+   },
+   {
+    "t": 0.7718,
+    "v": 12.478
+   },
+   {
+    "t": 0.7731,
+    "v": 11.213
+   },
+   {
+    "t": 0.7731,
+    "v": 12.153
+   },
+   {
+    "t": 0.7744,
+    "v": 11.249
+   },
+   {
+    "t": 0.7744,
+    "v": 12.352
+   },
+   {
+    "t": 0.7756,
+    "v": 11.575
+   },
+   {
+    "t": 0.7756,
+    "v": 12.37
+   },
+   {
+    "t": 0.7769,
+    "v": 11.918
+   },
+   {
+    "t": 0.7769,
+    "v": 12.37
+   },
+   {
+    "t": 0.7782,
+    "v": 12.099
+   },
+   {
+    "t": 0.7782,
+    "v": 12.695
+   },
+   {
+    "t": 0.7795,
+    "v": 12.081
+   },
+   {
+    "t": 0.7795,
+    "v": 12.876
+   },
+   {
+    "t": 0.7808,
+    "v": 12.081
+   },
+   {
+    "t": 0.7808,
+    "v": 12.876
+   },
+   {
+    "t": 0.7821,
+    "v": 12.099
+   },
+   {
+    "t": 0.7821,
+    "v": 12.858
+   },
+   {
+    "t": 0.7833,
+    "v": 12.261
+   },
+   {
+    "t": 0.7833,
+    "v": 12.533
+   },
+   {
+    "t": 0.7846,
+    "v": 12.261
+   },
+   {
+    "t": 0.7846,
+    "v": 12.659
+   },
+   {
+    "t": 0.7859,
+    "v": 12.298
+   },
+   {
+    "t": 0.7859,
+    "v": 12.804
+   },
+   {
+    "t": 0.7872,
+    "v": 12.442
+   },
+   {
+    "t": 0.7872,
+    "v": 12.912
+   },
+   {
+    "t": 0.7885,
+    "v": 12.496
+   },
+   {
+    "t": 0.7885,
+    "v": 12.93
+   },
+   {
+    "t": 0.7897,
+    "v": 12.189
+   },
+   {
+    "t": 0.7897,
+    "v": 12.912
+   },
+   {
+    "t": 0.791,
+    "v": 11.954
+   },
+   {
+    "t": 0.791,
+    "v": 12.894
+   },
+   {
+    "t": 0.7923,
+    "v": 11.954
+   },
+   {
+    "t": 0.7923,
+    "v": 12.605
+   },
+   {
+    "t": 0.7936,
+    "v": 11.954
+   },
+   {
+    "t": 0.7936,
+    "v": 12.316
+   },
+   {
+    "t": 0.7949,
+    "v": 11.954
+   },
+   {
+    "t": 0.7949,
+    "v": 12.767
+   },
+   {
+    "t": 0.7962,
+    "v": 12.008
+   },
+   {
+    "t": 0.7962,
+    "v": 12.804
+   },
+   {
+    "t": 0.7974,
+    "v": 12.008
+   },
+   {
+    "t": 0.7974,
+    "v": 12.804
+   },
+   {
+    "t": 0.7987,
+    "v": 12.008
+   },
+   {
+    "t": 0.7987,
+    "v": 12.804
+   },
+   {
+    "t": 0.8,
+    "v": 12.695
+   },
+   {
+    "t": 0.8103,
+    "v": 12.37
+   },
+   {
+    "t": 0.8115,
+    "v": 12.261
+   },
+   {
+    "t": 0.8115,
+    "v": 12.731
+   },
+   {
+    "t": 0.8128,
+    "v": 12.243
+   },
+   {
+    "t": 0.8128,
+    "v": 12.749
+   },
+   {
+    "t": 0.8141,
+    "v": 12.026
+   },
+   {
+    "t": 0.8141,
+    "v": 12.749
+   },
+   {
+    "t": 0.8154,
+    "v": 11.755
+   },
+   {
+    "t": 0.8154,
+    "v": 12.749
+   },
+   {
+    "t": 0.8167,
+    "v": 11.683
+   },
+   {
+    "t": 0.8167,
+    "v": 12.406
+   },
+   {
+    "t": 0.8179,
+    "v": 11.683
+   },
+   {
+    "t": 0.8179,
+    "v": 12.298
+   },
+   {
+    "t": 0.8192,
+    "v": 11.683
+   },
+   {
+    "t": 0.8192,
+    "v": 12.677
+   },
+   {
+    "t": 0.8205,
+    "v": 11.99
+   },
+   {
+    "t": 0.8205,
+    "v": 12.677
+   },
+   {
+    "t": 0.8218,
+    "v": 12.008
+   },
+   {
+    "t": 0.8218,
+    "v": 12.677
+   },
+   {
+    "t": 0.8231,
+    "v": 12.099
+   },
+   {
+    "t": 0.8231,
+    "v": 12.731
+   },
+   {
+    "t": 0.8244,
+    "v": 11.882
+   },
+   {
+    "t": 0.8244,
+    "v": 12.731
+   },
+   {
+    "t": 0.8256,
+    "v": 11.882
+   },
+   {
+    "t": 0.8256,
+    "v": 12.731
+   },
+   {
+    "t": 0.8269,
+    "v": 11.882
+   },
+   {
+    "t": 0.8269,
+    "v": 12.749
+   },
+   {
+    "t": 0.8282,
+    "v": 11.9
+   },
+   {
+    "t": 0.8282,
+    "v": 12.786
+   },
+   {
+    "t": 0.8295,
+    "v": 12.623
+   },
+   {
+    "t": 0.8295,
+    "v": 12.804
+   },
+   {
+    "t": 0.8308,
+    "v": 12.478
+   },
+   {
+    "t": 0.8308,
+    "v": 12.804
+   },
+   {
+    "t": 0.8321,
+    "v": 12.334
+   },
+   {
+    "t": 0.8321,
+    "v": 12.804
+   },
+   {
+    "t": 0.8333,
+    "v": 12.298
+   },
+   {
+    "t": 0.8333,
+    "v": 12.677
+   },
+   {
+    "t": 0.8346,
+    "v": 12.28
+   },
+   {
+    "t": 0.8346,
+    "v": 12.533
+   },
+   {
+    "t": 0.8359,
+    "v": 12.352
+   },
+   {
+    "t": 0.8372,
+    "v": 12.379
+   },
+   {
+    "t": 0.8577,
+    "v": 12.252
+   },
+   {
+    "t": 0.8603,
+    "v": 12.198
+   },
+   {
+    "t": 0.8615,
+    "v": 12.081
+   },
+   {
+    "t": 0.8615,
+    "v": 12.533
+   },
+   {
+    "t": 0.8628,
+    "v": 12.063
+   },
+   {
+    "t": 0.8628,
+    "v": 12.749
+   },
+   {
+    "t": 0.8641,
+    "v": 12.063
+   },
+   {
+    "t": 0.8641,
+    "v": 13.201
+   },
+   {
+    "t": 0.8654,
+    "v": 12.063
+   },
+   {
+    "t": 0.8654,
+    "v": 13.219
+   },
+   {
+    "t": 0.8667,
+    "v": 11.647
+   },
+   {
+    "t": 0.8667,
+    "v": 13.219
+   },
+   {
+    "t": 0.8679,
+    "v": 11.647
+   },
+   {
+    "t": 0.8679,
+    "v": 13.219
+   },
+   {
+    "t": 0.8692,
+    "v": 11.647
+   },
+   {
+    "t": 0.8692,
+    "v": 13.219
+   },
+   {
+    "t": 0.8705,
+    "v": 11.828
+   },
+   {
+    "t": 0.8705,
+    "v": 13.219
+   },
+   {
+    "t": 0.8718,
+    "v": 12.153
+   },
+   {
+    "t": 0.8718,
+    "v": 13.183
+   },
+   {
+    "t": 0.8731,
+    "v": 12.514
+   },
+   {
+    "t": 0.8731,
+    "v": 13.021
+   },
+   {
+    "t": 0.8744,
+    "v": 12.921
+   },
+   {
+    "t": 0.8821,
+    "v": 12.722
+   },
+   {
+    "t": 0.9218,
+    "v": 12.072
+   },
+   {
+    "t": 0.9308,
+    "v": 11.963
+   },
+   {
+    "t": 0.959,
+    "v": 11.24
+   },
+   {
+    "t": 0.9603,
+    "v": 11.141
+   },
+   {
+    "t": 0.9603,
+    "v": 11.701
+   },
+   {
+    "t": 0.9615,
+    "v": 11.051
+   },
+   {
+    "t": 0.9615,
+    "v": 11.701
+   },
+   {
+    "t": 0.9628,
+    "v": 10.96
+   },
+   {
+    "t": 0.9628,
+    "v": 11.701
+   },
+   {
+    "t": 0.9641,
+    "v": 10.942
+   },
+   {
+    "t": 0.9641,
+    "v": 11.683
+   },
+   {
+    "t": 0.9654,
+    "v": 10.942
+   },
+   {
+    "t": 0.9654,
+    "v": 11.683
+   },
+   {
+    "t": 0.9667,
+    "v": 10.942
+   },
+   {
+    "t": 0.9667,
+    "v": 12.045
+   },
+   {
+    "t": 0.9679,
+    "v": 11.159
+   },
+   {
+    "t": 0.9679,
+    "v": 12.406
+   },
+   {
+    "t": 0.9692,
+    "v": 11.52
+   },
+   {
+    "t": 0.9692,
+    "v": 12.767
+   },
+   {
+    "t": 0.9705,
+    "v": 11.882
+   },
+   {
+    "t": 0.9705,
+    "v": 12.84
+   },
+   {
+    "t": 0.9718,
+    "v": 12.243
+   },
+   {
+    "t": 0.9718,
+    "v": 12.894
+   },
+   {
+    "t": 0.9731,
+    "v": 11.285
+   },
+   {
+    "t": 0.9731,
+    "v": 13.093
+   },
+   {
+    "t": 0.9744,
+    "v": 11.267
+   },
+   {
+    "t": 0.9744,
+    "v": 13.111
+   },
+   {
+    "t": 0.9756,
+    "v": 11.267
+   },
+   {
+    "t": 0.9756,
+    "v": 13.111
+   },
+   {
+    "t": 0.9769,
+    "v": 11.267
+   },
+   {
+    "t": 0.9769,
+    "v": 13.111
+   },
+   {
+    "t": 0.9782,
+    "v": 11.737
+   },
+   {
+    "t": 0.9782,
+    "v": 13.057
+   },
+   {
+    "t": 0.9795,
+    "v": 12.261
+   },
+   {
+    "t": 0.9795,
+    "v": 13.057
+   },
+   {
+    "t": 0.9808,
+    "v": 12.261
+   },
+   {
+    "t": 0.9808,
+    "v": 12.767
+   },
+   {
+    "t": 0.9821,
+    "v": 12.316
+   },
+   {
+    "t": 0.9859,
+    "v": 12.298
+   },
+   {
+    "t": 0.9987,
+    "v": 12.334
+   }
+  ],
+  "ticks": [
+   "2022.03",
+   "2023.05",
+   "2024.07",
+   "2025.09",
+   "now"
+  ]
+ },
+ "records": [
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1989,
+   "perfect_count": 2097,
+   "near_count": 32,
+   "miss_count": 5,
+   "time_played": 1759313906011,
+   "chart_id": "arcanaeden:3",
+   "song_id": "arcanaeden",
+   "difficulty": 3,
+   "score": 9903582,
+   "chart_constant": 11.6,
+   "constant": 11.6,
+   "play_potential": 13.31791,
+   "play_potential_exact": "13.31791",
+   "potential": 13.31791,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Arcana Eden"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1802,
+   "perfect_count": 2102,
+   "near_count": 60,
+   "miss_count": 22,
+   "time_played": 1759322867005,
+   "chart_id": "designant:3",
+   "song_id": "designant",
+   "difficulty": 3,
+   "score": 9763706,
+   "chart_constant": 11.9,
+   "constant": 11.9,
+   "play_potential": 12.97902,
+   "play_potential_exact": "12.97902",
+   "potential": 12.97902,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Designant."
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1402,
+   "perfect_count": 1490,
+   "near_count": 42,
+   "miss_count": 8,
+   "time_played": 1759315081082,
+   "chart_id": "tempestissimo:3",
+   "song_id": "tempestissimo",
+   "difficulty": 3,
+   "score": 9813090,
+   "chart_constant": 11.7,
+   "constant": 11.7,
+   "play_potential": 12.96545,
+   "play_potential_exact": "12.96545",
+   "potential": 12.96545,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Tempestissimo"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1497,
+   "perfect_count": 1593,
+   "near_count": 40,
+   "miss_count": 4,
+   "time_played": 1759318439384,
+   "chart_id": "lamentrain:3",
+   "song_id": "lamentrain",
+   "difficulty": 3,
+   "score": 9854887,
+   "chart_constant": 11.4,
+   "constant": 11.4,
+   "play_potential": 12.874435,
+   "play_potential_exact": "12.874435",
+   "potential": 12.874435,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Lament Rain"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1103,
+   "perfect_count": 1258,
+   "near_count": 16,
+   "miss_count": 5,
+   "time_played": 1759318628722,
+   "chart_id": "fractureray:2",
+   "song_id": "fractureray",
+   "difficulty": 2,
+   "score": 9899461,
+   "chart_constant": 11.1,
+   "constant": 11.1,
+   "play_potential": 12.797305,
+   "play_potential_exact": "12.797305",
+   "potential": 12.797305,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Fracture Ray"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 1276,
+   "perfect_count": 1423,
+   "near_count": 19,
+   "miss_count": 8,
+   "time_played": 1737711246957,
+   "chart_id": "grievouslady:2",
+   "song_id": "grievouslady",
+   "difficulty": 2,
+   "score": 9880586,
+   "chart_constant": 11.1,
+   "constant": 11.1,
+   "play_potential": 12.70293,
+   "play_potential_exact": "12.70293",
+   "potential": 12.70293,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Grievous Lady"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1552,
+   "perfect_count": 1629,
+   "near_count": 20,
+   "miss_count": 12,
+   "time_played": 1759318491030,
+   "chart_id": "worldender:3",
+   "song_id": "worldender",
+   "difficulty": 3,
+   "score": 9869101,
+   "chart_constant": 11.1,
+   "constant": 11.1,
+   "play_potential": 12.645505,
+   "play_potential_exact": "12.645505",
+   "potential": 12.645505,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "World Ender"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1328,
+   "perfect_count": 1461,
+   "near_count": 8,
+   "miss_count": 7,
+   "time_played": 1759318949981,
+   "chart_id": "dantalion:2",
+   "song_id": "dantalion",
+   "difficulty": 2,
+   "score": 9926802,
+   "chart_constant": 10.8,
+   "constant": 10.8,
+   "play_potential": 12.63401,
+   "play_potential_exact": "12.63401",
+   "potential": 12.63401,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Dantalion"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1553,
+   "perfect_count": 1602,
+   "near_count": 28,
+   "miss_count": 3,
+   "time_played": 1759314153915,
+   "chart_id": "infinitestrife:3",
+   "song_id": "infinitestrife",
+   "difficulty": 3,
+   "score": 9897450,
+   "chart_constant": 10.9,
+   "constant": 10.9,
+   "play_potential": 12.58725,
+   "play_potential_exact": "12.58725",
+   "potential": 12.58725,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Infinite Strife,"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 961,
+   "perfect_count": 1093,
+   "near_count": 11,
+   "miss_count": 1,
+   "time_played": 1738035572882,
+   "chart_id": "singularity:2",
+   "song_id": "singularity",
+   "difficulty": 2,
+   "score": 9942137,
+   "chart_constant": 10.5,
+   "constant": 10.5,
+   "play_potential": 12.410685,
+   "play_potential_exact": "12.410685",
+   "potential": 12.410685,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Singularity"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 672,
+   "perfect_count": 1207,
+   "near_count": 20,
+   "miss_count": 0,
+   "time_played": 1775311636587,
+   "chart_id": "halcyon:2",
+   "song_id": "halcyon",
+   "difficulty": 2,
+   "score": 9919172,
+   "chart_constant": 10.5,
+   "constant": 10.5,
+   "play_potential": 12.29586,
+   "play_potential_exact": "12.29586",
+   "potential": 12.29586,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Halcyon"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 523,
+   "perfect_count": 1622,
+   "near_count": 119,
+   "miss_count": 0,
+   "time_played": 1775309123198,
+   "chart_id": "pentiment:3",
+   "song_id": "pentiment",
+   "difficulty": 3,
+   "score": 9658765,
+   "chart_constant": 11.5,
+   "constant": 11.5,
+   "play_potential": 12.229216666666666,
+   "play_potential_exact": "12.22921666666666666666666667",
+   "potential": 12.229216666666666,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Pentiment"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 889,
+   "perfect_count": 1081,
+   "near_count": 18,
+   "miss_count": 0,
+   "time_played": 1754116427091,
+   "chart_id": "pupa:2",
+   "song_id": "pupa",
+   "difficulty": 2,
+   "score": 9918996,
+   "chart_constant": 10.4,
+   "constant": 10.4,
+   "play_potential": 12.19498,
+   "play_potential_exact": "12.19498",
+   "potential": 12.19498,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "PUPA"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1544,
+   "perfect_count": 1759,
+   "near_count": 25,
+   "miss_count": 8,
+   "time_played": 1754117638209,
+   "chart_id": "arcanaeden:2",
+   "song_id": "arcanaeden",
+   "difficulty": 2,
+   "score": 9887146,
+   "chart_constant": 10.5,
+   "constant": 10.5,
+   "play_potential": 12.13573,
+   "play_potential_exact": "12.13573",
+   "potential": 12.13573,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Arcana Eden"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1187,
+   "perfect_count": 1324,
+   "near_count": 16,
+   "miss_count": 5,
+   "time_played": 1757249220158,
+   "chart_id": "pentiment:2",
+   "song_id": "pentiment",
+   "difficulty": 2,
+   "score": 9904532,
+   "chart_constant": 10.4,
+   "constant": 10.4,
+   "play_potential": 12.12266,
+   "play_potential_exact": "12.12266",
+   "potential": 12.12266,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Pentiment"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1053,
+   "perfect_count": 1155,
+   "near_count": 11,
+   "miss_count": 4,
+   "time_played": 1700838396314,
+   "chart_id": "etherstrike:2",
+   "song_id": "etherstrike",
+   "difficulty": 2,
+   "score": 9919856,
+   "chart_constant": 10.3,
+   "constant": 10.3,
+   "play_potential": 12.09928,
+   "play_potential_exact": "12.09928",
+   "potential": 12.09928,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Ether Strike"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 992,
+   "perfect_count": 1047,
+   "near_count": 5,
+   "miss_count": 4,
+   "time_played": 1759318307546,
+   "chart_id": "conflict:2",
+   "song_id": "conflict",
+   "difficulty": 2,
+   "score": 9939438,
+   "chart_constant": 10.2,
+   "constant": 10.2,
+   "play_potential": 12.09719,
+   "play_potential_exact": "12.09719",
+   "potential": 12.09719,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "conflict"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1128,
+   "perfect_count": 1184,
+   "near_count": 5,
+   "miss_count": 5,
+   "time_played": 1759312679857,
+   "chart_id": "redandblue:3",
+   "song_id": "redandblue",
+   "difficulty": 3,
+   "score": 9938313,
+   "chart_constant": 10.2,
+   "constant": 10.2,
+   "play_potential": 12.091565,
+   "play_potential_exact": "12.091565",
+   "potential": 12.091565,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Red and Blue"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 328,
+   "perfect_count": 1694,
+   "near_count": 74,
+   "miss_count": 0,
+   "time_played": 1775308656549,
+   "chart_id": "designant:2",
+   "song_id": "designant",
+   "difficulty": 2,
+   "score": 9791051,
+   "chart_constant": 10.9,
+   "constant": 10.9,
+   "play_potential": 12.07017,
+   "play_potential_exact": "12.07017",
+   "potential": 12.07017,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Designant."
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1402,
+   "perfect_count": 1521,
+   "near_count": 22,
+   "miss_count": 33,
+   "time_played": 1759320731708,
+   "chart_id": "ifi:2",
+   "song_id": "ifi",
+   "difficulty": 2,
+   "score": 9722214,
+   "chart_constant": 11.1,
+   "constant": 11.1,
+   "play_potential": 12.040713333333333,
+   "play_potential_exact": "12.04071333333333333333333333",
+   "potential": 12.040713333333333,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "#1f1e33"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 993,
+   "perfect_count": 1094,
+   "near_count": 13,
+   "miss_count": 7,
+   "time_played": 1760623075129,
+   "chart_id": "singularity:3",
+   "song_id": "singularity",
+   "difficulty": 3,
+   "score": 9879808,
+   "chart_constant": 10.4,
+   "constant": 10.4,
+   "play_potential": 11.99904,
+   "play_potential_exact": "11.99904",
+   "potential": 11.99904,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Singularity"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 992,
+   "perfect_count": 1151,
+   "near_count": 9,
+   "miss_count": 5,
+   "time_played": 1759471340164,
+   "chart_id": "renegade:3",
+   "song_id": "renegade",
+   "difficulty": 3,
+   "score": 9919446,
+   "chart_constant": 10.2,
+   "constant": 10.2,
+   "play_potential": 11.99723,
+   "play_potential_exact": "11.99723",
+   "potential": 11.99723,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Renegade"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1159,
+   "perfect_count": 2025,
+   "near_count": 134,
+   "miss_count": 62,
+   "time_played": 1764380180867,
+   "chart_id": "testify:3",
+   "song_id": "testify",
+   "difficulty": 3,
+   "score": 9420339,
+   "chart_constant": 12,
+   "constant": 12,
+   "play_potential": 11.934463333333333,
+   "play_potential_exact": "11.93446333333333333333333333",
+   "potential": 11.934463333333333,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Testify"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 923,
+   "perfect_count": 1059,
+   "near_count": 31,
+   "miss_count": 4,
+   "time_played": 1759471129841,
+   "chart_id": "axiumcrisis:2",
+   "song_id": "axiumcrisis",
+   "difficulty": 2,
+   "score": 9822678,
+   "chart_constant": 10.6,
+   "constant": 10.6,
+   "play_potential": 11.91339,
+   "play_potential_exact": "11.91339",
+   "potential": 11.91339,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Axium Crisis"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 1267,
+   "perfect_count": 1337,
+   "near_count": 65,
+   "miss_count": 0,
+   "time_played": 1775310556275,
+   "chart_id": "distortedfate:4",
+   "song_id": "distortedfate",
+   "difficulty": 4,
+   "score": 9769455,
+   "chart_constant": 10.8,
+   "constant": 10.8,
+   "play_potential": 11.898183333333334,
+   "play_potential_exact": "11.89818333333333333333333333",
+   "potential": 11.898183333333334,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Distorted Fate"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 768,
+   "perfect_count": 1201,
+   "near_count": 53,
+   "miss_count": 0,
+   "time_played": 1775308802538,
+   "chart_id": "tempestissimo:2",
+   "song_id": "tempestissimo",
+   "difficulty": 2,
+   "score": 9789444,
+   "chart_constant": 10.7,
+   "constant": 10.7,
+   "play_potential": 11.864813333333334,
+   "play_potential_exact": "11.86481333333333333333333333",
+   "potential": 11.864813333333334,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Tempestissimo"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 979,
+   "perfect_count": 1038,
+   "near_count": 6,
+   "miss_count": 1,
+   "time_played": 1700837314828,
+   "chart_id": "sulfur:2",
+   "song_id": "sulfur",
+   "difficulty": 2,
+   "score": 9962701,
+   "chart_constant": 9.7,
+   "constant": 9.7,
+   "play_potential": 11.713505,
+   "play_potential_exact": "11.713505",
+   "potential": 11.713505,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Sulfur"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 368,
+   "perfect_count": 1273,
+   "near_count": 15,
+   "miss_count": 0,
+   "time_played": 1775311083116,
+   "chart_id": "qualia:3",
+   "song_id": "qualia",
+   "difficulty": 3,
+   "score": 9942138,
+   "chart_constant": 9.8,
+   "constant": 9.8,
+   "play_potential": 11.71069,
+   "play_potential_exact": "11.71069",
+   "potential": 11.71069,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "qualia -ideaesthesia-"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 146,
+   "perfect_count": 1439,
+   "near_count": 69,
+   "miss_count": 0,
+   "time_played": 1775309910391,
+   "chart_id": "aethercrest:2",
+   "song_id": "aethercrest",
+   "difficulty": 2,
+   "score": 9771366,
+   "chart_constant": 10.6,
+   "constant": 10.6,
+   "play_potential": 11.704553333333333,
+   "play_potential_exact": "11.70455333333333333333333333",
+   "potential": 11.704553333333333,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Aether Crest: Astral"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1293,
+   "perfect_count": 1491,
+   "near_count": 15,
+   "miss_count": 5,
+   "time_played": 1737689714990,
+   "chart_id": "infinitestrife:2",
+   "song_id": "infinitestrife",
+   "difficulty": 2,
+   "score": 9918566,
+   "chart_constant": 9.9,
+   "constant": 9.9,
+   "play_potential": 11.69283,
+   "play_potential_exact": "11.69283",
+   "potential": 11.69283,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Infinite Strife,"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 917,
+   "perfect_count": 985,
+   "near_count": 4,
+   "miss_count": 3,
+   "time_played": 1700837787062,
+   "chart_id": "themessage:2",
+   "song_id": "themessage",
+   "difficulty": 2,
+   "score": 9950513,
+   "chart_constant": 9.7,
+   "constant": 9.7,
+   "play_potential": 11.652565,
+   "play_potential_exact": "11.652565",
+   "potential": 11.652565,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "The Message"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 974,
+   "perfect_count": 1044,
+   "near_count": 3,
+   "miss_count": 0,
+   "time_played": 1749029520382,
+   "chart_id": "jingle:4",
+   "song_id": "jingle",
+   "difficulty": 4,
+   "score": 9986647,
+   "chart_constant": 9.5,
+   "constant": 9.5,
+   "play_potential": 11.633235,
+   "play_potential_exact": "11.633235",
+   "potential": 11.633235,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Jingle"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1233,
+   "perfect_count": 1383,
+   "near_count": 17,
+   "miss_count": 5,
+   "time_played": 1695460317521,
+   "chart_id": "ultimatetaste:2",
+   "song_id": "ultimatetaste",
+   "difficulty": 2,
+   "score": 9905147,
+   "chart_constant": 9.9,
+   "constant": 9.9,
+   "play_potential": 11.625735,
+   "play_potential_exact": "11.625735",
+   "potential": 11.625735,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Ultimate taste"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 918,
+   "perfect_count": 1109,
+   "near_count": 14,
+   "miss_count": 0,
+   "time_played": 1695459863929,
+   "chart_id": "supernova:2",
+   "song_id": "supernova",
+   "difficulty": 2,
+   "score": 9938584,
+   "chart_constant": 9.7,
+   "constant": 9.7,
+   "play_potential": 11.59292,
+   "play_potential_exact": "11.59292",
+   "potential": 11.59292,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "SUPERNOVA"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1180,
+   "perfect_count": 1320,
+   "near_count": 45,
+   "miss_count": 15,
+   "time_played": 1754128993697,
+   "chart_id": "lamentrain:2",
+   "song_id": "lamentrain",
+   "difficulty": 2,
+   "score": 9729440,
+   "chart_constant": 10.6,
+   "constant": 10.6,
+   "play_potential": 11.5648,
+   "play_potential_exact": "11.5648",
+   "potential": 11.5648,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Lament Rain"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 779,
+   "perfect_count": 834,
+   "near_count": 3,
+   "miss_count": 0,
+   "time_played": 1695459034544,
+   "chart_id": "sakurafubuki:2",
+   "song_id": "sakurafubuki",
+   "difficulty": 2,
+   "score": 9982857,
+   "chart_constant": 9.4,
+   "constant": 9.4,
+   "play_potential": 11.514285,
+   "play_potential_exact": "11.514285",
+   "potential": 11.514285,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Sakura Fubuki"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1002,
+   "perfect_count": 1090,
+   "near_count": 9,
+   "miss_count": 9,
+   "time_played": 1695459440462,
+   "chart_id": "nhelv:2",
+   "song_id": "nhelv",
+   "difficulty": 2,
+   "score": 9879160,
+   "chart_constant": 9.9,
+   "constant": 9.9,
+   "play_potential": 11.4958,
+   "play_potential_exact": "11.4958",
+   "potential": 11.4958,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Nhelv"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1350,
+   "perfect_count": 1660,
+   "near_count": 72,
+   "miss_count": 34,
+   "time_played": 1754116855902,
+   "chart_id": "testify:2",
+   "song_id": "testify",
+   "difficulty": 2,
+   "score": 9604974,
+   "chart_constant": 10.9,
+   "constant": 10.9,
+   "play_potential": 11.449913333333333,
+   "play_potential_exact": "11.44991333333333333333333333",
+   "potential": 11.449913333333333,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Testify"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1010,
+   "perfect_count": 1119,
+   "near_count": 18,
+   "miss_count": 4,
+   "time_played": 1737695112016,
+   "chart_id": "defection:2",
+   "song_id": "defection",
+   "difficulty": 2,
+   "score": 9887074,
+   "chart_constant": 9.8,
+   "constant": 9.8,
+   "play_potential": 11.43537,
+   "play_potential_exact": "11.43537",
+   "potential": 11.43537,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Defection"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 628,
+   "perfect_count": 1146,
+   "near_count": 55,
+   "miss_count": 0,
+   "time_played": 1775310303252,
+   "chart_id": "eightem:4",
+   "song_id": "eightem",
+   "difficulty": 4,
+   "score": 9771652,
+   "chart_constant": 10.3,
+   "constant": 10.3,
+   "play_potential": 11.405506666666666,
+   "play_potential_exact": "11.40550666666666666666666667",
+   "potential": 11.405506666666666,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "8-EM"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 929,
+   "perfect_count": 1132,
+   "near_count": 45,
+   "miss_count": 26,
+   "time_played": 1736599118171,
+   "chart_id": "spidersthread:2",
+   "song_id": "spidersthread",
+   "difficulty": 2,
+   "score": 9597770,
+   "chart_constant": 10.8,
+   "constant": 10.8,
+   "play_potential": 11.3259,
+   "play_potential_exact": "11.3259",
+   "potential": 11.3259,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Spider's Thread"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1044,
+   "perfect_count": 1194,
+   "near_count": 13,
+   "miss_count": 15,
+   "time_played": 1737714896743,
+   "chart_id": "internetyamero:2",
+   "song_id": "internetyamero",
+   "difficulty": 2,
+   "score": 9825102,
+   "chart_constant": 10,
+   "constant": 10,
+   "play_potential": 11.32551,
+   "play_potential_exact": "11.32551",
+   "potential": 11.32551,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "INTERNET YAMERO"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1129,
+   "perfect_count": 1218,
+   "near_count": 4,
+   "miss_count": 3,
+   "time_played": 1695456991534,
+   "chart_id": "ignotus:2",
+   "song_id": "ignotus",
+   "difficulty": 2,
+   "score": 9960312,
+   "chart_constant": 9.3,
+   "constant": 9.3,
+   "play_potential": 11.30156,
+   "play_potential_exact": "11.30156",
+   "potential": 11.30156,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Ignotus"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 893,
+   "perfect_count": 961,
+   "near_count": 6,
+   "miss_count": 1,
+   "time_played": 1695456219778,
+   "chart_id": "goodtek:2",
+   "song_id": "goodtek",
+   "difficulty": 2,
+   "score": 9959570,
+   "chart_constant": 9.3,
+   "constant": 9.3,
+   "play_potential": 11.29785,
+   "play_potential_exact": "11.29785",
+   "potential": 11.29785,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "GOODTEK (Arcaea Edit)"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 963,
+   "perfect_count": 1051,
+   "near_count": 16,
+   "miss_count": 10,
+   "time_played": 1737960933916,
+   "chart_id": "ignotus:3",
+   "song_id": "ignotus",
+   "difficulty": 3,
+   "score": 9833832,
+   "chart_constant": 9.9,
+   "constant": 9.9,
+   "play_potential": 11.26916,
+   "play_potential_exact": "11.26916",
+   "potential": 11.26916,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Ignotus"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 921,
+   "perfect_count": 1045,
+   "near_count": 13,
+   "miss_count": 3,
+   "time_played": 1702551814524,
+   "chart_id": "darakunosono:2",
+   "song_id": "darakunosono",
+   "difficulty": 2,
+   "score": 9911382,
+   "chart_constant": 9.5,
+   "constant": 9.5,
+   "play_potential": 11.25691,
+   "play_potential_exact": "11.25691",
+   "potential": 11.25691,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Illegal Paradise"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 879,
+   "perfect_count": 982,
+   "near_count": 2,
+   "miss_count": 2,
+   "time_played": 1695457606552,
+   "chart_id": "lostcivilization:2",
+   "song_id": "lostcivilization",
+   "difficulty": 2,
+   "score": 9970453,
+   "chart_constant": 9.2,
+   "constant": 9.2,
+   "play_potential": 11.252265,
+   "play_potential_exact": "11.252265",
+   "potential": 11.252265,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Lost Civilization"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 847,
+   "perfect_count": 963,
+   "near_count": 12,
+   "miss_count": 7,
+   "time_played": 1735290859987,
+   "chart_id": "raysofremnant:2",
+   "song_id": "raysofremnant",
+   "difficulty": 2,
+   "score": 9868464,
+   "chart_constant": 9.7,
+   "constant": 9.7,
+   "play_potential": 11.24232,
+   "play_potential_exact": "11.24232",
+   "potential": 11.24232,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Rays of Remnant"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1045,
+   "perfect_count": 1115,
+   "near_count": 10,
+   "miss_count": 4,
+   "time_played": 1695456566574,
+   "chart_id": "dreaminattraction:2",
+   "song_id": "dreaminattraction",
+   "difficulty": 2,
+   "score": 9921328,
+   "chart_constant": 9.4,
+   "constant": 9.4,
+   "play_potential": 11.20664,
+   "play_potential_exact": "11.20664",
+   "potential": 11.20664,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Dreamin' Attraction!!"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1033,
+   "perfect_count": 1185,
+   "near_count": 31,
+   "miss_count": 9,
+   "time_played": 1737695836722,
+   "chart_id": "worldender:2",
+   "song_id": "worldender",
+   "difficulty": 2,
+   "score": 9801033,
+   "chart_constant": 10,
+   "constant": 10,
+   "play_potential": 11.205165,
+   "play_potential_exact": "11.205165",
+   "potential": 11.205165,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "World Ender"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 1012,
+   "perfect_count": 1146,
+   "near_count": 21,
+   "miss_count": 5,
+   "time_played": 1719813834050,
+   "chart_id": "distortedfate:2",
+   "song_id": "distortedfate",
+   "difficulty": 2,
+   "score": 9868759,
+   "chart_constant": 9.6,
+   "constant": 9.6,
+   "play_potential": 11.143795,
+   "play_potential_exact": "11.143795",
+   "potential": 11.143795,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Distorted Fate"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 802,
+   "perfect_count": 834,
+   "near_count": 6,
+   "miss_count": 5,
+   "time_played": 1695458619979,
+   "chart_id": "redandblue:2",
+   "song_id": "redandblue",
+   "difficulty": 2,
+   "score": 9906127,
+   "chart_constant": 9.4,
+   "constant": 9.4,
+   "play_potential": 11.130635,
+   "play_potential_exact": "11.130635",
+   "potential": 11.130635,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Red and Blue"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 791,
+   "perfect_count": 867,
+   "near_count": 17,
+   "miss_count": 4,
+   "time_played": 1734099293085,
+   "chart_id": "last:3",
+   "song_id": "last",
+   "difficulty": 3,
+   "score": 9860025,
+   "chart_constant": 9.6,
+   "constant": 9.6,
+   "play_potential": 11.100125,
+   "play_potential_exact": "11.100125",
+   "potential": 11.100125,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "LAST"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 732,
+   "perfect_count": 841,
+   "near_count": 9,
+   "miss_count": 1,
+   "time_played": 1691910647998,
+   "chart_id": "anokumene:2",
+   "song_id": "anokumene",
+   "difficulty": 2,
+   "score": 9936102,
+   "chart_constant": 9.2,
+   "constant": 9.2,
+   "play_potential": 11.08051,
+   "play_potential_exact": "11.08051",
+   "potential": 11.08051,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Anökumene"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 988,
+   "perfect_count": 1118,
+   "near_count": 29,
+   "miss_count": 7,
+   "time_played": 1734423598547,
+   "chart_id": "lostdesire:2",
+   "song_id": "lostdesire",
+   "difficulty": 2,
+   "score": 9814679,
+   "chart_constant": 9.8,
+   "constant": 9.8,
+   "play_potential": 11.073395,
+   "play_potential_exact": "11.073395",
+   "potential": 11.073395,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Lost Desire"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1070,
+   "perfect_count": 1137,
+   "near_count": 6,
+   "miss_count": 7,
+   "time_played": 1695459253853,
+   "chart_id": "syro:2",
+   "song_id": "syro",
+   "difficulty": 2,
+   "score": 9914113,
+   "chart_constant": 9.3,
+   "constant": 9.3,
+   "play_potential": 11.070565,
+   "play_potential_exact": "11.070565",
+   "potential": 11.070565,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Syro"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 993,
+   "perfect_count": 1185,
+   "near_count": 28,
+   "miss_count": 12,
+   "time_played": 1735311865021,
+   "chart_id": "swansong:2",
+   "song_id": "swansong",
+   "difficulty": 2,
+   "score": 9788748,
+   "chart_constant": 9.9,
+   "constant": 9.9,
+   "play_potential": 11.062493333333334,
+   "play_potential_exact": "11.06249333333333333333333333",
+   "potential": 11.062493333333334,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Swan Song"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 951,
+   "perfect_count": 1040,
+   "near_count": 3,
+   "miss_count": 4,
+   "time_played": 1695458871176,
+   "chart_id": "revixy:2",
+   "song_id": "revixy",
+   "difficulty": 2,
+   "score": 9948419,
+   "chart_constant": 9.1,
+   "constant": 9.1,
+   "play_potential": 11.042095,
+   "play_potential_exact": "11.042095",
+   "potential": 11.042095,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "REVIXY"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 777,
+   "perfect_count": 920,
+   "near_count": 21,
+   "miss_count": 4,
+   "time_played": 1701492303876,
+   "chart_id": "remindthesouls:2",
+   "song_id": "remindthesouls",
+   "difficulty": 2,
+   "score": 9847337,
+   "chart_constant": 9.6,
+   "constant": 9.6,
+   "play_potential": 11.036685,
+   "play_potential_exact": "11.036685",
+   "potential": 11.036685,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Remind the Souls"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1115,
+   "perfect_count": 1273,
+   "near_count": 22,
+   "miss_count": 4,
+   "time_played": 1702026598363,
+   "chart_id": "vector:2",
+   "song_id": "vector",
+   "difficulty": 2,
+   "score": 9885641,
+   "chart_constant": 9.4,
+   "constant": 9.4,
+   "play_potential": 11.028205,
+   "play_potential_exact": "11.028205",
+   "potential": 11.028205,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "VECTOR"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 1234,
+   "perfect_count": 1390,
+   "near_count": 27,
+   "miss_count": 9,
+   "time_played": 1736083954594,
+   "chart_id": "designant:1",
+   "song_id": "designant",
+   "difficulty": 1,
+   "score": 9843449,
+   "chart_constant": 9.6,
+   "constant": 9.6,
+   "play_potential": 11.017245,
+   "play_potential_exact": "11.017245",
+   "potential": 11.017245,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Designant."
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 1079,
+   "perfect_count": 1204,
+   "near_count": 14,
+   "miss_count": 13,
+   "time_played": 1736668340133,
+   "chart_id": "impact:2",
+   "song_id": "impact",
+   "difficulty": 2,
+   "score": 9838609,
+   "chart_constant": 9.6,
+   "constant": 9.6,
+   "play_potential": 10.993045,
+   "play_potential_exact": "10.993045",
+   "potential": 10.993045,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "IMPACT"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 874,
+   "perfect_count": 948,
+   "near_count": 20,
+   "miss_count": 10,
+   "time_played": 1793247047601,
+   "chart_id": "memoryforest:2",
+   "song_id": "memoryforest",
+   "difficulty": 2,
+   "score": 9796375,
+   "chart_constant": 9.8,
+   "constant": 9.8,
+   "play_potential": 10.987916666666667,
+   "play_potential_exact": "10.98791666666666666666666667",
+   "potential": 10.987916666666667,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Memory Forest"
+  },
+  {
+   "clear_type": 2,
+   "shiny_perfect_count": 620,
+   "perfect_count": 1031,
+   "near_count": 87,
+   "miss_count": 0,
+   "time_played": 1775309705616,
+   "chart_id": "raysofremnant:3",
+   "song_id": "raysofremnant",
+   "difficulty": 3,
+   "score": 9611532,
+   "chart_constant": 10.4,
+   "constant": 10.4,
+   "play_potential": 10.971773333333333,
+   "play_potential_exact": "10.97177333333333333333333333",
+   "potential": 10.971773333333333,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Rays of Remnant"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 822,
+   "perfect_count": 909,
+   "near_count": 9,
+   "miss_count": 4,
+   "time_played": 1735289881859,
+   "chart_id": "strongholds:2",
+   "song_id": "strongholds",
+   "difficulty": 2,
+   "score": 9908631,
+   "chart_constant": 9.2,
+   "constant": 9.2,
+   "play_potential": 10.943155,
+   "play_potential_exact": "10.943155",
+   "potential": 10.943155,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Strongholds"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 945,
+   "perfect_count": 1011,
+   "near_count": 7,
+   "miss_count": 4,
+   "time_played": 1695457808703,
+   "chart_id": "qualia:2",
+   "song_id": "qualia",
+   "difficulty": 2,
+   "score": 9927559,
+   "chart_constant": 9.1,
+   "constant": 9.1,
+   "play_potential": 10.937795,
+   "play_potential_exact": "10.937795",
+   "potential": 10.937795,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "qualia -ideaesthesia-"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 909,
+   "perfect_count": 1016,
+   "near_count": 42,
+   "miss_count": 7,
+   "time_played": 1734778245717,
+   "chart_id": "arcahv:2",
+   "song_id": "arcahv",
+   "difficulty": 2,
+   "score": 9737998,
+   "chart_constant": 9.9,
+   "constant": 9.9,
+   "play_potential": 10.893326666666667,
+   "play_potential_exact": "10.89332666666666666666666667",
+   "potential": 10.893326666666667,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Arcahv"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1070,
+   "perfect_count": 1178,
+   "near_count": 30,
+   "miss_count": 14,
+   "time_played": 1793246727514,
+   "chart_id": "callimakarma:2",
+   "song_id": "callimakarma",
+   "difficulty": 2,
+   "score": 9763754,
+   "chart_constant": 9.8,
+   "constant": 9.8,
+   "play_potential": 10.87918,
+   "play_potential_exact": "10.87918",
+   "potential": 10.87918,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Callima Karma"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 866,
+   "perfect_count": 968,
+   "near_count": 15,
+   "miss_count": 11,
+   "time_played": 1735290582292,
+   "chart_id": "renegade:2",
+   "song_id": "renegade",
+   "difficulty": 2,
+   "score": 9814749,
+   "chart_constant": 9.6,
+   "constant": 9.6,
+   "play_potential": 10.873745,
+   "play_potential_exact": "10.873745",
+   "potential": 10.873745,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Renegade"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 1044,
+   "perfect_count": 1187,
+   "near_count": 35,
+   "miss_count": 3,
+   "time_played": 1759316913127,
+   "chart_id": "testify:1",
+   "song_id": "testify",
+   "difficulty": 1,
+   "score": 9833697,
+   "chart_constant": 9.4,
+   "constant": 9.4,
+   "play_potential": 10.768485,
+   "play_potential_exact": "10.768485",
+   "potential": 10.768485,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Testify"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 810,
+   "perfect_count": 956,
+   "near_count": 18,
+   "miss_count": 12,
+   "time_played": 1749029986935,
+   "chart_id": "infinityheaven:3",
+   "song_id": "infinityheaven",
+   "difficulty": 3,
+   "score": 9787828,
+   "chart_constant": 9.6,
+   "constant": 9.6,
+   "play_potential": 10.759426666666666,
+   "play_potential_exact": "10.75942666666666666666666667",
+   "potential": 10.759426666666666,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "INFINITY HEAVEN"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 752,
+   "perfect_count": 901,
+   "near_count": 26,
+   "miss_count": 5,
+   "time_played": 1700874566292,
+   "chart_id": "fairytale:3",
+   "song_id": "fairytale",
+   "difficulty": 3,
+   "score": 9807618,
+   "chart_constant": 9.5,
+   "constant": 9.5,
+   "play_potential": 10.73809,
+   "play_potential_exact": "10.73809",
+   "potential": 10.73809,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Fairytale"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 905,
+   "perfect_count": 955,
+   "near_count": 14,
+   "miss_count": 6,
+   "time_played": 1707730100910,
+   "chart_id": "rugie:2",
+   "song_id": "rugie",
+   "difficulty": 2,
+   "score": 9867571,
+   "chart_constant": 9.2,
+   "constant": 9.2,
+   "play_potential": 10.737855,
+   "play_potential_exact": "10.737855",
+   "potential": 10.737855,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Rugie"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 857,
+   "perfect_count": 1006,
+   "near_count": 16,
+   "miss_count": 12,
+   "time_played": 1736604002078,
+   "chart_id": "tempestissimo:1",
+   "song_id": "tempestissimo",
+   "difficulty": 1,
+   "score": 9807433,
+   "chart_constant": 9.5,
+   "constant": 9.5,
+   "play_potential": 10.737165,
+   "play_potential_exact": "10.737165",
+   "potential": 10.737165,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Tempestissimo"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 794,
+   "perfect_count": 919,
+   "near_count": 28,
+   "miss_count": 4,
+   "time_played": 1733835298592,
+   "chart_id": "equilibrium:2",
+   "song_id": "equilibrium",
+   "difficulty": 2,
+   "score": 9811519,
+   "chart_constant": 9.4,
+   "constant": 9.4,
+   "play_potential": 10.657595,
+   "play_potential_exact": "10.657595",
+   "potential": 10.657595,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Equilibrium"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 659,
+   "perfect_count": 754,
+   "near_count": 27,
+   "miss_count": 9,
+   "time_played": 1734099563972,
+   "chart_id": "lasteternity:3",
+   "song_id": "lasteternity",
+   "difficulty": 3,
+   "score": 9715848,
+   "chart_constant": 9.7,
+   "constant": 9.7,
+   "play_potential": 10.619493333333333,
+   "play_potential_exact": "10.61949333333333333333333333",
+   "potential": 10.619493333333333,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Last Eternity"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 808,
+   "perfect_count": 968,
+   "near_count": 31,
+   "miss_count": 3,
+   "time_played": 1697356267871,
+   "chart_id": "blaster:2",
+   "song_id": "blaster",
+   "difficulty": 2,
+   "score": 9816177,
+   "chart_constant": 9.3,
+   "constant": 9.3,
+   "play_potential": 10.580885,
+   "play_potential_exact": "10.580885",
+   "potential": 10.580885,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Blaster"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1155,
+   "perfect_count": 1280,
+   "near_count": 55,
+   "miss_count": 38,
+   "time_played": 1735355019153,
+   "chart_id": "breachoffaith:2",
+   "song_id": "breachoffaith",
+   "difficulty": 2,
+   "score": 9524097,
+   "chart_constant": 10.3,
+   "constant": 10.3,
+   "play_potential": 10.580323333333334,
+   "play_potential_exact": "10.58032333333333333333333333",
+   "potential": 10.580323333333334,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Breach of Faith"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 1177,
+   "perfect_count": 1279,
+   "near_count": 24,
+   "miss_count": 20,
+   "time_played": 1696342224740,
+   "chart_id": "dropdead:1",
+   "song_id": "dropdead",
+   "difficulty": 1,
+   "score": 9759302,
+   "chart_constant": 9.5,
+   "constant": 9.5,
+   "play_potential": 10.56434,
+   "play_potential_exact": "10.56434",
+   "potential": 10.56434,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "dropdead"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 703,
+   "perfect_count": 774,
+   "near_count": 17,
+   "miss_count": 4,
+   "time_played": 1709967640343,
+   "chart_id": "iconoclast:2",
+   "song_id": "iconoclast",
+   "difficulty": 2,
+   "score": 9843470,
+   "chart_constant": 9.1,
+   "constant": 9.1,
+   "play_potential": 10.51735,
+   "play_potential_exact": "10.51735",
+   "potential": 10.51735,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Iconoclast"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 760,
+   "perfect_count": 923,
+   "near_count": 30,
+   "miss_count": 4,
+   "time_played": 1707371697864,
+   "chart_id": "theformula:2",
+   "song_id": "theformula",
+   "difficulty": 2,
+   "score": 9802222,
+   "chart_constant": 9.3,
+   "constant": 9.3,
+   "play_potential": 10.51111,
+   "play_potential_exact": "10.51111",
+   "potential": 10.51111,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "The Formula"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 769,
+   "perfect_count": 971,
+   "near_count": 65,
+   "miss_count": 8,
+   "time_played": 1710032822860,
+   "chart_id": "trappola:2",
+   "song_id": "trappola",
+   "difficulty": 2,
+   "score": 9612837,
+   "chart_constant": 9.9,
+   "constant": 9.9,
+   "play_potential": 10.476123333333334,
+   "play_potential_exact": "10.47612333333333333333333333",
+   "potential": 10.476123333333334,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Trappola"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1133,
+   "perfect_count": 1278,
+   "near_count": 57,
+   "miss_count": 8,
+   "time_played": 1696237675190,
+   "chart_id": "fractureray:1",
+   "song_id": "fractureray",
+   "difficulty": 1,
+   "score": 9729353,
+   "chart_constant": 9.5,
+   "constant": 9.5,
+   "play_potential": 10.46451,
+   "play_potential_exact": "10.46451",
+   "potential": 10.46451,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Fracture Ray"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 923,
+   "perfect_count": 1016,
+   "near_count": 16,
+   "miss_count": 10,
+   "time_played": 1701491790738,
+   "chart_id": "shadesoflight:3",
+   "song_id": "shadesoflight",
+   "difficulty": 3,
+   "score": 9828178,
+   "chart_constant": 9.1,
+   "constant": 9.1,
+   "play_potential": 10.44089,
+   "play_potential_exact": "10.44089",
+   "potential": 10.44089,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Shades of Light"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 920,
+   "perfect_count": 1055,
+   "near_count": 43,
+   "miss_count": 23,
+   "time_played": 1702552283371,
+   "chart_id": "kanagawa:3",
+   "song_id": "kanagawa",
+   "difficulty": 3,
+   "score": 9603953,
+   "chart_constant": 9.8,
+   "constant": 9.8,
+   "play_potential": 10.34651,
+   "play_potential_exact": "10.34651",
+   "potential": 10.34651,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Kanagawa Cyber Culvert"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 675,
+   "perfect_count": 802,
+   "near_count": 31,
+   "miss_count": 17,
+   "time_played": 1788709017677,
+   "chart_id": "lovelessdress:2",
+   "song_id": "lovelessdress",
+   "difficulty": 2,
+   "score": 9618322,
+   "chart_constant": 9.7,
+   "constant": 9.7,
+   "play_potential": 10.294406666666667,
+   "play_potential_exact": "10.29440666666666666666666667",
+   "potential": 10.294406666666667,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Loveless Dress"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1010,
+   "perfect_count": 1254,
+   "near_count": 80,
+   "miss_count": 54,
+   "time_played": 1739610074378,
+   "chart_id": "astralquant:2",
+   "song_id": "astralquant",
+   "difficulty": 2,
+   "score": 9323776,
+   "chart_constant": 10.6,
+   "constant": 10.6,
+   "play_potential": 10.212586666666667,
+   "play_potential_exact": "10.21258666666666666666666667",
+   "potential": 10.212586666666667,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "ASTRAL QUANTUM"
+  },
+  {
+   "clear_type": 5,
+   "shiny_perfect_count": 533,
+   "perfect_count": 721,
+   "near_count": 55,
+   "miss_count": 9,
+   "time_played": 1712186751455,
+   "chart_id": "soundwitch:2",
+   "song_id": "soundwitch",
+   "difficulty": 2,
+   "score": 9535564,
+   "chart_constant": 9.8,
+   "constant": 9.8,
+   "play_potential": 10.118546666666667,
+   "play_potential_exact": "10.11854666666666666666666667",
+   "potential": 10.118546666666667,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Sound Witch"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 845,
+   "perfect_count": 1081,
+   "near_count": 68,
+   "miss_count": 34,
+   "time_played": 1754128407167,
+   "chart_id": "trrricksters:2",
+   "song_id": "trrricksters",
+   "difficulty": 2,
+   "score": 9426035,
+   "chart_constant": 10.1,
+   "constant": 10.1,
+   "play_potential": 10.05345,
+   "play_potential_exact": "10.05345",
+   "potential": 10.05345,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "TRRICKSTERS"
+  },
+  {
+   "clear_type": 0,
+   "shiny_perfect_count": 878,
+   "perfect_count": 1057,
+   "near_count": 64,
+   "miss_count": 21,
+   "time_played": 1734874963331,
+   "chart_id": "antagonism:2",
+   "song_id": "antagonism",
+   "difficulty": 2,
+   "score": 9536779,
+   "chart_constant": 9.9,
+   "constant": 9.9,
+   "play_potential": 10.022596666666667,
+   "play_potential_exact": "10.02259666666666666666666667",
+   "potential": 10.022596666666667,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0,
+   "title": "Antagonism"
+  },
+  {
+   "clear_type": 1,
+   "shiny_perfect_count": 716,
+   "perfect_count": 779,
+   "near_count": 36,
+   "miss_count": 8,
+   "time_played": 1706161105707,
+   "chart_id": "dropdead:2",
+   "song_id": "dropdead",
+   "difficulty": 2,
+   "score": 9684798,
+   "chart_constant": 9.1,
+   "constant": 9.1,
+   "play_potential": 9.915993333333333,
+   "play_potential_exact": "9.915993333333333333333333333",
+   "potential": 9.915993333333333,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "dropdead"
+  },
+  {
+   "clear_type": 4,
+   "shiny_perfect_count": 1079,
+   "perfect_count": 1252,
+   "near_count": 105,
+   "miss_count": 91,
+   "time_played": 1736656022023,
+   "chart_id": "breachoffaith:3",
+   "song_id": "breachoffaith",
+   "difficulty": 3,
+   "score": 9010056,
+   "chart_constant": 10.9,
+   "constant": 10.9,
+   "play_potential": 9.466853333333333,
+   "play_potential_exact": "9.466853333333333333333333333",
+   "potential": 9.466853333333333,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0.2,
+   "title": "Breach of Faith"
+  },
+  {
+   "clear_type": 0,
+   "shiny_perfect_count": 315,
+   "perfect_count": 385,
+   "near_count": 19,
+   "miss_count": 699,
+   "time_played": 1768301894714,
+   "chart_id": "goodtek:3",
+   "song_id": "goodtek",
+   "difficulty": 3,
+   "score": 3576924,
+   "chart_constant": 9.8,
+   "constant": 9.8,
+   "play_potential": 0,
+   "play_potential_exact": "0",
+   "potential": 0,
+   "potential_source": "score+clear_type",
+   "is_estimated": false,
+   "clear_bonus": 0,
+   "title": "GOODTEK (Arcaea Edit)"
+  }
+ ],
+ "char": {
+  "character": 81,
+  "is_char_uncapped": true
+ }
+}
