@@ -28,6 +28,7 @@ export class arcHelp extends plugin {
             `/${c}解绑                解除绑定`,
             `/${c}b50                 查询 B50 成绩单`,
             `/${c}b50 last            查看上次 B50（秒回，不重新查询）`,
+            `/${c}b50cd               查看 B50 查询冷却剩余时间`,
             `/${c}查歌 <曲> <难度>    查询单曲（难度 PST/PRS/FTR/BYD/ETR 或 0-4）`,
             `/${c}状态                查分服务状态`,
         ].join('\n'))
@@ -44,6 +45,7 @@ export class arcHelp extends plugin {
                 `渲染器：${h.renderer || '?'}`,
                 `曲谱就绪：${a.charts_loaded ? '是' : '否'} / 曲目就绪：${a.songs_loaded ? '是' : '否'}`,
                 `缓存图：${a.cache_images ?? 0} 张（${a.cache_mib ?? 0} MiB）`,
+                `B50 冷却：${h.b50_cooldown_seconds ? `${h.b50_cooldown_seconds} 秒` : '未启用'}`,
             ].join('\n'))
         } catch (err) {
             await e.reply(friendlyError(err, { what: '获取服务状态' }), true)

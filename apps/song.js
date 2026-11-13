@@ -69,7 +69,7 @@ export class arcSong extends plugin {
         try {
             const submit = await api.submitSong(userId, songId, difficulty, botId)
             if (submit.status !== 'completed') {
-                const job = await api.pollJob(submit.job_id, { pollAfterMs: submit.poll_after_ms })
+                const job = await api.waitJob(submit.job_id, { maxWaitMs: config.get('poll.max_wait_ms', 60000) })
                 if (job.status === 'failed') {
                     return e.reply(`单曲查询失败：${job.error || job.error_code || '未知错误'}`, true)
                 }

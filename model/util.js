@@ -50,6 +50,13 @@ export function friendlyError(err, { what = '查询' } = {}) {
             return err.message
         case 'poll_timeout':
             return `${what}超时，后端可能较忙，请稍后重试`
+        case 'B50_COOLDOWN': {
+            const s = Number(err.retryAfterSeconds)
+            const left = Number.isFinite(s) && s > 0
+                ? (s < 60 ? `剩余 ${s} 秒` : `剩余 ${Math.ceil(s / 60)} 分钟`)
+                : '请稍后'
+            return `B50 查询冷却中（${left}），期间可用「last/上次」查看最近一次结果`
+        }
         case 'QUEUE_FULL':
             return '当前查询队列已满，请过一会儿再试'
         case 'job_not_found':

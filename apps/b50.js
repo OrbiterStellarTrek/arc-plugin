@@ -15,6 +15,7 @@ export class arcB50 extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
+                { reg: `^[#/]${H}\\s*(?:b50cd|冷却|cd)\\s*$`, fnc: 'cooldown' },
                 { reg: `^[#/]${H}\\s*(?:b50|B50|查分|bests)\\s*(?:last|上次|历史)?\\s*$`, fnc: 'b50' },
             ],
         })
@@ -38,8 +39,7 @@ export class arcB50 extends plugin {
                 } else {
                     await e.reply('正在查询 B50，请稍候…', true)
                 }
-                const job = await api.pollJob(submit.job_id, {
-                    pollAfterMs: submit.poll_after_ms,
+                const job = await api.waitJob(submit.job_id, {
                     maxWaitMs: config.get('poll.b50_max_wait_ms', 180000),
                 })
                 if (job.status === 'failed') {
@@ -48,9 +48,14 @@ export class arcB50 extends plugin {
                 result = job.result
             }
         } catch (err) {
-            // 提交/轮询失败：尝试回退到最近一次成功快照（服务器出图）
-            const fallback = await this.#tryLastImage(e, userId, botId)
-            if (fallback) return true
+            // B50 一律本地渲染：慢查询/冷却时回退「拉服务器最近数据(JSON) → 本地出图」
+            const cooling = err instanceof ArcApiError && err.code === 'B50_COOLDOWN'
+            const note = cooling
+                ? `\n（B50 冷却中${cooldownHint(err)}，先渲染上一次的数据）`
+                : '\n（查询较慢，先渲染上一次的数据）'
+            try {
+                if (await this.#renderLast(e, userId, botId, note)) return true
+            } catch { /* 无最近快照或渲染失败，走下方错误提示 */ }
             return e.reply(friendlyError(err, { what: 'B50 查询' }), true)
         }
 
@@ -64,17 +69,45 @@ export class arcB50 extends plugin {
         return true
     }
 
+    /** #ab50cd：查看当前绑定的 B50 冷却剩余时间（只读，不触发查询） */
+    async cooldown(e) {
+        const { userId, botId } = pickTarget(e)
+        try {
+            const cd = await api.getB50Cooldown(userId, botId)
+            const s = Number(cd.retry_after_seconds) || 0
+            if (cd.can_query || s <= 0) {
+                return e.reply('B50 现在可以查询，发送 #ab50 即可', true)
+            }
+            const left = s < 60 ? `${s} 秒` : `${Math.floor(s / 60)} 分 ${s % 60} 秒`
+            const at = cd.available_at ? `，约 ${formatTime(cd.available_at)} 恢复` : ''
+            return e.reply(`B50 冷却中，剩余 ${left}${at}\n期间可用「#${config.cmdhead}b50 last」查看上次结果`, true)
+        } catch (err) {
+            return e.reply(friendlyError(err, { what: '查询 B50 冷却' }), true)
+        }
+    }
+
     /** #ab50 last：读最近一次成功 B50 快照（JSON）本地出图，秒回、不查后端 */
     async #sendLast(e, userId, botId) {
         try {
-            const snap = await api.getLastB50(userId, botId)
-            const buf = await this.#render(snap.result)
-            const parts = [segment.image(buf), `\n生成于 ${formatTime(snap.generated_at)}`]
-            if (snap.cache_stale) parts.push('（算法版本已更新，建议重新 #ab50）')
-            await e.reply(parts)
+            await this.#renderLast(e, userId, botId)
         } catch (err) {
             await e.reply(friendlyError(err, { what: '读取上次 B50' }), true)
         }
+        return true
+    }
+
+    /**
+     * 拉服务器最近一次成功 B50 快照（JSON）并本地渲染发出。
+     * 不使用服务器出图；无快照（B50_CACHE_NOT_FOUND）或渲染失败时抛出，交调用方处理。
+     * @returns {Promise<boolean>} 发送成功返回 true
+     */
+    async #renderLast(e, userId, botId, extraNote = '') {
+        const snap = await api.getLastB50(userId, botId)
+        const buf = await this.#render(snap.result)
+        const parts = [segment.image(buf), `\n生成于 ${formatTime(snap.generated_at)}`]
+        if (snap.cache_stale) parts.push('（算法版本已更新，建议重新 #ab50）')
+        if (extraNote) parts.push(extraNote)
+        await e.reply(parts)
         return true
     }
 
@@ -87,16 +120,12 @@ export class arcB50 extends plugin {
             quality: config.get('b50.quality', 95),
         })
     }
+}
 
-    /** 轮询超时等情况下，回退拉取服务器的最近成功快照图 */
-    async #tryLastImage(e, userId, botId) {
-        try {
-            const buf = await api.lastB50Image(userId, botId)
-            await e.reply([segment.image(buf), '\n（查询较慢，先发上一次的结果）'])
-            return true
-        } catch (err) {
-            if (err instanceof ArcApiError && err.code === 'B50_CACHE_NOT_FOUND') return false
-            return false
-        }
-    }
+/** B50_COOLDOWN 剩余时间提示，如「，剩余 8 分钟」 */
+function cooldownHint(err) {
+    const s = Number(err?.retryAfterSeconds)
+    if (!Number.isFinite(s) || s <= 0) return ''
+    if (s < 60) return `，剩余 ${s} 秒`
+    return `，剩余 ${Math.ceil(s / 60)} 分钟`
 }

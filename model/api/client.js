@@ -2,16 +2,19 @@ import config from '../config.js'
 
 /** 带后端错误码的 API 异常 */
 export class ArcApiError extends Error {
-    constructor(message, { code = '', status = 0, cause } = {}) {
+    constructor(message, { code = '', status = 0, retryAfterSeconds, availableAt, cause } = {}) {
         super(message)
         this.name = 'ArcApiError'
         this.code = code
         this.status = status
+        // B50_COOLDOWN 等场景：剩余冷却秒数与到期 Unix 秒
+        if (retryAfterSeconds != null) this.retryAfterSeconds = Number(retryAfterSeconds)
+        if (availableAt != null) this.availableAt = Number(availableAt)
         if (cause) this.cause = cause
     }
 }
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+const safeJsonParse = (s) => { try { return JSON.parse(s) } catch { return null } }
 
 /**
  * invtwd-server 查分 API 客户端（基于全局 fetch，无需 axios）。
@@ -78,11 +81,22 @@ class ArcApi {
         }
 
         if (!res.ok) {
-            const code = data?.error?.code || ''
-            const message = data?.error?.message || `HTTP ${res.status}`
-            throw new ArcApiError(message, { code, status: res.status })
+            throw this.#toError(res, data)
         }
         return data
+    }
+
+    /** 把失败响应（含 error 体与 Retry-After 头）整理成 ArcApiError */
+    #toError(res, data) {
+        const code = data?.error?.code || ''
+        const message = data?.error?.message || `HTTP ${res.status}`
+        const headerRetry = res.headers?.get?.('Retry-After')
+        return new ArcApiError(message, {
+            code,
+            status: res.status,
+            retryAfterSeconds: data?.error?.retry_after_seconds ?? (headerRetry != null ? Number(headerRetry) : undefined),
+            availableAt: data?.error?.available_at,
+        })
     }
 
     // ---- Health ----
@@ -127,17 +141,15 @@ class ArcApi {
         return this.#request('/api/v1/queries/song', { method: 'POST', body })
     }
 
-    getJob(jobId) {
-        return this.#request(`/api/v1/queries/${encodeURIComponent(jobId)}`)
+    /** 读取当前绑定的 B50 冷却状态（秒），不触发查询 */
+    getB50Cooldown(onebotUserId, botId) {
+        const p = new URLSearchParams({ onebot_user_id: String(onebotUserId) })
+        if (botId) p.set('bot_id', String(botId))
+        return this.#request(`/api/v1/queries/b50cd?${p}`)
     }
 
     // ---- Last 快照出图（不消费 Job，可重复读）----
-    lastB50Image(onebotUserId, botId) {
-        const p = new URLSearchParams({ onebot_user_id: String(onebotUserId) })
-        if (botId) p.set('bot_id', String(botId))
-        return this.#request(`/api/v1/queries/b50/last/image.png?${p}`, { as: 'buffer' })
-    }
-
+    // 注：B50 一律本地渲染（renderB30），不使用服务器出图；单曲仍走服务器出图。
     lastSongImage(onebotUserId, songId, difficulty, botId) {
         const p = new URLSearchParams({
             onebot_user_id: String(onebotUserId),
@@ -149,30 +161,133 @@ class ArcApi {
     }
 
     /**
-     * 轮询任务到终态。
-     * queued/processing 不消费、可无限轮询；completed/failed 首次读取原子消费并返回结果。
+     * 通过 SSE 等待任务到终态。
+     *
+     * 服务端把 GET /api/v1/queries/{job_id} 作为 SSE 长连接：排队/处理中每 15 秒发注释心跳，
+     * 成功或失败发一次 `event: result`（data 为 JobOutput），随后关闭并原子消费该 Job；
+     * 若结果已被其它连接消费，则发 `event: error`（data 为 {status,error}）或在建流前返回 410。
+     *
      * @param {string} jobId
      * @param {object} [opt]
-     * @param {number} [opt.pollAfterMs] 首次等待间隔（来自提交响应）
      * @param {number} [opt.maxWaitMs] 最长等待（毫秒），覆盖 config.poll.max_wait_ms
      *   —— B50 后端分批串行，queued 可能数十秒，调用方可传更大的值
      * @returns {Promise<object>} 终态 JobOutput（status=completed|failed）
      */
-    async pollJob(jobId, { pollAfterMs, maxWaitMs } = {}) {
+    async waitJob(jobId, { maxWaitMs } = {}) {
         const maxWait = Number(maxWaitMs ?? config.get('poll.max_wait_ms', 60000)) || 60000
-        const fallback = Number(config.get('poll.default_interval_ms', 3000)) || 3000
-        let wait = Number(pollAfterMs) || fallback
-        const deadline = Date.now() + maxWait
+        const headers = { Accept: 'text/event-stream' }
+        if (this.#key) headers.Authorization = `Bearer ${this.#key}`
 
-        for (;;) {
-            if (Date.now() + wait > deadline) {
-                throw new ArcApiError('查询超时，请稍后重试', { code: 'poll_timeout' })
-            }
-            await sleep(wait)
-            const job = await this.getJob(jobId)
-            if (job.status === 'completed' || job.status === 'failed') return job
-            wait = Number(job.poll_after_ms) || fallback
+        const ctrl = new AbortController()
+        const timer = setTimeout(() => ctrl.abort(), maxWait)
+        let res
+        try {
+            res = await fetch(`${this.#base}/api/v1/queries/${encodeURIComponent(jobId)}`, {
+                method: 'GET',
+                headers,
+                signal: ctrl.signal,
+            })
+        } catch (err) {
+            clearTimeout(timer)
+            if (err?.name === 'AbortError') throw new ArcApiError('查询超时，请稍后重试', { code: 'poll_timeout' })
+            throw new ArcApiError(`无法连接查分服务：${err?.message || err}`, { code: 'network_error', cause: err })
         }
+
+        // 建流前的错误（410 result_consumed / 404 job_not_found / 401）以 JSON 返回
+        if (!res.ok || !res.body) {
+            clearTimeout(timer)
+            const data = (res.headers.get('content-type') || '').includes('application/json')
+                ? await res.json().catch(() => null)
+                : null
+            throw this.#toError(res, data)
+        }
+
+        try {
+            return await this.#readJobStream(res)
+        } catch (err) {
+            if (err?.name === 'AbortError') throw new ArcApiError('查询超时，请稍后重试', { code: 'poll_timeout' })
+            throw err
+        } finally {
+            clearTimeout(timer)
+        }
+    }
+
+    /** 读取 SSE 流直到拿到终态 result 事件；error 事件抛出，心跳忽略 */
+    async #readJobStream(res) {
+        const decoder = new TextDecoder()
+        const sep = /\r\n\r\n|\n\n|\r\r/
+        let buf = ''
+        try {
+            for await (const value of this.#iterBody(res.body)) {
+                buf += decoder.decode(value, { stream: true })
+                let m
+                while ((m = sep.exec(buf))) {
+                    const chunk = buf.slice(0, m.index)
+                    buf = buf.slice(m.index + m[0].length)
+                    const ev = this.#parseSseEvent(chunk)
+                    if (!ev) continue // 仅注释/心跳
+                    if (ev.event === 'error') {
+                        const d = safeJsonParse(ev.data)
+                        throw new ArcApiError(
+                            d?.error?.message || '结果已被读取，请重新查询或查看最近一次记录',
+                            {
+                                code: d?.error?.code || 'result_consumed',
+                                status: d?.status || 410,
+                                retryAfterSeconds: d?.error?.retry_after_seconds,
+                                availableAt: d?.error?.available_at,
+                            },
+                        )
+                    }
+                    const job = safeJsonParse(ev.data)
+                    if (job && (job.status === 'completed' || job.status === 'failed')) return job
+                    // 其它事件（理论上不会出现的非终态）忽略，继续等待
+                }
+            }
+        } finally {
+            // 关闭连接：Node Readable 用 destroy，WHATWG 流用 cancel
+            try { res.body?.destroy?.() } catch { /* ignore */ }
+            try { res.body?.cancel?.().catch?.(() => {}) } catch { /* ignore */ }
+        }
+        throw new ArcApiError('查询连接已结束但未返回结果，请稍后重试', { code: 'poll_timeout' })
+    }
+
+    /**
+     * 统一迭代响应体，兼容两种 fetch 实现：
+     *   - 全局 undici fetch：res.body 是 WHATWG ReadableStream（有 getReader）
+     *   - node-fetch 等：res.body 是 Node Readable（本身可异步迭代）
+     */
+    async *#iterBody(body) {
+        if (!body) return
+        if (typeof body.getReader === 'function') {
+            const reader = body.getReader()
+            try {
+                for (;;) {
+                    const { value, done } = await reader.read()
+                    if (done) return
+                    if (value) yield value
+                }
+            } finally {
+                try { reader.cancel()?.catch?.(() => {}) } catch { /* ignore */ }
+            }
+        } else {
+            yield* body
+        }
+    }
+
+    /** 解析单个 SSE 事件块；纯注释（心跳）或无 data 返回 null */
+    #parseSseEvent(chunk) {
+        let event = 'message'
+        const dataLines = []
+        for (const line of chunk.split(/\r\n|\n|\r/)) {
+            if (!line || line.startsWith(':')) continue // 空行或注释（: keep-alive）
+            const i = line.indexOf(':')
+            const field = i < 0 ? line : line.slice(0, i)
+            let val = i < 0 ? '' : line.slice(i + 1)
+            if (val.startsWith(' ')) val = val.slice(1)
+            if (field === 'event') event = val
+            else if (field === 'data') dataLines.push(val)
+        }
+        return dataLines.length ? { event, data: dataLines.join('\n') } : null
     }
 }
 
