@@ -180,13 +180,15 @@ function buildChart(chart, records, now) {
         return {
             title: chart.title || 'Potential Trend',
             plays: chart.plays ?? records.length,
-            series: chart.series,
+            // 丢弃无效点（无/零潜力），否则折线会掉到 0 冲出图框
+            series: chart.series.filter((p) => Number(p.v) > 0),
             ticks: chart.ticks || ['', '', '', '', 'now'],
         }
     }
 
+    // 只取既有游玩时间、又有有效潜力（>0）的记录，避免 0 值把折线拉出图框
     const plays = records
-        .filter((r) => r.time_played)
+        .filter((r) => r.time_played && Number(r.potential ?? r.play_potential ?? 0) > 0)
         .slice()
         .sort((a, b) => a.time_played - b.time_played)
 

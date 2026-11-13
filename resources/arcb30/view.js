@@ -79,7 +79,19 @@ function chart(d) {
     const series = Array.isArray(c.series) ? c.series : []
     if (!series.length) return ''
 
-    const pts = series.map((p) => ({ x: tickToX(p.t), y: valueToY(p.v), v: p.v }))
+    // Y 轴按数据范围自适应：固定像素框 [yMax, yMin] 不变，只重算值→像素映射。
+    // 加少量留白并对齐到 0.5，让折线完整收进图框、标签也取整好看。
+    const vals = series.map((p) => Number(p.v))
+    let lo = Math.min(...vals)
+    let hi = Math.max(...vals)
+    if (!(hi > lo)) hi = lo + 1
+    const padV = Math.max(0.1, (hi - lo) * 0.08)
+    lo = Math.floor((lo - padV) * 2) / 2
+    hi = Math.ceil((hi + padV) * 2) / 2
+    const spanV = hi - lo || 1
+    const yFor = (v) => AXIS.yMax + (hi - v) * (AXIS.yMin - AXIS.yMax) / spanV
+
+    const pts = series.map((p) => ({ x: tickToX(p.t), y: yFor(p.v), v: p.v }))
     const first = pts[0]
     const last = pts[pts.length - 1]
     let minP = first
@@ -119,19 +131,25 @@ function chart(d) {
         return `<div class="trend-xlabel" style="left:${n(left)}px;text-align:${align}">${esc(label)}</div>`
     }).join('')
 
+    // y 轴标签跟随自适应范围：上/下网格线各标 hi/lo（-5.6 让文字与线垂直居中）
+    const yTop = n(FRAME.top + AXIS.yMax - 5.6)
+    const yBot = n(FRAME.top + AXIS.yMin - 5.6)
+    const clipH = n(AXIS.yMin - AXIS.yMax)
+
     return `
   <div class="trend">
     <div class="trend-title">${esc(c.title || 'Potential Trend')}</div>
     <div class="trend-plays">${esc(c.plays || 0)} plays</div>
     <div class="trend-peak" style="left:${n(FRAME.left + maxP.x - 14)}px;top:${n(FRAME.top + maxP.y - 15.5)}px">${n(maxP.v)}</div>
     <svg class="trend-graph" width="390" height="97" viewBox="0 0 390 97" overflow="visible">
+      <defs><clipPath id="trendClip"><rect x="0" y="${n(AXIS.yMax)}" width="390" height="${clipH}"></rect></clipPath></defs>
       <g class="trend-grid">${grid}</g>
-      <polyline class="trend-line" points="${polyline}"></polyline>
+      <polyline class="trend-line" points="${polyline}" clip-path="url(#trendClip)"></polyline>
       <g class="trend-dots">${dots}</g>
     </svg>
     <div class="trend-yaxis">
-      <div class="trend-ylabel" style="top:47.8px">12.5</div>
-      <div class="trend-ylabel" style="top:103.1px">10.5</div>
+      <div class="trend-ylabel" style="top:${yTop}px">${hi.toFixed(1)}</div>
+      <div class="trend-ylabel" style="top:${yBot}px">${lo.toFixed(1)}</div>
     </div>
     <div class="trend-xaxis">${xlabels}</div>
     <div class="trend-marks">${marks}</div>
