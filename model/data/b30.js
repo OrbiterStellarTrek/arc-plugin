@@ -9,12 +9,12 @@ const JACKET_DIR = path.join(RESOURCE_ROOT, 'jacket')
 /** 0 基难度索引 → 名称（接口 difficulty 0=PST 1=PRS 2=FTR 3=BYD 4=ETR） */
 const DIFF_NAMES = ['PST', 'PRS', 'FTR', 'BYD', 'ETR']
 const DIFF_COLORS = {
-    PST: '#4FA8D8',
-    PRS: '#46B87E',
-    FTR: '#D1455E',
-    BYD: '#8E56C8',
-    ETR: '#B18BD8',
-    INS: '#8E56C8',
+    PST: '#4FA8D8', // 蓝 Past
+    PRS: '#93B84F', // 绿 Present
+    FTR: '#9B4B80', // 品红 Future
+    BYD: '#CE4557', // 红 Beyond
+    ETR: '#7A5C97', // 紫 Eternal
+    INS: '#3E5AB5', // 靛蓝 Insight（特殊 BYD）
 }
 /** 这些曲目的 BYD(3) 难度实际显示为 INS */
 const INS_SONGS = new Set(['dreadarea', 'rivenpilgrim', 'cataclysmcry', 'deinosphainein'])
