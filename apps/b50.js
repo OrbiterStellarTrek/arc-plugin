@@ -3,7 +3,7 @@ import api, { ArcApiError } from '../model/api/client.js'
 import config from '../model/config.js'
 import { renderB30 } from '../model/render/arcb30.js'
 import { b50ResultToRaw } from '../model/data/mapResult.js'
-import { pickTarget, friendlyError, escapeRegExp } from '../model/util.js'
+import { pickTarget, friendlyError, formatTime, escapeRegExp } from '../model/util.js'
 
 const H = escapeRegExp(config.cmdhead)
 
@@ -15,13 +15,15 @@ export class arcB50 extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
-                { reg: `^[#/]${H}\\s*(b50|B50|查分|bests)\\s*$`, fnc: 'b50' },
+                { reg: `^[#/]${H}\\s*(?:b50|B50|查分|bests)\\s*(?:last|上次|历史)?\\s*$`, fnc: 'b50' },
             ],
         })
     }
 
     async b50(e) {
         const { userId, botId } = pickTarget(e)
+        // 带 last/上次/历史 时直接读最近一次快照，不触发新查询
+        if (/(?:last|上次|历史)\s*$/i.test(e.msg)) return this.#sendLast(e, userId, botId)
         let result
         try {
             const submit = await api.submitB50(userId, botId)
@@ -55,17 +57,35 @@ export class arcB50 extends plugin {
         if (!result) return e.reply('B50 查询没有返回结果\n请联系皮梦/班尼特处理喵', true)
 
         try {
-            const buf = await renderB30(b50ResultToRaw(result), {
-                renderer: config.get('b50.renderer', 'auto'),
-                scale: config.get('b50.scale', 3),
-                type: config.get('b50.type', 'webp'),
-                quality: config.get('b50.quality', 95),
-            })
-            await e.reply(segment.image(buf))
+            await e.reply(segment.image(await this.#render(result)))
         } catch (err) {
             await e.reply(`B50 渲染失败：${err?.message || err}`, true)
         }
         return true
+    }
+
+    /** #ab50 last：读最近一次成功 B50 快照（JSON）本地出图，秒回、不查后端 */
+    async #sendLast(e, userId, botId) {
+        try {
+            const snap = await api.getLastB50(userId, botId)
+            const buf = await this.#render(snap.result)
+            const parts = [segment.image(buf), `\n生成于 ${formatTime(snap.generated_at)}`]
+            if (snap.cache_stale) parts.push('（算法版本已更新，建议重新 #ab50）')
+            await e.reply(parts)
+        } catch (err) {
+            await e.reply(friendlyError(err, { what: '读取上次 B50' }), true)
+        }
+        return true
+    }
+
+    /** 结果 → 本地渲染出图（读配置里的出图参数） */
+    #render(result) {
+        return renderB30(b50ResultToRaw(result), {
+            renderer: config.get('b50.renderer', 'auto'),
+            scale: config.get('b50.scale', 3),
+            type: config.get('b50.type', 'webp'),
+            quality: config.get('b50.quality', 95),
+        })
     }
 
     /** 轮询超时等情况下，回退拉取服务器的最近成功快照图 */

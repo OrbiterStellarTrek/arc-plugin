@@ -114,6 +114,13 @@ class ArcApi {
         return this.#request('/api/v1/queries/b50', { method: 'POST', body })
     }
 
+    /** 读取最近一次成功 B50 快照（JSON），可重复读、不查后端 */
+    getLastB50(onebotUserId, botId) {
+        const p = new URLSearchParams({ onebot_user_id: String(onebotUserId) })
+        if (botId) p.set('bot_id', String(botId))
+        return this.#request(`/api/v1/queries/b50/last?${p}`)
+    }
+
     submitSong(onebotUserId, songId, difficulty, botId) {
         const body = { onebot_user_id: String(onebotUserId), song_id: String(songId), difficulty: Number(difficulty) }
         if (botId) body.bot_id = String(botId)

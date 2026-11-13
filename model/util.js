@@ -31,6 +31,15 @@ export function parseDifficulty(token) {
 const DIFF_NAMES = ['PST', 'PRS', 'FTR', 'BYD', 'ETR']
 export const diffName = (d) => DIFF_NAMES[d] || String(d)
 
+/** Unix 秒 → 本地「YYYY-MM-DD HH:mm」 */
+export function formatTime(unixSec) {
+    const t = Number(unixSec)
+    if (!Number.isFinite(t) || t <= 0) return '未知时间'
+    const d = new Date(t * 1000)
+    const p = (n) => String(n).padStart(2, '0')
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`
+}
+
 /** 后端错误码 → 友好中文提示 */
 export function friendlyError(err, { what = '查询' } = {}) {
     if (!(err instanceof ArcApiError)) {

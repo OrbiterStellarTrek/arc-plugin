@@ -27,6 +27,7 @@ export class arcHelp extends plugin {
             `/${c}我的绑定            查看当前绑定`,
             `/${c}解绑                解除绑定`,
             `/${c}b50                 查询 B50 成绩单`,
+            `/${c}b50 last            查看上次 B50（秒回，不重新查询）`,
             `/${c}查歌 <曲> <难度>    查询单曲（难度 PST/PRS/FTR/BYD/ETR 或 0-4）`,
             `/${c}状态                查分服务状态`,
         ].join('\n'))
