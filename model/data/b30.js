@@ -28,11 +28,18 @@ const CLEARS = {
     5: { text: 'HC', color: '#3D7BD8' },
 }
 
-/** PTT 星级底图档位 */
+/**
+ * 潜力值 → 徽章底图档位（rating_0~7）；潜力值隐藏（-1）或非法返回 -1 → rating_off。
+ * 区间（萌娘百科 / wiki）：
+ *   0–3.499 蓝 / 3.5–6.999 绿 / 7–9.999 紫 / 10–10.999 紫(带花纹)
+ *   / 11–11.999 红 / 12–12.499 红★ / 12.5–12.999 红★★ / ≥13 红★★★
+ */
 function ratingIndex(ptt) {
-    const tiers = [3.5, 5.5, 7.5, 9.5, 11, 12.5, 13.5]
+    const p = Number(ptt)
+    if (!(p >= 0)) return -1
+    const tiers = [3.5, 7, 10, 11, 12, 12.5, 13]
     let idx = 0
-    for (const t of tiers) if (ptt >= t) idx++
+    for (const t of tiers) if (p >= t) idx++
     return Math.min(idx, 7)
 }
 
@@ -157,8 +164,9 @@ export function buildB30Model(raw = {}) {
             chara: raw.player?.chara || charaPath(raw),
         },
         ptt: {
-            save: fixed(pttValue, 3),
-            calc: fixed(raw.ptt?.exact ?? pttValue, 5),
+            // 潜力值隐藏（-1）时不显示数字，只保留 off 徽章
+            save: pttValue < 0 ? '' : fixed(pttValue, 3),
+            calc: Number(raw.ptt?.exact ?? pttValue) < 0 ? '' : fixed(raw.ptt?.exact ?? pttValue, 5),
             b10: fixed(raw.ptt?.b10 ?? 0, 5),
             b50: fixed(raw.ptt?.b50 ?? 0, 5),
             rating: ratingIndex(pttValue),

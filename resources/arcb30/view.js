@@ -31,6 +31,8 @@ const n = (v, d = 2) => (Number.isFinite(Number(v)) ? Number(v) : 0).toFixed(d)
 function header(d) {
     const p = d.player || {}
     const ptt = d.ptt || {}
+    // rating 为 -1（潜力值隐藏）时用 rating_off.png
+    const ratingTag = ptt.rating == null ? 5 : (ptt.rating < 0 ? 'off' : ptt.rating)
     const stat = (top, label, value, field) =>
         `<div class="stat-label" style="top:${top}px">${esc(label)}</div>` +
         `<div class="stat-value" style="top:${top + 18.5}px" data-field="${field}">${esc(value)}</div>`
@@ -58,7 +60,7 @@ function header(d) {
   <div class="avatar"><img src="${esc(p.avatar)}" alt=""></div>
 
   <div class="ptt">
-    <img class="ptt-bg" src="img/rating_${ptt.rating == null ? 5 : ptt.rating}.png" alt="">
+    <img class="ptt-bg" src="img/rating_${ratingTag}.png" alt="">
     <div class="ptt-text">${pttNumber(ptt.save)}</div>
   </div>
 
