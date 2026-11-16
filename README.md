@@ -51,7 +51,7 @@ pnpm add puppeteer -w           # 兜底渲染器
 | `#a状态` | 查分服务状态 |
 | `#a帮助` | 命令帮助 |
 
-> 单曲与非样例 B50 的曲名解析依赖 `resources/arcb30/songlist.json`（样例覆盖有限）；识别不到时请直接用 `song_id`。
+> 曲名来自 `resources/arcb30/songlist.json`（由官方 songlist 生成，含 BYD 等难度专属曲名，如 `Axium Divergence` 会直接识别为 axiumcrisis BYD）；识别不到时请直接用 `song_id`。
 
 ## ⚙️ 配置
 
@@ -101,11 +101,11 @@ arc-plugin/
 ├── resources/arcb30/         # 模板本体（素材已随插件复制）
 │   ├── view.js               # 纯字符串视图：生成页面 HTML（无 DOM API）
 │   ├── style.css
-│   ├── songlist.json         # song_id → 曲名（示例数据）
+│   ├── songlist.json         # song_id → 曲名（含难度专属曲名，copy-assets 生成）
 │   ├── fonts/                # GeosansLight、Exo Medium
 │   ├── img/                  # 背景、lowiro 标识、PTT 星级底图
 │   ├── char/                 # 角色立绘 141 + 头像 132（WebP）
-│   └── jacket/               # 曲绘 565（WebP，256px）
+│   └── jacket/               # 曲绘 565 + 难度专属 57（WebP，256px）
 ├── tools/
 │   ├── render-preview.js     # 用示例数据渲染一张图
 │   ├── copy-assets.js        # 从 arcinf 素材包同步资源
@@ -188,10 +188,10 @@ node tools/render-preview.js out.webp --scale=4 --renderer=shotium
 | `fonts/` | GeosansLight（标题/正文）、Exo Medium（分数） | 2 | 0.2 MB |
 | `img/` | `bg_konzetsu.jpg`、`lowiro_white.png`、`rating_0~7/off.png` | 11 | 1.9 MB |
 | `char/` | `char/1080/*.png` 立绘 + `*_icon.png` 头像（WebP q95/q92） | 273 | 52.4 MB |
-| `jacket/` | `songs/*/1080_base_256.jpg`（缺失用 `base_256.jpg`），WebP q90 | 565 | 27.3 MB |
-| | | **851** | **约 87 MB** |
+| `jacket/` | `songs/*/1080_base_256.jpg`（缺失用 `base_256.jpg`）+ 难度专属 `1080_<难度>_256.jpg` → `<id>_<难度>`，WebP q90 | 622 | 30.1 MB |
+| | | **908** | **约 90 MB** |
 
-- 素材更新：`node tools/copy-assets.js <arcinf/assets 路径>`（增量，不覆盖已有文件）
+- 素材更新：`node tools/copy-assets.js <arcinf/assets 路径>`（增量，不覆盖已有文件；`songlist.json` 每次按官方 `songs/songlist` 重新生成）
 - 体积优化：`python tools/optimize-assets.py`（PNG/JPG → WebP，需 Pillow）
 - 数据层依次尝试 `.webp` / `.png`，两种格式都能直接用
 
@@ -231,5 +231,6 @@ node tools/render-preview.js out.webp --scale=4 --renderer=shotium
 
 ## 🗺️ Roadmap
 
-- [ ] 完整曲库 / 中文曲名别名表（当前单曲名解析仅覆盖 `songlist.json` 样例）
+- [x] 完整曲库（官方 songlist 生成，含难度专属曲名与曲绘）
+- [ ] 中文曲名别名表
 - [ ] 曲绘 / 立绘按需下载（目前是全量自带）

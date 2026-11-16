@@ -1,33 +1,35 @@
-import fs from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import plugin from '../../../lib/plugins/plugin.js'
 import api from '../model/api/client.js'
 import config from '../model/config.js'
 import { pickTarget, parseDifficulty, diffName, friendlyError, escapeRegExp } from '../model/util.js'
+import { songNames } from '../model/data/songlist.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const SONGLIST = path.resolve(__dirname, '..', 'resources', 'arcb30', 'songlist.json')
 const SONG_ID_RE = /^[A-Za-z0-9_-]{1,128}$/
 const H = escapeRegExp(config.cmdhead)
 
-/** 曲名（小写去空格）→ song_id 反查表，来自 songlist.json（样例覆盖有限） */
+/**
+ * 曲名（小写去空格）→ { id, difficulty } 反查表，来自 songlist.json。
+ * 难度专属曲名（如 Axium Divergence）会带上对应难度，整曲曲名与 song_id 的 difficulty 为 null。
+ */
 let nameIndex = null
-function resolveSongId(query) {
+function resolveSong(query) {
     const q = String(query).trim()
     if (!nameIndex) {
         nameIndex = new Map()
-        try {
-            const list = JSON.parse(fs.readFileSync(SONGLIST, 'utf8'))
-            for (const [id, name] of Object.entries(list)) {
-                nameIndex.set(norm(name), id)
-                nameIndex.set(norm(id), id)
-            }
-        } catch { /* 无曲库时只能按 id 处理 */ }
+        const entries = songNames()
+        // 先放难度专属曲名，再放整曲曲名 / song_id，同名时以后者为准
+        for (const { name, id, difficulty } of entries) {
+            if (difficulty != null) nameIndex.set(norm(name), { id, difficulty })
+        }
+        for (const { name, id, difficulty } of entries) {
+            if (difficulty != null) continue
+            nameIndex.set(norm(name), { id, difficulty: null })
+            nameIndex.set(norm(id), { id, difficulty: null })
+        }
     }
     const hit = nameIndex.get(norm(q))
     if (hit) return hit
-    if (SONG_ID_RE.test(q)) return q
+    if (SONG_ID_RE.test(q)) return { id: q, difficulty: null }
     return null
 }
 const norm = (s) => String(s).toLowerCase().replace(/\s+/g, '')
@@ -58,13 +60,16 @@ export class arcSong extends plugin {
         if (difficulty !== null && tokens.length > 1) {
             songPart = tokens.slice(0, -1).join(' ')
         } else {
-            difficulty = 2 // 默认 FTR
+            difficulty = null
         }
 
-        const songId = resolveSongId(songPart)
-        if (!songId) {
+        const song = resolveSong(songPart)
+        if (!song) {
             return e.reply(`无法识别曲目「${songPart}」，请直接用 song_id（字母数字/下划线/连字符）`, true)
         }
+        const songId = song.id
+        // 未指定难度：难度专属曲名用其难度，否则默认 FTR
+        if (difficulty === null) difficulty = song.difficulty ?? 2
 
         try {
             const submit = await api.submitSong(userId, songId, difficulty, botId)

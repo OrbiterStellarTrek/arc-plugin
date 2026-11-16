@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { songTitle } from './songlist.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const RESOURCE_ROOT = path.resolve(__dirname, '..', '..', 'resources', 'arcb30')
@@ -69,8 +70,11 @@ function avatarPath(raw) {
 }
 
 let jacketCache = null
-/** 曲绘文件名索引：song_id -> jacket/<id>.webp|.jpg */
-function jacketFile(songId) {
+/**
+ * 曲绘文件名索引：<song_id>[_<ratingClass>] -> jacket/<name>.webp|.jpg
+ * 部分难度有专属曲绘（官方 songlist 的 jacketOverride），存为 jacket/<id>_<难度>.*，优先使用。
+ */
+function jacketFile(songId, difficulty) {
     if (!jacketCache) {
         jacketCache = new Map()
         try {
@@ -81,7 +85,7 @@ function jacketFile(songId) {
             }
         } catch { /* 目录不存在时按无曲绘处理 */ }
     }
-    return jacketCache.get(songId) || ''
+    return (difficulty != null && jacketCache.get(songId + '_' + difficulty)) || jacketCache.get(songId) || ''
 }
 
 const pad = (n, len) => String(n).padStart(len, '0')
@@ -93,21 +97,6 @@ export function formatScore(score) {
 }
 
 const fixed = (n, d) => (Number.isFinite(Number(n)) ? Number(n).toFixed(d) : (0).toFixed(d))
-
-/** song_id → 展示名（资源的 songlist 只覆盖样例曲目，缺失时回退到首字母大写） */
-function prettifyId(id) {
-    return String(id || '')
-        .replace(/[_-]+/g, ' ')
-        .replace(/\b\w/g, (m) => m.toUpperCase())
-}
-
-function loadSonglist() {
-    try {
-        return JSON.parse(fs.readFileSync(path.join(RESOURCE_ROOT, 'songlist.json'), 'utf8'))
-    } catch {
-        return {}
-    }
-}
 
 /**
  * 把原始成绩数据整理成模板数据。
@@ -124,8 +113,6 @@ function loadSonglist() {
 export function buildB30Model(raw = {}) {
     const records = Array.isArray(raw.records) ? raw.records.slice() : []
     const now = raw.now || Date.now()
-    const songlist = loadSonglist()
-    const title = (id) => songlist[id] || prettifyId(id)
     const pttValue = Number(raw.ptt?.value ?? raw.ptt?.save ?? 0)
 
     // 按潜力排序取前 N，同分按分数降序
@@ -141,8 +128,9 @@ export function buildB30Model(raw = {}) {
         const days = r.time_played ? Math.max(0, Math.floor((now - r.time_played) / 86400000)) : 0
         return {
             rank: i + 1,
-            title: r.title || title(r.song_id),
-            jacket: r.song_id ? jacketFile(r.song_id) : '',
+            // 官方曲库优先（含难度专属曲名），服务器曲名只作兜底
+            title: songTitle(r.song_id, r.difficulty, r.title),
+            jacket: r.song_id ? jacketFile(r.song_id, r.difficulty) : '',
             diff,
             diffColor: DIFF_COLORS[diff],
             potentialLine: diff + ' ' + formatConst(r.chart_constant ?? r.constant) + ' \u203a ' + fixed(potential, 4),

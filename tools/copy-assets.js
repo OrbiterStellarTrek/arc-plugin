@@ -1,10 +1,11 @@
 /**
  * 从 arcinf 素材包同步渲染资源到 resources/arcb30。
  *
- *   node tools/copy-assets.js D:\temp\arcinf\assets
+ *   node tools/copy-assets.js E:\存档\arcinf\assets
  *
  * 只复制渲染用得上的图片/字体，音源、谱面、模型、粒子、csb 等一律跳过。
- * 已存在的文件不会覆盖，方便本地替换个别素材。
+ * 已存在的文件不会覆盖，方便本地替换个别素材；songlist.json 例外，每次按官方 songs/songlist 重新生成。
+ * 素材目录只读，脚本不会往里面写任何东西。
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -12,7 +13,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const RES = path.resolve(__dirname, '..', 'resources', 'arcb30')
-const SRC = process.argv[2] || 'D:\\temp\\arcinf\\assets'
+const SRC = process.argv[2] || 'E:\\存档\\arcinf\\assets'
 
 function ensure(dir) {
     fs.mkdirSync(dir, { recursive: true })
@@ -84,6 +85,41 @@ if (fs.existsSync(songs)) {
             }
         }
     }
+}
+
+// 官方曲目表：生成曲名表，并复制难度专属曲绘
+const songlistFile = path.join(songs, 'songlist')
+if (fs.existsSync(songlistFile)) {
+    const list = JSON.parse(fs.readFileSync(songlistFile, 'utf8')).songs || []
+    const titleOf = (loc) => String(loc?.en || '').trim()
+    const out = {}
+    report.jacketDiff = 0
+    for (const song of list) {
+        if (!song.id || song.deleted) continue
+        const title = titleOf(song.title_localized) || song.id
+        const diffTitles = {}
+        for (const d of song.difficulties || []) {
+            const t = titleOf(d.title_localized)
+            if (t && t !== title) diffTitles[d.ratingClass] = t
+
+            // 难度专属曲绘：songs/<id>/1080_<难度>_256.jpg，退化为 <难度>_256.jpg → jacket/<id>_<难度>.jpg
+            if (!d.jacketOverride) continue
+            const dst = path.join(RES, 'jacket', `${song.id}_${d.ratingClass}.jpg`)
+            if (fs.existsSync(dst) || fs.existsSync(dst.replace(/\.jpg$/, '.webp'))) continue
+            for (const c of [`1080_${d.ratingClass}_256.jpg`, `${d.ratingClass}_256.jpg`]) {
+                const from = path.join(songs, song.id, c)
+                if (fs.existsSync(from)) {
+                    fs.copyFileSync(from, dst)
+                    report.jacketDiff++
+                    break
+                }
+            }
+        }
+        out[song.id] = Object.keys(diffTitles).length ? { title, difficulties: diffTitles } : title
+    }
+    // 曲名表完全由官方数据生成，每次覆盖
+    fs.writeFileSync(path.join(RES, 'songlist.json'), JSON.stringify(out, null, 2) + '\n')
+    report.songlist = Object.keys(out).length
 }
 
 const size = (dir) => {
