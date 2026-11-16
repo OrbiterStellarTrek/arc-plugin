@@ -62,7 +62,10 @@ export class arcB50 extends plugin {
         if (!result) return e.reply('B50 查询没有返回结果\n请联系皮梦/班尼特处理喵', true)
 
         try {
-            await e.reply(segment.image(await this.#render(result)))
+            const parts = [segment.image(await this.#render(result))]
+            const msg = resultMsg(result)
+            if (msg) parts.push(`\n${msg}`)
+            await e.reply(parts)
         } catch (err) {
             await e.reply(`B50 渲染失败：${err?.message || err}`, true)
         }
@@ -104,7 +107,10 @@ export class arcB50 extends plugin {
     async #renderLast(e, userId, botId, extraNote = '') {
         const snap = await api.getLastB50(userId, botId)
         const buf = await this.#render(snap.result)
-        const parts = [segment.image(buf), `\n生成于 ${formatTime(snap.generated_at)}`]
+        const parts = [segment.image(buf)]
+        const msg = resultMsg(snap.result)
+        if (msg) parts.push(`\n${msg}`)
+        parts.push(`\n生成于 ${formatTime(snap.generated_at)}`)
         if (snap.cache_stale) parts.push('（算法版本已更新，建议重新 #ab50）')
         if (extraNote) parts.push(extraNote)
         await e.reply(parts)
@@ -120,6 +126,12 @@ export class arcB50 extends plugin {
             quality: config.get('b50.quality', 95),
         })
     }
+}
+
+/** 服务端附带的 result.msg（如「TIME: 68.27s」或 PTT 校验提示）；旧快照可能没有 */
+function resultMsg(result) {
+    const msg = result?.msg
+    return typeof msg === 'string' ? msg.trim() : ''
 }
 
 /** B50_COOLDOWN 剩余时间提示，如「，剩余 8 分钟」 */
