@@ -143,14 +143,16 @@ node tools/render-preview.js out.png --type=png --scale=2 --renderer=shotium
 `tools/pack-resources.mjs` 会把 `resources/original_ill` 与 `resources/assets` 暂存后交给 `qentimart` 构建静态树。打包并发布（需 `qentimart` CLI 在 PATH、`wrangler` 已登录 Cloudflare）：
 
 ```bash
-node tools/pack-resources.mjs 7.1.0
+node tools/pack-resources.mjs 7.3.1
 ```
 
 ```bash
 npx wrangler@latest pages deploy tools/out/arc-site --project-name <项目名> --branch <生产分支>
 ```
 
-> 内容有变但想让下游重新同步时，请升高版本号（`node tools/pack-resources.mjs <新版本>`）。
+> 输出目录是 qentimart 的**持久镜像**：重复发布会累积多个版本，未变的 chunk 按内容哈希共享，历史版本几乎不额外占空间，`diff` / 回滚 / 指定版本都能用。已存在的版本号会被拒绝，请每次用新版本号；确需从零重建时加 `--fresh`。
+>
+> 发布流程：游戏更新后 `node tools/copy-assets.js <素材包>` 并入新资源 → 更新 `info/songlist.json`（提交 git）→ `node tools/pack-resources.mjs <新版本>` → 部署。
 
 ### 目录结构
 

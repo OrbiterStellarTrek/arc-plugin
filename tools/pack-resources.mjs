@@ -1,12 +1,14 @@
 /**
  * 把渲染资源里「随游戏更新的部分」打包成 QentimArt 静态分发树，供 Cloudflare Pages 等托管。
  *
- *   node tools/pack-resources.mjs [版本号] [输出目录]
- *   node tools/pack-resources.mjs 7.1.0 tools/out/arc-site
+ *   node tools/pack-resources.mjs <版本号> [输出目录] [--fresh]
+ *   node tools/pack-resources.mjs 7.3.1 tools/out/arc-site
  *
- * 只收录曲绘（jacket/）与曲名表（songlist.json）——即随 Arcaea 更新而变的内容；
- * 插件自带的模板（view.js / style.css）、字体、立绘、界面图一律不打进去，
- * 这样下游 `#a更新曲绘` 只会同步曲绘/曲名表，绝不动插件自带素材。
+ * 收录曲绘（original_ill/）与立绘/字体/界面图（assets/）——随游戏更新、体量大的资源；
+ * 模板（html/）与曲名表（info/）随插件仓库发布，不打进分发树。
+ *
+ * 输出目录是 qentimart 的「持久镜像」：重复发布累积多版本，chunk 按内容哈希共享，
+ * 历史版本几乎不额外占空间；已存在的版本号会被拒绝（请用新版本号），确需重来时加 --fresh。
  *
  * 依赖 qentimart CLI（需在 PATH，或用 QENTIMART_BIN 指定路径）。
  */
@@ -55,8 +57,23 @@ function countFiles(dir) {
 }
 console.log(`暂存 ${countFiles(srcDir)} 个文件到 ${path.relative(ROOT, srcDir)}`)
 
-// 2) 清空输出目录（单版本干净树），再用 qentimart 构建静态树
-fs.rmSync(outDir, { recursive: true, force: true })
+// 2) 构建静态树。qentimart 的 -o 是「持久镜像」：重复发布会累积新版本，
+//    未变的 chunk 按内容哈希复用，所以历史版本几乎不额外占空间，应默认保留。
+//    确需从零重建时加 --fresh 清空输出目录。
+const fresh = process.argv.includes('--fresh')
+if (fresh) {
+    fs.rmSync(outDir, { recursive: true, force: true })
+    console.log('已清空输出目录（--fresh）')
+} else if (fs.existsSync(path.join(outDir, 'index.json'))) {
+    const idx = JSON.parse(fs.readFileSync(path.join(outDir, 'index.json'), 'utf8'))
+    const existing = (idx.versions || []).map((v) => v.version)
+    if (existing.includes(version)) {
+        console.error(`版本 ${version} 已存在于输出目录（${existing.join(', ')}）。`)
+        console.error('请换一个新的版本号，或用 --fresh 从零重建。')
+        process.exit(1)
+    }
+    console.log(`保留已有版本 ${existing.join(', ')}，将追加 ${version}`)
+}
 const args = ['publish', '-static', '-o', outDir, '-project', PROJECT, '-version', version, srcDir]
 console.log(`运行：${bin} ${args.join(' ')}`)
 const r = spawnSync(bin, args, { stdio: 'inherit', shell: process.platform === 'win32' })
