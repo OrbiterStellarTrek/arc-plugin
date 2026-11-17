@@ -68,13 +68,23 @@ report.char = copyDir(path.join(SRC, 'char', '1080'), path.join(RES, 'assets', '
 report.icon = copyDir(path.join(SRC, 'char'), path.join(RES, 'assets', 'char'), (n) => n.endsWith('_icon.png'))
 
 // 曲绘：songs/<id>/1080_base_256.jpg，退化为 base_256.jpg → original_ill/<id>.jpg（256 版本足够 56px 卡片用）
+// DLC / 新曲的资源在 songs/dl_<id>/，拍平到 original_ill 时统一去掉 dl_ 前缀。
 ensure(path.join(RES, 'original_ill'))
 report.jacket = 0
 const songs = path.join(SRC, 'songs')
+/** 素材包里某曲的实际目录：优先 songs/<id>/，其次 DLC 的 songs/dl_<id>/ */
+const songDirOf = (id) => {
+    for (const name of [id, 'dl_' + id]) {
+        const p = path.join(songs, name)
+        if (fs.existsSync(p)) return p
+    }
+    return path.join(songs, id)
+}
 if (fs.existsSync(songs)) {
     for (const d of fs.readdirSync(songs, { withFileTypes: true })) {
         if (!d.isDirectory()) continue
-        const dst = path.join(RES, 'original_ill', d.name + '.jpg')
+        const id = d.name.replace(/^dl_/, '')
+        const dst = path.join(RES, 'original_ill', id + '.jpg')
         if (fs.existsSync(dst) || fs.existsSync(dst.replace(/\.jpg$/, '.webp'))) continue
         const candidates = ['1080_base_256.jpg', 'base_256.jpg']
         for (const c of candidates) {
@@ -103,12 +113,12 @@ if (fs.existsSync(songlistFile)) {
             const t = titleOf(d.title_localized)
             if (t && t !== title) diffTitles[d.ratingClass] = t
 
-            // 难度专属曲绘：songs/<id>/1080_<难度>_256.jpg，退化为 <难度>_256.jpg → original_ill/<id>_<难度>.jpg
+            // 难度专属曲绘：<曲目目录>/1080_<难度>_256.jpg，退化为 <难度>_256.jpg → original_ill/<id>_<难度>.jpg
             if (!d.jacketOverride) continue
             const dst = path.join(RES, 'original_ill', `${song.id}_${d.ratingClass}.jpg`)
             if (fs.existsSync(dst) || fs.existsSync(dst.replace(/\.jpg$/, '.webp'))) continue
             for (const c of [`1080_${d.ratingClass}_256.jpg`, `${d.ratingClass}_256.jpg`]) {
-                const from = path.join(songs, song.id, c)
+                const from = path.join(songDirOf(song.id), c)
                 if (fs.existsSync(from)) {
                     fs.copyFileSync(from, dst)
                     report.jacketDiff++
