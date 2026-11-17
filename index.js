@@ -43,5 +43,19 @@ try {
     }
 })()
 
+// 首次启动兜底：曲绘/立绘缺失时后台拉取一次，不阻塞加载。
+// 动态 import：未安装 @qentimart/sdk 时仅跳过自动同步，不影响插件其余功能。
+;(async () => {
+    try {
+        const { ensureAssets } = await import('./model/assets.js')
+        const r = await ensureAssets()
+        if (r && r.skipped === false) {
+            logger?.mark?.(`[arc-plugin] 首次资源同步完成：v${r.version}，下载 ${r.downloadedMB} MB`)
+        }
+    } catch (err) {
+        logger?.warn?.(`[arc-plugin] 资源自动同步跳过（可稍后用 #${config.cmdhead}更新曲绘 手动拉取）：${err?.message || err}`)
+    }
+})()
+
 export { apps }
 export { renderB30, shutdownRenderers, RENDER_DEFAULTS }

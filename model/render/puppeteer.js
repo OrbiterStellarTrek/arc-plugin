@@ -6,8 +6,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /** 插件根目录 */
 export const pluginRoot = path.resolve(__dirname, '..', '..')
-/** 模板目录 */
-export const templateRoot = path.join(pluginRoot, 'resources', 'arcb30')
+/** 资源根目录：渲染文档写在这里，模板相对路径（html/ assets/ original_ill/）都以此为基准 */
+export const resourcesRoot = path.join(pluginRoot, 'resources')
 
 /** 惰性加载 puppeteer，避免未安装时直接崩溃 */
 let puppeteerModule = null

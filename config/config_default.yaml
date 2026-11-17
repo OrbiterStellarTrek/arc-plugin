@@ -27,3 +27,18 @@ b50:
   scale: 3           # 1=1000x1034, 3=3000x3102
   type: "webp"       # webp | png | jpeg
   quality: 95
+
+# 曲绘 / 立绘等资源在线更新（QentimArt 静态源，增量同步到 resources/；拉 original_ill 与 assets）
+assets:
+  # 资源站地址（QentimArt 静态发布树；会自动去掉末尾的 /index.json 与斜杠）
+  # 注意：务必用 https，官方站点会把 http 301 跳到 https，而底层 SDK 不跟随跳转
+  base_url: "https://arcaea-resources.phira.link"
+  # 下载并发连接数（过高可能触发 CDN 限流返回 503，默认 8 较稳）
+  concurrency: 8
+  # 本地改动处理策略：
+  #   keep      保留本地已改动/多出来的文件（默认，适合本地替换过个别素材）
+  #   overwrite 以服务端为准，并删除本地多余文件
+  #   fail      有冲突则报错且不写入任何文件
+  local_changes: "keep"
+  # 单次 HTTP 请求超时（毫秒）
+  timeout_ms: 60000

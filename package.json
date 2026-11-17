@@ -11,8 +11,8 @@
     "assets:copy": "node tools/copy-assets.js"
   },
   "peerDependencies": {
-    "puppeteer": "^24.16.2",
-    "@pixel.js/shotium": "^0.12.2"
+    "@pixel.js/shotium": "^0.12.2",
+    "puppeteer": "^24.16.2"
   },
   "peerDependenciesMeta": {
     "puppeteer": {
@@ -26,5 +26,8 @@
     "Yunzai-Bot",
     "Arcaea"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@qentimart/sdk": "^0.1.3"
+  }
 }

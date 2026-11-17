@@ -3,7 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const SONGLIST = path.resolve(__dirname, '..', '..', 'resources', 'arcb30', 'songlist.json')
+const SONGLIST = path.resolve(__dirname, '..', '..', 'resources', 'info', 'songlist.json')
 
 /**
  * 曲名表（由 tools/copy-assets.js 从官方 songs/songlist 生成）。
@@ -14,6 +14,10 @@ const SONGLIST = path.resolve(__dirname, '..', '..', 'resources', 'arcb30', 'son
  * 后者用于 BYD 等难度单独改名的曲目（如 axiumcrisis 的 BYD 为 Axium Divergence）。
  */
 let cache = null
+/** 清空曲名表缓存（在线更新 songlist.json 后调用，使新曲名免重启生效） */
+export function resetSonglistCache() {
+    cache = null
+}
 function load() {
     if (cache) return cache
     const titles = new Map()

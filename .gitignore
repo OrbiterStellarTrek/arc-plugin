@@ -1,4 +1,10 @@
 tools/out/
-resources/arcb30/.render-*.html
+resources/.render-*.html
+resources/.qentimart/
+# 曲绘与立绘/字体/界面图由 QentimArt 远端同步，不入库（仅 html 模板与 info 曲名表随仓库发布）
+resources/original_ill/
+resources/assets/
 config/config.yaml
+node_modules/
 *.log
+node_modules/

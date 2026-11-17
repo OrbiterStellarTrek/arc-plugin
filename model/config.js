@@ -67,6 +67,7 @@ class ArcConfig {
     get cmdhead() { return this.all.cmdhead || 'a' }
     get poll() { return this.all.poll || {} }
     get b50() { return this.all.b50 || {} }
+    get assets() { return this.all.assets || {} }
 
     /** 清掉缓存，下次访问重新读取（改配置后用） */
     reload() { this.#cache = null }

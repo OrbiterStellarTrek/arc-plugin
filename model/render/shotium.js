@@ -9,7 +9,7 @@ import { createDocument } from './static.js'
  * 没有 JS 引擎和浏览器外壳，单张图通常比 Puppeteer 快 3~5 倍，也没有进程泄漏风险。
  *
  * 代价：不执行 JS，所以数据必须在 Node 侧拼进 HTML —— 这里直接把
- * resources/arcb30/view.js 生成的静态文档写到模板目录下再截图。
+ * resources/html/view.js 生成的静态文档写到 resources/ 根目录下再截图。
  */
 
 let sdkPromise = null

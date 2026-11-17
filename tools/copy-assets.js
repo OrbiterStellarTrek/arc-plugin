@@ -1,5 +1,6 @@
 /**
- * 从 arcinf 素材包同步渲染资源到 resources/arcb30。
+ * 从 arcinf 素材包同步渲染资源到 resources/（曲绘入 original_ill/，曲名表入 info/，
+ * 立绘/字体/界面图入 assets/）。
  *
  *   node tools/copy-assets.js E:\存档\arcinf\assets
  *
@@ -12,7 +13,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const RES = path.resolve(__dirname, '..', 'resources', 'arcb30')
+const RES = path.resolve(__dirname, '..', 'resources')
 const SRC = process.argv[2] || 'E:\\存档\\arcinf\\assets'
 
 function ensure(dir) {
@@ -41,39 +42,39 @@ function copyDir(src, dest, filter) {
 const report = {}
 
 // 字体：标题/正文 GeosansLight，分数 Exo Medium
-ensure(path.join(RES, 'fonts'))
+ensure(path.join(RES, 'assets', 'fonts'))
 report.fonts = [
     ['Fonts/GeosansLight.ttf'],
     ['Fonts/Exo-Medium.ttf'],
-].filter(([f]) => copyIfAbsent(path.join(SRC, f), path.join(RES, 'fonts', path.basename(f)))).length
+].filter(([f]) => copyIfAbsent(path.join(SRC, f), path.join(RES, 'assets', 'fonts', path.basename(f)))).length
 
 // 界面图：背景、lowiro、PTT 星级底图
-ensure(path.join(RES, 'img'))
+ensure(path.join(RES, 'assets', 'img'))
 report.img = 0
 const uiMap = [
     ['startup/1080/bg_konzetsu.jpg', 'bg.jpg'],
     ['startup/lowiro_white.png', 'lowiro_white.png'],
 ]
 for (const [from, to] of uiMap) {
-    if (copyIfAbsent(path.join(SRC, from), path.join(RES, 'img', to))) report.img++
+    if (copyIfAbsent(path.join(SRC, from), path.join(RES, 'assets', 'img', to))) report.img++
 }
 for (let i = 0; i <= 7; i++) {
-    if (copyIfAbsent(path.join(SRC, `img/rating_${i}.png`), path.join(RES, 'img', `rating_${i}.png`))) report.img++
+    if (copyIfAbsent(path.join(SRC, `img/rating_${i}.png`), path.join(RES, 'assets', 'img', `rating_${i}.png`))) report.img++
 }
-if (copyIfAbsent(path.join(SRC, 'img/rating_off.png'), path.join(RES, 'img', 'rating_off.png'))) report.img++
+if (copyIfAbsent(path.join(SRC, 'img/rating_off.png'), path.join(RES, 'assets', 'img', 'rating_off.png'))) report.img++
 
 // 角色：char/1080/<id>.png 全身立绘 + char/<id>_icon.png 头像
-report.char = copyDir(path.join(SRC, 'char', '1080'), path.join(RES, 'char'), (n) => n.endsWith('.png'))
-report.icon = copyDir(path.join(SRC, 'char'), path.join(RES, 'char'), (n) => n.endsWith('_icon.png'))
+report.char = copyDir(path.join(SRC, 'char', '1080'), path.join(RES, 'assets', 'char'), (n) => n.endsWith('.png'))
+report.icon = copyDir(path.join(SRC, 'char'), path.join(RES, 'assets', 'char'), (n) => n.endsWith('_icon.png'))
 
-// 曲绘：songs/<id>/1080_base_256.jpg，退化为 base_256.jpg（256 版本足够 56px 卡片用）
-ensure(path.join(RES, 'jacket'))
+// 曲绘：songs/<id>/1080_base_256.jpg，退化为 base_256.jpg → original_ill/<id>.jpg（256 版本足够 56px 卡片用）
+ensure(path.join(RES, 'original_ill'))
 report.jacket = 0
 const songs = path.join(SRC, 'songs')
 if (fs.existsSync(songs)) {
     for (const d of fs.readdirSync(songs, { withFileTypes: true })) {
         if (!d.isDirectory()) continue
-        const dst = path.join(RES, 'jacket', d.name + '.jpg')
+        const dst = path.join(RES, 'original_ill', d.name + '.jpg')
         if (fs.existsSync(dst) || fs.existsSync(dst.replace(/\.jpg$/, '.webp'))) continue
         const candidates = ['1080_base_256.jpg', 'base_256.jpg']
         for (const c of candidates) {
@@ -102,9 +103,9 @@ if (fs.existsSync(songlistFile)) {
             const t = titleOf(d.title_localized)
             if (t && t !== title) diffTitles[d.ratingClass] = t
 
-            // 难度专属曲绘：songs/<id>/1080_<难度>_256.jpg，退化为 <难度>_256.jpg → jacket/<id>_<难度>.jpg
+            // 难度专属曲绘：songs/<id>/1080_<难度>_256.jpg，退化为 <难度>_256.jpg → original_ill/<id>_<难度>.jpg
             if (!d.jacketOverride) continue
-            const dst = path.join(RES, 'jacket', `${song.id}_${d.ratingClass}.jpg`)
+            const dst = path.join(RES, 'original_ill', `${song.id}_${d.ratingClass}.jpg`)
             if (fs.existsSync(dst) || fs.existsSync(dst.replace(/\.jpg$/, '.webp'))) continue
             for (const c of [`1080_${d.ratingClass}_256.jpg`, `${d.ratingClass}_256.jpg`]) {
                 const from = path.join(songs, song.id, c)
@@ -118,7 +119,8 @@ if (fs.existsSync(songlistFile)) {
         out[song.id] = Object.keys(diffTitles).length ? { title, difficulties: diffTitles } : title
     }
     // 曲名表完全由官方数据生成，每次覆盖
-    fs.writeFileSync(path.join(RES, 'songlist.json'), JSON.stringify(out, null, 2) + '\n')
+    ensure(path.join(RES, 'info'))
+    fs.writeFileSync(path.join(RES, 'info', 'songlist.json'), JSON.stringify(out, null, 2) + '\n')
     report.songlist = Object.keys(out).length
 }
 

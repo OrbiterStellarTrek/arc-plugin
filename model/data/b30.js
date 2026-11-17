@@ -4,8 +4,9 @@ import { fileURLToPath } from 'node:url'
 import { songTitle } from './songlist.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const RESOURCE_ROOT = path.resolve(__dirname, '..', '..', 'resources', 'arcb30')
-const JACKET_DIR = path.join(RESOURCE_ROOT, 'jacket')
+const RESOURCES_ROOT = path.resolve(__dirname, '..', '..', 'resources')
+// 曲绘单独放 original_ill/（由 qentimart 拉取）；立绘/界面图在 assets/，模板样式在 html/
+const JACKET_DIR = path.join(RESOURCES_ROOT, 'original_ill')
 
 /** 0 基难度索引 → 名称（接口 difficulty 0=PST 1=PRS 2=FTR 3=BYD 4=ETR） */
 const DIFF_NAMES = ['PST', 'PRS', 'FTR', 'BYD', 'ETR']
@@ -51,28 +52,32 @@ function charKey(raw) {
     return String(char.character) + (char.is_char_uncapped ? 'u' : '')
 }
 
-/** 依次尝试 .webp / .png，存在即返回相对路径 */
+/** 依次尝试 .webp / .png，存在即返回相对路径（相对 resources/，渲染文档也写在那里） */
 function resourceWithExt(base) {
     for (const ext of ['.webp', '.png']) {
         try {
-            if (fs.existsSync(path.join(RESOURCE_ROOT, base + ext))) return base + ext
+            if (fs.existsSync(path.join(RESOURCES_ROOT, base + ext))) return base + ext
         } catch { /* 忽略 */ }
     }
     return ''
 }
 
 function charaPath(raw) {
-    return resourceWithExt('char/' + charKey(raw)) || resourceWithExt('char/81u') || 'char/81u.webp'
+    return resourceWithExt('assets/char/' + charKey(raw)) || resourceWithExt('assets/char/81u') || 'assets/char/81u.webp'
 }
 
 function avatarPath(raw) {
-    return resourceWithExt('char/' + charKey(raw) + '_icon') || resourceWithExt('char/81u_icon') || 'char/81u_icon.webp'
+    return resourceWithExt('assets/char/' + charKey(raw) + '_icon') || resourceWithExt('assets/char/81u_icon') || 'assets/char/81u_icon.webp'
 }
 
 let jacketCache = null
+/** 清空曲绘文件名索引（在线更新曲绘后调用，使新曲绘免重启生效） */
+export function resetJacketCache() {
+    jacketCache = null
+}
 /**
- * 曲绘文件名索引：<song_id>[_<ratingClass>] -> jacket/<name>.webp|.jpg
- * 部分难度有专属曲绘（官方 songlist 的 jacketOverride），存为 jacket/<id>_<难度>.*，优先使用。
+ * 曲绘文件名索引：<song_id>[_<ratingClass>] -> original_ill/<name>.webp|.jpg
+ * 部分难度有专属曲绘（官方 songlist 的 jacketOverride），存为 original_ill/<id>_<难度>.*，优先使用。
  */
 function jacketFile(songId, difficulty) {
     if (!jacketCache) {
@@ -81,7 +86,7 @@ function jacketFile(songId, difficulty) {
             for (const f of fs.readdirSync(JACKET_DIR)) {
                 const id = f.replace(/\.(webp|jpg|jpeg|png)$/i, '')
                 // .webp 优先（体积更小），其次保留旧格式兼容
-                if (!jacketCache.has(id) || /\.webp$/i.test(f)) jacketCache.set(id, 'jacket/' + f)
+                if (!jacketCache.has(id) || /\.webp$/i.test(f)) jacketCache.set(id, 'original_ill/' + f)
             }
         } catch { /* 目录不存在时按无曲绘处理 */ }
     }
