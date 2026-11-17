@@ -30,6 +30,7 @@ export class arcHelp extends plugin {
             `/${c}b50 last            查看上次 B50（秒回，不重新查询）`,
             `/${c}b50cd               查看 B50 查询冷却剩余时间`,
             `/${c}查歌 <曲> <难度>    查询单曲（难度 PST/PRS/FTR/BYD/ETR 或 0-4）`,
+            `/${c}calc <分数> <定数>  计算单曲潜力值（分数支持 971w 写法）`,
             `/${c}状态                查分服务状态`,
         ].join('\n'))
         return true
