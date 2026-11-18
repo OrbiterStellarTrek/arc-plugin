@@ -38,7 +38,7 @@ export class arcSong extends plugin {
     constructor() {
         super({
             name: 'arc-单曲',
-            dsc: 'Arcaea 单曲查询（服务器出图）',
+            dsc: 'Arcaea 单曲查询',
             event: 'message',
             priority: 1000,
             rule: [

@@ -62,7 +62,7 @@ export function friendlyError(err, { what = '查询' } = {}) {
         case 'job_not_found':
             return '任务已失效（可能服务重启），请重新查询'
         case 'result_consumed':
-            return '该结果已被读取，请重新查询或查看最近一次记录'
+            return '该结果已被使用，请重新查询或查看最近一次记录'
         case 'B50_CACHE_NOT_FOUND':
             return '还没有可用的 B50 记录，请先 #ab50 查询一次'
         case 'SONG_CACHE_NOT_FOUND':

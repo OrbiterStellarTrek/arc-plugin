@@ -11,7 +11,7 @@ export class arcB50 extends plugin {
     constructor() {
         super({
             name: 'arc-b50',
-            dsc: 'Arcaea B50 查询（本地渲染）',
+            dsc: 'Arcaea B50 查询',
             event: 'message',
             priority: 1000,
             rule: [
@@ -33,7 +33,7 @@ export class arcB50 extends plugin {
             } else {
                 if (submit.status === 'queued' && submit.queue_position) {
                     await e.reply(
-                        `正在排队查询 B50（第 ${submit.queue_position} 位），请稍候…`,
+                        `正排队查询 B50（第${submit.queue_position}位），请稍候…`,
                         true,
                     )
                 } else {
@@ -79,7 +79,7 @@ export class arcB50 extends plugin {
             const cd = await api.getB50Cooldown(userId, botId)
             const s = Number(cd.retry_after_seconds) || 0
             if (cd.can_query || s <= 0) {
-                return e.reply('B50 现在可以查询，发送 #ab50 即可', true)
+                return e.reply(`B50 现在可以查询，发送 #${config.cmdhead}b50 即可`, true)
             }
             const left = s < 60 ? `${s} 秒` : `${Math.floor(s / 60)} 分 ${s % 60} 秒`
             const at = cd.available_at ? `，约 ${formatTime(cd.available_at)} 恢复` : ''

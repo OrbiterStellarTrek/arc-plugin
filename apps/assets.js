@@ -28,8 +28,16 @@ export class arcAssets extends plugin {
                 'Arcaea 资源版本',
                 `本地：${v.local || '未同步'}`,
                 `最新：${v.latest}`,
-                v.upToDate ? '已是最新 ✓' : `有更新可用，发送 /${config.cmdhead}更新曲绘 同步`,
             ]
+            if (e.isMaster) {
+                lines.push(
+                    v.upToDate ? '已是最新 ✓' : `有更新可用，发送 /${config.cmdhead}更新曲绘 同步`
+                )
+            } else {
+                lines.push(
+                    v.upToDate ? '已是最新 ✓' : `有更新可用，请让主人更新喵`
+                )
+            }
             if (!v.clean && v.local) lines.push('（检测到本地有改动，更新时将按配置的策略处理）')
             await e.reply(lines.join('\n'), true)
         } catch (err) {
@@ -78,8 +86,8 @@ export class arcAssets extends plugin {
             if (err instanceof SyncConflictError) {
                 const n = Array.isArray(err.conflicts) ? err.conflicts.length : 0
                 await e.reply(
-                    `检测到 ${n || '若干'} 处本地改动，已按「fail」策略中止、未改动任何文件。\n` +
-                    `如需以服务端为准覆盖，请发送 /${config.cmdhead}强制更新曲绘`,
+                    `检测到 ${n || '若干'} 处本地改动，已按「fail」策略中止、未改动任何文件\n` +
+                    `若要覆盖更新，请发送 /${config.cmdhead}强制更新曲绘喵`,
                     true,
                 )
             } else {

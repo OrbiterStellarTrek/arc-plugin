@@ -41,8 +41,44 @@ class ArcConfig {
         try {
             if (!fs.existsSync(USER_FILE) && fs.existsSync(DEFAULT_FILE)) {
                 fs.copyFileSync(DEFAULT_FILE, USER_FILE)
+                return
             }
-        } catch { /* 复制失败不阻塞，仍可读默认 */ }
+            // 用户文件已存在时，把默认里新增的键回填进去（只增不改）
+            this.#syncDefaults()
+        } catch { /* 失败不阻塞，运行时仍按 default+user 合并读取 */ }
+    }
+
+    /**
+     * 回填默认配置里用户文件缺失的键：保留用户已有的值、注释和多余键，
+     * 仅补入 config_default.yaml 新增的键（连同其注释），有改动才写回磁盘。
+     */
+    #syncDefaults() {
+        if (!fs.existsSync(USER_FILE) || !fs.existsSync(DEFAULT_FILE)) return
+        const defDoc = YAML.parseDocument(fs.readFileSync(DEFAULT_FILE, 'utf8'))
+        const userDoc = YAML.parseDocument(fs.readFileSync(USER_FILE, 'utf8'))
+        if (defDoc.errors?.length || userDoc.errors?.length) return
+        if (!YAML.isMap(defDoc.contents) || !YAML.isMap(userDoc.contents)) return
+
+        let changed = false
+        const backfill = (defMap, userMap) => {
+            for (const pair of defMap.items) {
+                const key = pair.key.value
+                if (!userMap.has(key)) {
+                    userMap.items.push(pair.clone()) // 整键克隆，保留值与注释
+                    changed = true
+                } else {
+                    const dv = pair.value
+                    const uv = userMap.get(key, true)
+                    if (YAML.isMap(dv) && YAML.isMap(uv)) backfill(dv, uv) // 子对象递归补齐
+                }
+            }
+        }
+        backfill(defDoc.contents, userDoc.contents)
+
+        if (changed) {
+            fs.writeFileSync(USER_FILE, userDoc.toString(), 'utf8')
+            logger?.mark?.('[arc-plugin] 已将新增默认配置回填到 config/config.yaml')
+        }
     }
 
     /** 读取并合并配置（带内存缓存） */

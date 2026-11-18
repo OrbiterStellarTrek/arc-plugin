@@ -26,12 +26,12 @@ export class arcBind extends plugin {
         const m = e.msg.match(/(?:绑定|bind)\s*((?:[0-9]\s*){9})/i)
         const friendCode = m ? m[1].replace(/\D/g, '') : ''
         if (!/^[0-9]{9}$/.test(friendCode)) {
-            return e.reply(`好友码格式错误，应为 9 位数字，如 /${config.cmdhead} bind 114514191 或 /${config.cmdhead} bind 114 514 191`, true)
+            return e.reply(`好友码格式错误，应为 9 位数字，如 /${config.cmdhead} bind 114 514 191`, true)
         }
         try {
             const { binding } = await api.putBinding(userId, friendCode, botId)
             await e.reply(
-                `绑定成功：好友码 ${binding.friend_code}${binding.verified ? '（已验证）' : ''}\n现在可以 /${config.cmdhead} b50 查询了`,
+                `绑定成功：好友码 ${binding.friend_code}${binding.verified ? '（已验证）' : ''}\n现在可以使用 /${config.cmdhead} b50 查询了`,
                 true,
             )
         } catch (err) {
