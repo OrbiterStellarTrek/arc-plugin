@@ -3,8 +3,9 @@ import api from '../model/api/client.js'
 import config from '../model/config.js'
 import { friendlyError, escapeRegExp } from '../model/util.js'
 
-const H = escapeRegExp(config.cmdhead)
-const c = config.cmdhead
+// 指令头：包成函数，每次调用实时读取配置，改 cmdhead 免重启（配合配置监听）
+const H = () => escapeRegExp(config.cmdhead)
+const c = () => config.cmdhead
 
 export class arcHelp extends plugin {
     constructor() {
@@ -14,8 +15,8 @@ export class arcHelp extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
-                { reg: `^[#/]${H}\\s*(帮助|help|菜单)\\s*$`, fnc: 'help' },
-                { reg: `^[#/]${H}\\s*(状态|status)\\s*$`, fnc: 'status' },
+                { reg: `^[#/]${H()}\\s*(帮助|help|菜单)\\s*$`, fnc: 'help' },
+                { reg: `^[#/]${H()}\\s*(状态|status)\\s*$`, fnc: 'status' },
             ],
         })
     }
@@ -23,20 +24,20 @@ export class arcHelp extends plugin {
     async help(e) {
         msg = [
             'Arcaea 查分帮助',
-            `/${c} bind <9位好友码>    绑定账号`,
-            `/${c} mybind              查看当前绑定`,
-            `/${c} unbind              解除绑定`,
-            `/${c} b50                 查询 B50 成绩单`,
-            `/${c} b50 last            查看上次 B50`,
-            `/${c} b50cd               查看 B50 查询冷却剩余时间`,
-            `/${c} song <曲> <难度>    查询单曲`,
-            `/${c} calc <分数> <定数>  计算单曲潜力值`,
-            `/${c} status              查分服务状态`,
+            `/${c()} bind <9位好友码>    绑定账号`,
+            `/${c()} mybind              查看当前绑定`,
+            `/${c()} unbind              解除绑定`,
+            `/${c()} b50                 查询 B50 成绩单`,
+            `/${c()} b50 last            查看上次 B50`,
+            `/${c()} b50cd               查看 B50 查询冷却剩余时间`,
+            `/${c()} song <曲> <难度>    查询单曲`,
+            `/${c()} calc <分数> <定数>  计算单曲潜力值`,
+            `/${c()} status              查分服务状态`,
         ]
         if (e.isMaster) {
             msg.push(
-                `/${c} assets              查看资源版本（本地 / 最新）`,
-                `/${c} update              在线增量更新曲绘等资源（主人）`
+                `/${c()} assets              查看资源版本（本地 / 最新）`,
+                `/${c()} update              在线增量更新曲绘等资源（主人）`
             )
         }
         await e.reply(msg.join('\n'))

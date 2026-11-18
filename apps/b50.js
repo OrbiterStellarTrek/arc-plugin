@@ -5,7 +5,8 @@ import { renderB30 } from '../model/render/arcb30.js'
 import { b50ResultToRaw } from '../model/data/mapResult.js'
 import { pickTarget, friendlyError, formatTime, escapeRegExp } from '../model/util.js'
 
-const H = escapeRegExp(config.cmdhead)
+// 指令头：包成函数，每次调用实时读取配置，改 cmdhead 免重启（配合配置监听）
+const H = () => escapeRegExp(config.cmdhead)
 
 export class arcB50 extends plugin {
     constructor() {
@@ -15,8 +16,8 @@ export class arcB50 extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
-                { reg: `^[#/]${H}\\s*(?:b50cd|冷却|cd)\\s*$`, fnc: 'cooldown' },
-                { reg: `^[#/]${H}\\s*(?:b50|B50|查分|bests)\\s*(?:last|上次|历史)?\\s*$`, fnc: 'b50' },
+                { reg: `^[#/]${H()}\\s*(?:b50cd|冷却|cd)\\s*$`, fnc: 'cooldown' },
+                { reg: `^[#/]${H()}\\s*(?:b50|B50|查分|bests)\\s*(?:last|上次|历史)?\\s*$`, fnc: 'b50' },
             ],
         })
     }

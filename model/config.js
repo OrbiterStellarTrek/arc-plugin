@@ -33,8 +33,57 @@ function merge(base, override) {
  * 轻量配置组件：加载 config_default.yaml 并合并用户 config.yaml。
  * 首次运行自动把默认配置复制为用户配置，方便直接编辑。
  */
+// 监听器挂在 globalThis 的 Symbol 上做全局单例：云崽热重载会反复 import 本模块、
+// new 出新的 ArcConfig，若每次都 fs.watch 旧句柄不关闭，会不断累积直至触碰
+// Node/OS 的 inotify/句柄上限。参考 phi-plugin 的做法——全局只保留一个 watcher，
+// 重载后只替换回调（onChange），指向最新的 config 实例。
+const WATCHER_KEY = Symbol.for('arc-plugin.configWatcher')
+
 class ArcConfig {
     #cache = null
+
+    /**
+     * 按 watch_config 开关管理「全局唯一」的配置目录监听。
+     * - 开启且尚无监听：新建一个 fs.watch（unref，不阻塞退出），改动防抖后 reload。
+     * - 开启且已有监听：复用句柄，只把回调换成当前实例的 reload（避免热重载累积 watcher）。
+     * - 关闭：若存在旧监听则关闭释放。
+     * 指令头 cmdhead 的命令正则在加载时固定，任何方式改动都需重启。
+     */
+    #syncWatch() {
+        const enabled = this.#cache?.watch_config !== false // 默认开启
+        const store = globalThis[WATCHER_KEY]
+
+        if (!enabled) {
+            if (store) {
+                clearTimeout(store.timer)
+                try { store.watcher?.close() } catch { /* 忽略关闭异常 */ }
+                globalThis[WATCHER_KEY] = undefined
+            }
+            return
+        }
+
+        // 已有同目录监听：仅更新回调，复用句柄
+        if (store?.watcher && store.dir === CONFIG_DIR) {
+            store.onChange = () => this.reload()
+            return
+        }
+
+        try {
+            const entry = { watcher: null, timer: null, dir: CONFIG_DIR, onChange: () => this.reload() }
+            entry.watcher = fs.watch(CONFIG_DIR, (_event, filename) => {
+                if (filename && filename !== 'config.yaml' && filename !== 'config_default.yaml') return
+                clearTimeout(entry.timer)
+                entry.timer = setTimeout(() => {
+                    entry.onChange()
+                    logger?.mark?.('[arc-plugin] 检测到配置文件变更，已重新加载')
+                }, 200) // 防抖：编辑器保存常触发多次事件
+                entry.timer.unref?.()
+            })
+            entry.watcher.on('error', () => { /* 监听出错不影响正常读取 */ })
+            entry.watcher.unref?.()
+            globalThis[WATCHER_KEY] = entry
+        } catch { /* 平台不支持 fs.watch 时静默跳过，仍可用面板保存或重启生效 */ }
+    }
 
     /** 确保用户配置存在；缺失时从默认复制 */
     #ensureUserFile() {
@@ -86,6 +135,7 @@ class ArcConfig {
         if (this.#cache) return this.#cache
         this.#ensureUserFile()
         this.#cache = merge(readYaml(DEFAULT_FILE), readYaml(USER_FILE))
+        this.#syncWatch() // 需在 cache 就绪后，才能按 watch_config 决定是否监听
         return this.#cache
     }
 

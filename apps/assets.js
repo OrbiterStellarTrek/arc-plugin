@@ -3,7 +3,8 @@ import config from '../model/config.js'
 import { escapeRegExp } from '../model/util.js'
 import { checkVersion, updateAssets, SyncConflictError } from '../model/assets.js'
 
-const H = escapeRegExp(config.cmdhead)
+// 指令头：包成函数，每次调用实时读取配置，改 cmdhead 免重启（配合配置监听）
+const H = () => escapeRegExp(config.cmdhead)
 
 export class arcAssets extends plugin {
     constructor() {
@@ -13,9 +14,9 @@ export class arcAssets extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
-                { reg: `^[#/]${H}\\s*(?:曲绘|资源)?\\s*(?:版本|version)\\s*$`, fnc: 'version' },
-                { reg: `^[#/]${H}\\s*(?:更新|update)\\s*(?:曲绘|资源|assets)?\\s*(强制|force)?\\s*$`, fnc: 'update' },
-                { reg: `^[#/]${H}\\s*强制更新\\s*(?:曲绘|资源|assets)?\\s*$`, fnc: 'forceUpdate' },
+                { reg: `^[#/]${H()}\\s*(?:曲绘|资源)?\\s*(?:版本|version)\\s*$`, fnc: 'version' },
+                { reg: `^[#/]${H()}\\s*(?:更新|update)\\s*(?:曲绘|资源|assets)?\\s*(强制|force)?\\s*$`, fnc: 'update' },
+                { reg: `^[#/]${H()}\\s*强制更新\\s*(?:曲绘|资源|assets)?\\s*$`, fnc: 'forceUpdate' },
             ],
         })
     }

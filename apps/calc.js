@@ -2,8 +2,9 @@ import plugin from '../../../lib/plugins/plugin.js'
 import config from '../model/config.js'
 import { escapeRegExp } from '../model/util.js'
 
-const H = escapeRegExp(config.cmdhead)
-const c = config.cmdhead
+// 指令头：包成函数，每次调用实时读取配置，改 cmdhead 免重启（配合配置监听）
+const H = () => escapeRegExp(config.cmdhead)
+const c = () => config.cmdhead
 
 // 分数上限（任何 ≥ 1000 万的分数都按 PM 处理）
 const SCORE_MAX = 10002228
@@ -45,18 +46,18 @@ export class arcCalc extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
-                { reg: `^[#/]${H}\\s*(?:com|calc)\\s+(.+)$`, fnc: 'calc' },
+                { reg: `^[#/]${H()}\\s*(?:com|calc)\\s+(.+)$`, fnc: 'calc' },
             ],
         })
     }
 
     async calc(e) {
-        const m = e.msg.match(new RegExp(`^[#/]${H}\\s*(?:com|calc)\\s+(.+)$`, 'i'))
+        const m = e.msg.match(new RegExp(`^[#/]${H()}\\s*(?:com|calc)\\s+(.+)$`, 'i'))
         const argStr = (m?.[1] || '').trim()
         const args = argStr.split(/\s+/)
         if (args.length < 2) {
             return e.reply(
-                `用法：/${c}calc <分数> <定数>（顺序可互换）\n分数支持 971w / 971万 / 9710000 写法，如 /${c}calc 971w 11.3`,
+                `用法：/${c()}calc <分数> <定数>（顺序可互换）\n分数支持 971w / 971万 / 9710000 写法，如 /${c()}calc 971w 11.3`,
                 true,
             )
         }

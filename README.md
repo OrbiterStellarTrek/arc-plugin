@@ -1,12 +1,11 @@
-# arc-plugin
-
-[![version](https://img.shields.io/badge/version-0.2.0-blue)](package.json)
-[![Yunzai](https://img.shields.io/badge/Yunzai--Bot-plugin-ff69b4)](https://github.com/yoimiya-kokomi/Yunzai-Bot)
-[![license](https://img.shields.io/badge/license-MIT-green)](package.json)
-
-> 适用于云崽（Yunzai-Bot）的 Arcaea 查分插件 —— 绑定好友码，查询B50、单曲成绩
-
-![预览](docs/preview.jpg)
+<center>
+  <img src="./resources/arc.png" alt="Arcaea" width="120" align="left">
+  <h1>Arc-plugin</h1>
+  <a href="package.json"><img src="https://img.shields.io/badge/version-0.2.0-blue" alt="version"></a>
+  <a href="https://github.com/yoimiya-kokomi/Yunzai-Bot"><img src="https://img.shields.io/badge/Yunzai--Bot-plugin-ff69b4" alt="Yunzai-Bot"></a>
+  <a href="package.json"><img src="https://img.shields.io/badge/License-GPL3.0-green" alt="license"></a>
+  <p>适用于 Yunzai 的 Arcaea 查分插件 —— 绑定好友码，查询B50、单曲成绩</p>
+</center>
 
 ## ✨ 功能
 
@@ -14,6 +13,8 @@
 - **单曲查询**：支持曲名或 `song_id`，可指定难度。
 - **冷却与兜底**：B50 冷却中或查询较慢时，自动先渲染上一次的数据。
 - **在线资源同步**：曲绘、立绘等大件资源由 QentimArt 远端增量同步（首次启动自动拉取，`#a更新曲绘` 手动更新）；模板与曲名表随仓库发布。
+
+![预览](docs/preview.jpg)
 
 ## 📦 安装
 

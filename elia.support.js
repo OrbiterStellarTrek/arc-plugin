@@ -40,6 +40,7 @@ const localChangesValues = localChangesOptions.map(o => o.value)
 // 默认值：同时决定表单初始值的类型
 const defaultConfig = {
     cmdhead: 'a',
+    watch_config: true,
     server: {
         base_url: 'http://127.0.0.1:8080',
         api_key: '',
@@ -86,6 +87,7 @@ function normalizeConfig(value) {
     const assets = isRecord(saved.assets) ? saved.assets : {}
     return {
         cmdhead: pickString(saved.cmdhead, defaultConfig.cmdhead),
+        watch_config: typeof saved.watch_config === 'boolean' ? saved.watch_config : defaultConfig.watch_config,
         server: {
             base_url: pickString(server.base_url, defaultConfig.server.base_url),
             api_key: pickString(server.api_key, defaultConfig.server.api_key),
@@ -118,6 +120,7 @@ function validateConfig(data) {
     if (typeof cmdhead !== 'string' || !/^[0-9a-zA-Z一-龥]{1,16}$/.test(cmdhead)) {
         return '指令头必须是 1 到 16 位的字母、数字或汉字'
     }
+    if (typeof data.watch_config !== 'boolean') return '配置文件监听开关无效'
 
     const server = data.server
     if (!isRecord(server)) return '后端服务配置必须是对象'
@@ -189,6 +192,7 @@ function writeUserConfig(next) {
     }
     const setIn = (segs, value) => doc.setIn(segs, value)
     setIn(['cmdhead'], next.cmdhead)
+    setIn(['watch_config'], next.watch_config)
     setIn(['server', 'base_url'], next.server.base_url)
     setIn(['server', 'api_key'], next.server.api_key)
     setIn(['server', 'timeout_ms'], next.server.timeout_ms)
@@ -216,15 +220,13 @@ export function supportPanel() {
     const pluginInfo = {
         name: 'arc-plugin',
         title: 'Arcaea 查分插件',
-        description: '绑定好友码，一键出 B50 成绩单与单曲成绩（对接 invtwd-server）',
-        author: 'OrbiterStellarTrek',
+        description: '绑定好友码，一键出 B50 成绩单与单曲成绩',
+        author: '空间站「星旅」',
         link: 'https://github.com/OrbiterStellarTrek/arc-plugin',
         icon: 'mdi:music-circle-outline',
         iconColor: '#485ab6',
+        iconPath: fileURLToPath(new URL("./resources/arc.png", import.meta.url)),
     }
-    // 预览图存在时作为插件列表 Logo
-    if (fs.existsSync(previewPath)) pluginInfo.iconPath = previewPath
-
     return {
         pluginInfo,
         configInfo: {
@@ -235,8 +237,14 @@ export function supportPanel() {
                     label: '指令头',
                     component: 'Input',
                     required: true,
-                    bottomHelpMessage: '匹配 ^[#/]<指令头>，默认 a，即 #ab50 / #a绑定。支持字母、数字或汉字，1~16 位。',
+                    bottomHelpMessage: '匹配 ^[#/]<指令头>，默认 a，即 #ab50 / #a绑定。支持字母、数字或汉字，1~16 位。修改后需重启 Bot 生效。',
                     componentProps: { placeholder: 'a' },
+                },
+                {
+                    field: 'watch_config',
+                    label: '监听配置文件变化',
+                    component: 'Switch',
+                    bottomHelpMessage: '开启后手动修改 config.yaml 会自动热重载，无需重启（全局仅建一个监听器）。',
                 },
                 {
                     field: 'server.base_url',
@@ -331,7 +339,7 @@ export function supportPanel() {
                 {
                     field: 'assets.local_changes',
                     label: '本地改动处理策略',
-                    component: 'RadioGroup',
+                    component: 'Select',
                     required: true,
                     componentProps: { options: localChangesOptions },
                 },
@@ -349,11 +357,12 @@ export function supportPanel() {
             },
 
             async setConfigData(data, { Result }) {
-                const next = normalizeConfig(data)
-                const error = validateConfig(next)
+                // 先校验原始提交数据：normalize 会把非法值回退成默认值，
+                // 若先 normalize 再校验等于跳过校验，故顺序不能颠倒。
+                const error = validateConfig(data)
                 if (error) return Result.error(error)
 
-                writeUserConfig(next)
+                writeUserConfig(normalizeConfig(data))
                 config.reload()
                 return Result.ok({}, '配置已保存并即时生效')
             },

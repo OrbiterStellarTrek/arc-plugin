@@ -5,7 +5,8 @@ import { pickTarget, parseDifficulty, diffName, friendlyError, escapeRegExp } fr
 import { songNames } from '../model/data/songlist.js'
 
 const SONG_ID_RE = /^[A-Za-z0-9_-]{1,128}$/
-const H = escapeRegExp(config.cmdhead)
+// 指令头：包成函数，每次调用实时读取配置，改 cmdhead 免重启（配合配置监听）
+const H = () => escapeRegExp(config.cmdhead)
 
 /**
  * 曲名（小写去空格）→ { id, difficulty } 反查表，来自 songlist.json。
@@ -42,14 +43,14 @@ export class arcSong extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
-                { reg: `^[#/]${H}\\s*(查歌|单曲|song)\\s+(.+)$`, fnc: 'song' },
+                { reg: `^[#/]${H()}\\s*(查歌|单曲|song)\\s+(.+)$`, fnc: 'song' },
             ],
         })
     }
 
     async song(e) {
         const { userId, botId } = pickTarget(e)
-        const m = e.msg.match(new RegExp(`^[#/]${H}\\s*(?:查歌|单曲|song)\\s+(.+)$`, 'i'))
+        const m = e.msg.match(new RegExp(`^[#/]${H()}\\s*(?:查歌|单曲|song)\\s+(.+)$`, 'i'))
         const argStr = (m?.[1] || '').trim()
         if (!argStr) return e.reply(`用法：/${config.cmdhead}查歌 <曲名或song_id> <难度>，如 /${config.cmdhead}查歌 deinosphainein FTR`, true)
 

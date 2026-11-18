@@ -3,7 +3,8 @@ import api from '../model/api/client.js'
 import config from '../model/config.js'
 import { pickTarget, friendlyError, escapeRegExp } from '../model/util.js'
 
-const H = escapeRegExp(config.cmdhead)
+// 指令头：包成函数，每次调用实时读取配置，改 cmdhead 免重启（配合配置监听）
+const H = () => escapeRegExp(config.cmdhead)
 
 export class arcBind extends plugin {
     constructor() {
@@ -13,9 +14,9 @@ export class arcBind extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
-                { reg: `^[#/]${H}\\s*(绑定|bind)\\s*((?:[0-9]\\s*){9})$`, fnc: 'bind' },
-                { reg: `^[#/]${H}\\s*(解绑|unbind)\\s*$`, fnc: 'unbind' },
-                { reg: `^[#/]${H}\\s*(我的绑定|查绑定|绑定查询|mybind)\\s*$`, fnc: 'query' },
+                { reg: `^[#/]${H()}\\s*(绑定|bind)\\s*((?:[0-9]\\s*){9})$`, fnc: 'bind' },
+                { reg: `^[#/]${H()}\\s*(解绑|unbind)\\s*$`, fnc: 'unbind' },
+                { reg: `^[#/]${H()}\\s*(我的绑定|查绑定|绑定查询|mybind)\\s*$`, fnc: 'query' },
             ],
         })
     }
