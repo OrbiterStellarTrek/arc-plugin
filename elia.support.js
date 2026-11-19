@@ -36,6 +36,12 @@ const localChangesOptions = [
     { label: '有冲突则报错（fail）', value: 'fail' },
 ]
 const localChangesValues = localChangesOptions.map(o => o.value)
+// 默认查分服下拉：value 为实际写入配置的值
+const serverIdOptions = [
+    { label: '国服', value: 'cn' },
+    { label: '国际服', value: 'global' },
+]
+const serverIdValues = serverIdOptions.map(o => o.value)
 
 // 默认值：同时决定表单初始值的类型
 const defaultConfig = {
@@ -44,6 +50,13 @@ const defaultConfig = {
     footer: {
         bot_name: '',
     },
+    // 国服 / 国际服双后端：两服 API 端点一致，仅需各自填写 base_url 与 api_key
+    servers: {
+        default: 'cn',
+        cn: { name: '国服', base_url: '', api_key: '' },
+        global: { name: '国际服', base_url: '', api_key: '' },
+    },
+    // 旧版单后端配置：默认服地址 / Key 的兜底来源；timeout_ms 对两服通用
     server: {
         base_url: 'http://127.0.0.1:8080',
         api_key: '',
@@ -111,7 +124,28 @@ function pickString(value, fallback) {
 function normalizeConfig(value) {
     const saved = isRecord(value) ? value : {}
     const footer = isRecord(saved.footer) ? saved.footer : {}
+    const servers = isRecord(saved.servers) ? saved.servers : {}
     const server = isRecord(saved.server) ? saved.server : {}
+
+    // 国服 / 国际服有效值：默认服回退旧版 server.*（老配置可平滑升级），其余服须显式填写
+    const defaultId = serverIdValues.includes(servers.default) ? servers.default : defaultConfig.servers.default
+    const serverEntry = (id) => {
+        const entry = isRecord(servers[id]) ? servers[id] : {}
+        let base_url = pickString(entry.base_url, '')
+        let api_key = pickString(entry.api_key, '')
+        if (!base_url && id === defaultId) {
+            base_url = pickString(server.base_url, '')
+            if (!api_key) api_key = pickString(server.api_key, '')
+        }
+        return {
+            name: pickString(entry.name, defaultConfig.servers[id].name),
+            base_url,
+            api_key,
+        }
+    }
+    const cnEntry = serverEntry('cn')
+    const globalEntry = serverEntry('global')
+    const defaultEntry = defaultId === 'cn' ? cnEntry : globalEntry
     const poll = isRecord(saved.poll) ? saved.poll : {}
     const b50 = isRecord(saved.b50) ? saved.b50 : {}
     const assets = isRecord(saved.assets) ? saved.assets : {}
@@ -121,9 +155,15 @@ function normalizeConfig(value) {
         footer: {
             bot_name: pickString(footer.bot_name, defaultConfig.footer.bot_name),
         },
+        servers: {
+            default: defaultId,
+            cn: cnEntry,
+            global: globalEntry,
+        },
+        // 旧版 server 块镜像默认服的有效值：保证手改配置时旧键兜底语义一致
         server: {
-            base_url: pickString(server.base_url, defaultConfig.server.base_url),
-            api_key: pickString(server.api_key, defaultConfig.server.api_key),
+            base_url: defaultEntry.base_url,
+            api_key: defaultEntry.api_key,
             timeout_ms: boundedInteger(server.timeout_ms, 1000, 120000, defaultConfig.server.timeout_ms),
         },
         poll: {
@@ -161,13 +201,32 @@ function validateConfig(data) {
         return '机器人名称必须是 64 字以内的字符串（留空则自动用机器人昵称）'
     }
 
-    const server = data.server
-    if (!isRecord(server)) return '后端服务配置必须是对象'
-    if (typeof server.base_url !== 'string' || !/^https?:\/\//i.test(server.base_url) || server.base_url.length > 2048) {
-        return '查分服务地址必须是 http(s):// 开头的 URL'
+    // 国服 / 国际服双后端：默认服地址回退旧版 server.* 后再校验；未配置的非默认服允许留空
+    const servers = isRecord(data.servers) ? data.servers : {}
+    const defaultId = servers.default === undefined ? 'cn' : servers.default
+    if (!serverIdValues.includes(defaultId)) return '默认查分服选择无效'
+    const legacyServer = isRecord(data.server) ? data.server : {}
+    for (const id of serverIdValues) {
+        const entry = isRecord(servers[id]) ? servers[id] : {}
+        if (entry.name !== undefined && (typeof entry.name !== 'string' || !entry.name.trim() || entry.name.length > 16)) {
+            return `${defaultConfig.servers[id].name} 备注名必须是 1 到 16 字的字符串`
+        }
+        const label = typeof entry.name === 'string' && entry.name.trim() ? entry.name.trim() : defaultConfig.servers[id].name
+        let base_url = pickString(entry.base_url, '')
+        let api_key = pickString(entry.api_key, '')
+        if (!base_url && id === defaultId) {
+            base_url = pickString(legacyServer.base_url, '')
+            if (!api_key) api_key = pickString(legacyServer.api_key, '')
+        }
+        if (!base_url) {
+            if (id === defaultId) return `${label} 是默认查分服，服务地址不能为空`
+        } else if (!/^https?:\/\//i.test(base_url) || base_url.length > 2048) {
+            return `${label} 查分服务地址必须是 http(s):// 开头的 URL`
+        }
+        if (typeof api_key !== 'string' || api_key.length > 1024) return `${label} API Key 无效`
     }
-    if (typeof server.api_key !== 'string' || server.api_key.length > 1024) return 'API Key 无效'
-    if (boundedInteger(server.timeout_ms, 1000, 120000, NaN) !== Number(server.timeout_ms)) {
+    if (!isRecord(data.server)) return '旧版后端配置必须是对象'
+    if (boundedInteger(legacyServer.timeout_ms, 1000, 120000, NaN) !== Number(legacyServer.timeout_ms)) {
         return '请求超时必须是 1000 到 120000 毫秒之间的整数'
     }
 
@@ -233,6 +292,14 @@ function writeUserConfig(next) {
     setIn(['cmdhead'], next.cmdhead)
     setIn(['watch_config'], next.watch_config)
     setIn(['footer', 'bot_name'], next.footer.bot_name)
+    setIn(['servers', 'default'], next.servers.default)
+    setIn(['servers', 'cn', 'name'], next.servers.cn.name)
+    setIn(['servers', 'cn', 'base_url'], next.servers.cn.base_url)
+    setIn(['servers', 'cn', 'api_key'], next.servers.cn.api_key)
+    setIn(['servers', 'global', 'name'], next.servers.global.name)
+    setIn(['servers', 'global', 'base_url'], next.servers.global.base_url)
+    setIn(['servers', 'global', 'api_key'], next.servers.global.api_key)
+    // 旧版 server 块保留：默认服的兜底地址 / Key + 两服通用的请求超时
     setIn(['server', 'base_url'], next.server.base_url)
     setIn(['server', 'api_key'], next.server.api_key)
     setIn(['server', 'timeout_ms'], next.server.timeout_ms)
@@ -286,19 +353,42 @@ export function supportPanel() {
                     component: 'Switch',
                     bottomHelpMessage: '开启后手动修改 config.yaml 会自动热重载，无需重启（全局仅建一个监听器）。',
                 },
+                { label: '查分后端（国服 / 国际服）', component: 'SOFT_GROUP_BEGIN' },
                 {
-                    field: 'server.base_url',
-                    label: '查分服务地址',
+                    field: 'servers.default',
+                    label: '默认查分服',
+                    component: 'Select',
+                    required: true,
+                    bottomHelpMessage: '不带服标签的命令（如 #ab50）查询这个服；命令末尾也可临时指定，如 #ab50国际服。',
+                    componentProps: { options: serverIdOptions },
+                },
+                {
+                    field: 'servers.cn.base_url',
+                    label: '国服 · 查分服务地址',
                     component: 'Input',
                     required: true,
-                    bottomHelpMessage: 'invtwd-server 地址，不带末尾斜杠。',
+                    bottomHelpMessage: '备注「国服」的 invtwd-server 地址（不带末尾斜杠）；两服 API 端点一致，填地址与 Key 即可。',
                     componentProps: { placeholder: 'http://127.0.0.1:8080', autocomplete: 'url' },
                 },
                 {
-                    field: 'server.api_key',
-                    label: 'API Key',
+                    field: 'servers.cn.api_key',
+                    label: '国服 · API Key',
                     component: 'Input',
-                    bottomHelpMessage: 'Bearer Token，留空表示不带认证（仅本机调试用）。会以明文写入 config.yaml，请妥善保管。',
+                    bottomHelpMessage: '国服 Bearer Token，留空表示不带认证（仅本机调试用）。会以明文写入 config.yaml，请妥善保管。',
+                    componentProps: { type: 'password', autocomplete: 'new-password', placeholder: '留空表示不认证' },
+                },
+                {
+                    field: 'servers.global.base_url',
+                    label: '国际服 · 查分服务地址',
+                    component: 'Input',
+                    bottomHelpMessage: '备注「国际服」的 invtwd-server 地址（不带末尾斜杠）；留空表示该服暂不启用。',
+                    componentProps: { placeholder: 'http://127.0.0.1:8080', autocomplete: 'url' },
+                },
+                {
+                    field: 'servers.global.api_key',
+                    label: '国际服 · API Key',
+                    component: 'Input',
+                    bottomHelpMessage: '国际服 Bearer Token，留空表示不带认证（仅本机调试用）。会以明文写入 config.yaml，请妥善保管。',
                     componentProps: { type: 'password', autocomplete: 'new-password', placeholder: '留空表示不认证' },
                 },
                 {
@@ -306,6 +396,7 @@ export function supportPanel() {
                     label: '请求超时（毫秒）',
                     component: 'InputNumber',
                     required: true,
+                    bottomHelpMessage: '国服 / 国际服通用的单次请求超时。',
                     componentProps: { min: 1000, max: 120000, step: 1000, placeholder: '15000' },
                 },
 
@@ -419,7 +510,7 @@ export function supportPanel() {
             // 操作按钮的中文标签与说明（EliaAdminPanel 可选扩展；不支持的面板会回退到操作名）
             actionsInfo: {
                 reload: { title: '重载配置', description: '重新读取 config.yaml，刷新内存缓存（面板保存已自动重载，仅在手动改文件后需要）' },
-                testConnection: { title: '测试后端连接', description: '用当前配置探活查分后端 invtwd-server，返回后端版本' },
+                testConnection: { title: '测试后端连接', description: '用当前配置逐个探活国服 / 国际服查分后端，返回各自的后端版本' },
             },
 
             actions: {
@@ -431,14 +522,29 @@ export function supportPanel() {
                 // 用当前配置探活查分后端
                 async testConnection(args, { Result }) {
                     config.reload()
-                    try {
-                        const { default: api } = await import('./model/api/client.js')
-                        const health = await api.health()
-                        const backend = [health?.backend, health?.backend_version].filter(Boolean).join(' ') || '未知'
-                        return Result.ok({ backend }, `连接成功：${backend}`)
-                    } catch (err) {
-                        return Result.error(`连接失败：${err?.message || err}`)
+                    const { allServers } = await import('./model/api/servers.js')
+                    const { default: api } = await import('./model/api/client.js')
+                    const lines = []
+                    let okCount = 0
+                    let failCount = 0
+                    for (const srv of allServers()) {
+                        if (!srv.configured) {
+                            lines.push(`${srv.name}：未配置（servers.${srv.id}.base_url 为空）`)
+                            continue
+                        }
+                        try {
+                            const health = await api.use(srv.id).health()
+                            const backend = [health?.backend, health?.backend_version].filter(Boolean).join(' ') || '未知'
+                            lines.push(`${srv.name}：连接成功（${backend}）`)
+                            okCount++
+                        } catch (err) {
+                            lines.push(`${srv.name}：连接失败（${err?.message || err}）`)
+                            failCount++
+                        }
                     }
+                    const text = lines.join('；')
+                    if (!okCount || failCount) return Result.error(text)
+                    return Result.ok({ lines }, text)
                 },
             },
         },

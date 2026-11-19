@@ -3,10 +3,13 @@ import api, { ArcApiError } from '../model/api/client.js'
 import config from '../model/config.js'
 import { renderB30 } from '../model/render/arcb30.js'
 import { b50ResultToRaw } from '../model/data/mapResult.js'
-import { pickTarget, friendlyError, formatTime, escapeRegExp } from '../model/util.js'
+import { pickTarget, friendlyError, formatTime, escapeRegExp, splitServerTag } from '../model/util.js'
 
 // 指令头：包成函数，每次调用实时读取配置，改 cmdhead 免重启（配合配置监听）
 const H = () => escapeRegExp(config.cmdhead)
+// 剥掉末尾服标签后的合法命令形态，不匹配则回用法提示
+const B50 = () => new RegExp(`^[#/]${H()}\\s*(?:b50|B50|查分|bests)\\s*(?:last|上次|历史)?\\s*$`)
+const B50CD = () => new RegExp(`^[#/]${H()}\\s*(?:b50cd|冷却|cd)\\s*$`)
 
 export class arcB50 extends plugin {
     constructor() {
@@ -16,19 +19,26 @@ export class arcB50 extends plugin {
             event: 'message',
             priority: 1000,
             rule: [
-                { reg: `^[#/]${H()}\\s*(?:b50cd|冷却|cd)\\s*$`, fnc: 'cooldown' },
-                { reg: `^[#/]${H()}\\s*(?:b50|B50|查分|bests)\\s*(?:last|上次|历史)?\\s*$`, fnc: 'b50' },
+                // 末尾允许多一个 token 作为可选服标签（如 #ab50国际服 / #ab50cd 国服）
+                { reg: `^[#/]${H()}\\s*(?:b50cd|冷却|cd)\\s*(?:\\S+)?\\s*$`, fnc: 'cooldown' },
+                { reg: `^[#/]${H()}\\s*(?:b50|B50|查分|bests)\\s*(?:last|上次|历史)?\\s*(?:\\S+)?\\s*$`, fnc: 'b50' },
             ],
         })
     }
 
     async b50(e) {
         const { userId, botId } = pickTarget(e)
+        // 末尾可带服标签（国服 / 国际服），不带则查默认服
+        const { serverId, serverName: fromName, msg } = splitServerTag(e.msg, { glued: true })
+        if (!B50().test(msg)) {
+            return e.reply(`用法：#${config.cmdhead}b50 [上次] [国服|国际服]`, true)
+        }
+        const serverApi = api.use(serverId)
         // 带 last/上次/历史 时直接读最近一次快照，不触发新查询
-        if (/(?:last|上次|历史)\s*$/i.test(e.msg)) return this.#sendLast(e, userId, botId)
+        if (/(?:last|上次|历史)\s*$/i.test(msg)) return this.#sendLast(e, userId, botId, serverApi, fromName)
         let result
         try {
-            const submit = await api.submitB50(userId, botId)
+            const submit = await serverApi.submitB50(userId, botId)
             if (submit.status === 'completed' && submit.result) {
                 result = submit.result
             } else {
@@ -40,7 +50,7 @@ export class arcB50 extends plugin {
                 } else {
                     await e.reply('正在查询 B50，请稍候…', true)
                 }
-                const job = await api.waitJob(submit.job_id, {
+                const job = await serverApi.waitJob(submit.job_id, {
                     maxWaitMs: config.get('poll.b50_max_wait_ms', 180000),
                 })
                 if (job.status === 'failed') {
@@ -55,7 +65,7 @@ export class arcB50 extends plugin {
                 ? `\n（B50 冷却中${cooldownHint(err)}，先渲染上一次的数据）`
                 : '\n（查询较慢，先渲染上一次的数据）'
             try {
-                if (await this.#renderLast(e, userId, botId, note)) return true
+                if (await this.#renderLast(e, userId, botId, serverApi, fromName, note)) return true
             } catch { /* 无最近快照或渲染失败，走下方错误提示 */ }
             return e.reply(friendlyError(err, { what: 'B50 查询' }), true)
         }
@@ -64,8 +74,13 @@ export class arcB50 extends plugin {
 
         try {
             const parts = [segment.image(await this.#render(result, e))]
-            const msg = resultMsg(result)
-            if (msg) parts.push(`\n${msg}`)
+            // 文字各行合并成单段，行间用换行分隔；不加开头换行，避免非官方 Bot 下
+            // 图片与文字之间出现一行空白（官方 Bot 的被动回复 @ 会占住该位置，非官方没有）
+            const lines = []
+            const extra = resultMsg(result)
+            if (extra) lines.push(extra)
+            if (fromName) lines.push(`数据来自：${fromName}`)
+            if (lines.length) parts.push(lines.join('\n'))
             await e.reply(parts)
         } catch (err) {
             await e.reply(`B50 渲染失败：${err?.message || err}`, true)
@@ -73,27 +88,32 @@ export class arcB50 extends plugin {
         return true
     }
 
-    /** #ab50cd：查看当前绑定的 B50 冷却剩余时间（只读，不触发查询） */
+    /** #ab50cd [国服|国际服]：查看当前绑定的 B50 冷却剩余时间（只读，不触发查询） */
     async cooldown(e) {
         const { userId, botId } = pickTarget(e)
+        const { serverId, serverName: fromName, msg } = splitServerTag(e.msg, { glued: true })
+        if (!B50CD().test(msg)) {
+            return e.reply(`用法：#${config.cmdhead}b50cd [国服|国际服]`, true)
+        }
         try {
-            const cd = await api.getB50Cooldown(userId, botId)
+            const cd = await api.use(serverId).getB50Cooldown(userId, botId)
             const s = Number(cd.retry_after_seconds) || 0
+            const from = fromName ? `（${fromName}）` : ''
             if (cd.can_query || s <= 0) {
-                return e.reply(`B50 现在可以查询，发送 #${config.cmdhead}b50 即可`, true)
+                return e.reply(`B50${from} 现在可以查询，发送 #${config.cmdhead}b50 即可`, true)
             }
             const left = s < 60 ? `${s} 秒` : `${Math.floor(s / 60)} 分 ${s % 60} 秒`
             const at = cd.available_at ? `，约 ${formatTime(cd.available_at)} 恢复` : ''
-            return e.reply(`B50 冷却中，剩余 ${left}${at}\n期间可用「#${config.cmdhead}b50 last」查看上次结果`, true)
+            return e.reply(`B50${from} 冷却中，剩余 ${left}${at}\n期间可用「#${config.cmdhead}b50 last」查看上次结果`, true)
         } catch (err) {
             return e.reply(friendlyError(err, { what: '查询 B50 冷却' }), true)
         }
     }
 
     /** #ab50 last：读最近一次成功 B50 快照（JSON）本地出图，秒回、不查后端 */
-    async #sendLast(e, userId, botId) {
+    async #sendLast(e, userId, botId, serverApi, fromName) {
         try {
-            await this.#renderLast(e, userId, botId)
+            await this.#renderLast(e, userId, botId, serverApi, fromName)
         } catch (err) {
             await e.reply(friendlyError(err, { what: '读取上次 B50' }), true)
         }
@@ -105,15 +125,21 @@ export class arcB50 extends plugin {
      * 不使用服务器出图；无快照（B50_CACHE_NOT_FOUND）或渲染失败时抛出，交调用方处理。
      * @returns {Promise<boolean>} 发送成功返回 true
      */
-    async #renderLast(e, userId, botId, extraNote = '') {
-        const snap = await api.getLastB50(userId, botId)
+    async #renderLast(e, userId, botId, serverApi, fromName, extraNote = '') {
+        const snap = await serverApi.getLastB50(userId, botId)
         const buf = await this.#render(snap.result, e)
         const parts = [segment.image(buf)]
-        const msg = resultMsg(snap.result)
-        if (msg) parts.push(`\n${msg}`)
-        parts.push(`\n生成于 ${formatTime(snap.generated_at)}`)
-        if (snap.cache_stale) parts.push('（算法版本已更新，建议重新 #ab50）')
-        if (extraNote) parts.push(extraNote)
+        // 文字各行合并成单段，不加开头换行（见 b50() 同款注释）
+        const lines = []
+        const extra = resultMsg(snap.result)
+        if (extra) lines.push(extra)
+        let born = `生成于 ${formatTime(snap.generated_at)}`
+        if (snap.cache_stale) born += '（算法版本已更新，建议重新 #ab50）'
+        lines.push(born)
+        if (fromName) lines.push(`数据来自：${fromName}`)
+        // extraNote 自带开头换行（如「\n（B50 冷却中…）」），直接接在文字末尾
+        const text = lines.join('\n') + (extraNote || '')
+        if (text) parts.push(text)
         await e.reply(parts)
         return true
     }

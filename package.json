@@ -1,7 +1,7 @@
 {
   "name": "arc-plugin",
-  "version": "0.2.0",
-  "description": "Arcaea 查分插件（绑定 / B50 / 单曲，对接 invtwd-server + Shotium / Puppeteer 双渲染器）",
+  "version": "0.3.0",
+  "description": "Arcaea 查分插件（绑定 / B50 / 单曲，对接 invtwd-server 国服/国际服双后端 + Shotium / Puppeteer 双渲染器）",
   "type": "module",
   "main": "index.js",
   "scripts": {

@@ -1,4 +1,5 @@
 import config from '../config.js'
+import { resolveServer } from './servers.js'
 
 /** 带后端错误码的 API 异常 */
 export class ArcApiError extends Error {
@@ -18,16 +19,41 @@ const safeJsonParse = (s) => { try { return JSON.parse(s) } catch { return null 
 
 /**
  * invtwd-server 查分 API 客户端（基于全局 fetch，无需 axios）。
- * 所有 base_url / api_key / 超时都从 config 实时读取，改配置 reload 后即生效。
+ * 支持「国服 / 国际服」双后端：两服 API 端点完全一致，仅 base_url / api_key 不同，
+ * 用 api.use('cn' | 'global') 取对应服的客户端，不指定时用配置的默认服。
+ * 连接信息都从 config 实时读取，改配置 reload 后即生效。
  */
 class ArcApi {
-    get #base() {
-        return String(config.get('server.base_url', 'http://127.0.0.1:8080')).replace(/\/+$/, '')
+    /**
+     * @param {string|undefined} serverId 查分服 id（cn=国服 / global=国际服）；
+     *   缺省使用配置里的默认服（servers.default）
+     */
+    constructor(serverId) {
+        this.serverId = serverId
     }
 
-    get #key() { return config.get('server.api_key', '') }
+    /** 取指定服的客户端视图，如 api.use('global').submitB50(...)；不传则沿用本实例的服 */
+    use(serverId) {
+        return serverId === this.serverId ? this : new ArcApi(serverId)
+    }
 
-    get #timeout() { return Number(config.get('server.timeout_ms', 15000)) || 15000 }
+    /** 当前服的连接信息；未配置的服直接抛错，提示去 config.yaml 填写 */
+    get #conn() {
+        const conn = resolveServer(this.serverId)
+        if (!conn.configured) {
+            throw new ArcApiError(
+                `${conn.name}查分后端尚未配置，请在 config/config.yaml 的 servers.${conn.id}.base_url 填写地址后重试`,
+                { code: 'server_not_configured' },
+            )
+        }
+        return conn
+    }
+
+    get #base() { return this.#conn.baseUrl }
+
+    get #key() { return this.#conn.apiKey }
+
+    get #timeout() { return this.#conn.timeoutMs }
 
     /**
      * 发一个请求。

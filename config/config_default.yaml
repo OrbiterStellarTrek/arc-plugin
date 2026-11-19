@@ -1,13 +1,33 @@
 # arc-plugin 默认配置
 # 请勿直接修改本文件；首次加载会在 config/config.yaml 生成一份用户配置，改那份即可。
 
-# 后端 invtwd-server
+# 后端 invtwd-server：国服 / 国际服两套部署（API 端点完全一致，仅需各自填写 base_url 与 api_key）
+servers:
+  # 不带服标签的命令（如 #ab50）默认查这个服：cn=国服 / global=国际服
+  default: "cn"
+  # 国服后端（备注：国服）
+  cn:
+    # 备注名：指令里的服标签与帮助 / 状态页展示用
+    name: "国服"
+    # 查分服务地址（不带末尾斜杠）；默认服留空时回退下方旧版 server.base_url
+    base_url: ""
+    # Bearer Token，留空表示不带认证（仅本机调试用）
+    api_key: ""
+  # 国际服后端（备注：国际服）
+  global:
+    name: "国际服"
+    # 查分服务地址（不带末尾斜杠）；留空表示该服暂不启用
+    base_url: ""
+    # Bearer Token，留空表示不带认证（仅本机调试用）
+    api_key: ""
+
+# 旧版单后端配置（兼容保留）：作为「默认服」的兜底地址与 Key；timeout_ms 对两服通用
 server:
   # 查分服务地址（不带末尾斜杠）
   base_url: "http://127.0.0.1:8080"
-  # server.api_key（Bearer Token），留空表示不带认证（仅本机调试用）
+  # Bearer Token，留空表示不带认证（仅本机调试用）
   api_key: ""
-  # 单次 HTTP 请求超时（毫秒）
+  # 单次 HTTP 请求超时（毫秒），国服 / 国际服通用
   timeout_ms: 15000
 
 # 命令指令头：匹配 ^[#/]<cmdhead>...，默认 a（如 #ab50 / /a绑定）

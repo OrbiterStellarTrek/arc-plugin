@@ -1,7 +1,7 @@
 import plugin from '../../../lib/plugins/plugin.js'
 import api from '../model/api/client.js'
 import config from '../model/config.js'
-import { pickTarget, parseDifficulty, diffName, friendlyError, escapeRegExp } from '../model/util.js'
+import { pickTarget, parseDifficulty, diffName, friendlyError, escapeRegExp, splitServerTag } from '../model/util.js'
 import { songNames } from '../model/data/songlist.js'
 
 const SONG_ID_RE = /^[A-Za-z0-9_-]{1,128}$/
@@ -50,9 +50,16 @@ export class arcSong extends plugin {
 
     async song(e) {
         const { userId, botId } = pickTarget(e)
-        const m = e.msg.match(new RegExp(`^[#/]${H()}\\s*(?:查歌|单曲|song)\\s+(.+)$`, 'i'))
+        // 末尾可带独立一词的服标签（国服 / 国际服）；要求空格分隔，避免误吞以「国」结尾的曲名
+        const { serverId, serverName: fromName, msg } = splitServerTag(e.msg, { glued: false })
+        const m = msg.match(new RegExp(`^[#/]${H()}\\s*(?:查歌|单曲|song)\\s+(.+)$`, 'i'))
         const argStr = (m?.[1] || '').trim()
-        if (!argStr) return e.reply(`用法：/${config.cmdhead}查歌 <曲名或song_id> <难度>，如 /${config.cmdhead}查歌 deinosphainein FTR`, true)
+        if (!argStr) {
+            return e.reply(
+                `用法：/${config.cmdhead}查歌 <曲名或song_id> <难度>，如 /${config.cmdhead}查歌 deinosphainein FTR\n末尾可带服标签（国服 / 国际服），如 /${config.cmdhead}查歌 deinosphainein FTR 国际服`,
+                true,
+            )
+        }
 
         // 末位 token 若是难度就取出，其余作为曲目
         const tokens = argStr.split(/\s+/)
@@ -72,17 +79,21 @@ export class arcSong extends plugin {
         // 未指定难度：难度专属曲名用其难度，否则默认 FTR
         if (difficulty === null) difficulty = song.difficulty ?? 2
 
+        const serverApi = api.use(serverId)
         try {
-            const submit = await api.submitSong(userId, songId, difficulty, botId)
+            const submit = await serverApi.submitSong(userId, songId, difficulty, botId)
             if (submit.status !== 'completed') {
-                const job = await api.waitJob(submit.job_id, { maxWaitMs: config.get('poll.max_wait_ms', 60000) })
+                const job = await serverApi.waitJob(submit.job_id, { maxWaitMs: config.get('poll.max_wait_ms', 60000) })
                 if (job.status === 'failed') {
                     return e.reply(`单曲查询失败：${job.error || job.error_code || '未知错误'}`, true)
                 }
             }
             // 终态成功后，Last 已更新；用 Last 出图（稳定、可重复读）
-            const buf = await api.lastSongImage(userId, songId, difficulty, botId)
-            await e.reply([segment.image(buf)])
+            const buf = await serverApi.lastSongImage(userId, songId, difficulty, botId)
+            const parts = [segment.image(buf)]
+            // 不加开头换行，避免非官方 Bot 下图片与文字间出现一行空白
+            if (fromName) parts.push(`数据来自：${fromName}`)
+            await e.reply(parts)
         } catch (err) {
             await e.reply(friendlyError(err, { what: `单曲查询（${songId} ${diffName(difficulty)}）` }), true)
         }

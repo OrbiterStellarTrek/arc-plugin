@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import { renderB30, shutdownRenderers, RENDER_DEFAULTS } from './model/render/arcb30.js'
 import api from './model/api/client.js'
 import config from './model/config.js'
+import { allServers } from './model/api/servers.js'
 
 /**
  * arc-plugin —— Arcaea 查分插件
@@ -31,15 +32,21 @@ try {
     logger?.error?.('[arc-plugin] 读取 apps 目录失败：', err)
 }
 
-// 后台探活，不阻塞加载
+// 后台探活（国服 / 国际服逐个探测），不阻塞加载
 ;(async () => {
-    try {
-        const h = await api.health()
-        logger?.mark?.(`[arc-plugin] 已连接查分服务：${h?.backend || '?'} ${h?.backend_version || ''}`)
-    } catch (err) {
-        logger?.warn?.(
-            `[arc-plugin] 未能连接查分服务（${config.get('server.base_url')}）：${err?.message || err}`,
-        )
+    for (const srv of allServers()) {
+        if (!srv.configured) {
+            logger?.warn?.(`[arc-plugin] ${srv.name}查分后端未配置（config.yaml 的 servers.${srv.id}.base_url 为空）`)
+            continue
+        }
+        try {
+            const h = await api.use(srv.id).health()
+            logger?.mark?.(`[arc-plugin] 已连接查分服务（${srv.name}）：${h?.backend || '?'} ${h?.backend_version || ''}`)
+        } catch (err) {
+            logger?.warn?.(
+                `[arc-plugin] 未能连接查分服务（${srv.name} ${srv.baseUrl}）：${err?.message || err}`,
+            )
+        }
     }
 })()
 

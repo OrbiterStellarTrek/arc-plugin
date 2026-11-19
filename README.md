@@ -1,15 +1,16 @@
 <center>
   <img src="./resources/arc.png" alt="Arcaea" width="120" align="left">
   <h1>Arc-plugin</h1>
-  <a href="package.json"><img src="https://img.shields.io/badge/version-0.2.0-blue" alt="version"></a>
+  <a href="package.json"><img src="https://img.shields.io/badge/version-0.3.0-blue" alt="version"></a>
   <a href="https://github.com/yoimiya-kokomi/Yunzai-Bot"><img src="https://img.shields.io/badge/Yunzai--Bot-plugin-ff69b4" alt="Yunzai-Bot"></a>
   <a href="package.json"><img src="https://img.shields.io/badge/License-GPL3.0-green" alt="license"></a>
-  <p>适用于 Yunzai 的 Arcaea 查分插件 —— 绑定好友码，查询B50、单曲成绩</p>
+  <p>适用于 Yunzai 的 Arcaea 查分插件 —— 绑定好友码，查询B50、单曲成绩（支持国服 / 国际服双后端）</p>
 </center>
 
 ## ✨ 功能
 
 - **B50 成绩单**：本地渲染高清成绩图，附潜力值趋势折线。
+- **国服 / 国际服双后端**：两套 `invtwd-server`（API 端点一致）各自填写 `base_url` 与 `api_key` 即可，查分命令末尾可带服标签切换，如 `#ab50国际服`。
 - **单曲查询**：支持曲名或 `song_id`，可指定难度。
 - **冷却与兜底**：B50 冷却中或查询较慢时，自动先渲染上一次的数据。
 - **在线资源同步**：曲绘、立绘等大件资源由 QentimArt 远端增量同步（首次启动自动拉取，`#a更新曲绘` 手动更新）；模板与曲名表随仓库发布。
@@ -18,7 +19,7 @@
 
 ## 📦 安装
 
-> 本插件需要配合查分后端服务使用，请先准备好服务地址与 API Key。
+> 本插件需要配合查分后端服务（invtwd-server）使用；国服 / 国际服各部署一套（API 端点一致），分别准备好地址与 API Key 即可。
 
 1. 在云崽根目录克隆插件本体并安装依赖：
 
@@ -54,15 +55,34 @@
 | `#a <updateart\|更新曲绘>` | 在线增量更新曲绘等渲染资源（仅主人，`#a更新曲绘 强制` 以服务端为准） |
 | `#a <帮助\|help>` | 查看帮助 |
 
+查分相关命令（绑定 / B50 / 单曲 / 状态）末尾都可以带**服标签** `国服` 或 `国际服`（可简写 `国` / `国际` / `外服` / `cn` / `global`），不带标签时查 `servers.default` 指定的默认服：
+
+```text
+#ab50国际服                    # 查询国际服 B50
+#a绑定 114514191 国服           # 在国服后端绑定好友码
+#a查歌 deinosphainein FTR 国际服
+#a状态                         # 不带标签时逐个展示已配置后端的状态
+```
+
 ## ⚙️ 配置
 
 编辑 `config/config.yaml`（请勿修改 `config_default.yaml`）：
 
 ```yaml
-server:
-  base_url: "http://127.0.0.1:8080"   # 查分服务地址
-  api_key: ""                         # API Key
-  timeout_ms: 15000                   # 单次请求超时（毫秒）
+# 国服 / 国际服双后端（两服 API 端点一致，仅需各自填写 base_url 与 api_key）
+servers:
+  default: "cn"                      # 不带服标签时默认查哪个服：cn=国服 / global=国际服
+  cn:                                # 备注：国服
+    base_url: "http://127.0.0.1:8080"   # 国服查分服务地址
+    api_key: ""                         # 国服 API Key
+  global:                            # 备注：国际服
+    base_url: ""                        # 国际服查分服务地址（留空 = 暂不启用）
+    api_key: ""                         # 国际服 API Key
+
+server:                             # 旧版单后端配置（兼容保留）：默认服的兜底地址与 Key
+  base_url: "http://127.0.0.1:8080"
+  api_key: ""
+  timeout_ms: 15000                   # 单次请求超时（毫秒），国服 / 国际服通用
 
 cmdhead: "a"                          # 指令头
 
@@ -82,6 +102,12 @@ assets:
   local_changes: "keep"               # keep 保留本地改动 / overwrite 以服务端为准 / fail 冲突即报错
   timeout_ms: 60000                   # 单次 HTTP 超时（毫秒）
 ```
+
+### 国服 / 国际服双后端
+
+- `servers.cn` 与 `servers.global` 各填一套 `base_url` + `api_key`（备注默认为「国服」/「国际服」，两服 API 端点完全一致）。
+- 不带服标签的命令查 `servers.default` 指定的服；带标签的命令只查对应服，两个后端的绑定 / B50 记录各自独立。
+- 从单后端版本升级无需改动旧配置：默认服的 `base_url` / `api_key` 为空时自动回退旧的 `server.*`；`server.timeout_ms` 对两服通用。
 
 ### 曲绘更新
 
